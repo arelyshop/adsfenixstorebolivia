@@ -3,116 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualizador de Anuncios - Tabla</title>
+    <title>Visualizador de Anuncios - Tarjetas</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
+            background-color: #f1f5f9;
         }
 
-        .status-active { background-color: #dcfce7; color: #166534; }
-        .status-scheduled { background-color: #fef9c3; color: #854d0e; }
+        .status-badge-activo { background-color: #22c55e; color: white; }
+        .status-badge-programado { background-color: #eab308; color: white; }
         
+        /* Aspect ratio vertical para las tarjetas tipo producto/reel */
+        .ad-card {
+            aspect-ratio: 2/3;
+            transition: transform 0.2s ease-in-out;
+        }
+        
+        .ad-card:hover {
+            transform: translateY(-4px);
+        }
+
         .video-container {
             aspect-ratio: 9/16;
             background: #000;
-            border-radius: 1rem;
+            border-radius: 1.5rem;
             overflow: hidden;
             position: relative;
         }
 
-        .hide-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .hide-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        .table-container {
-            border-radius: 1rem;
-            overflow: hidden;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-            background: white;
-        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="p-4 md:p-6">
 
-    <div class="max-w-7xl mx-auto">
+    <div class="max-w-[1600px] mx-auto">
         <!-- Header -->
         <header class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-                <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Control de Anuncios</h1>
-                <p class="text-slate-500 text-sm">Vista detallada con fotos de producto y métricas</p>
+                <h1 class="text-2xl font-bold text-slate-800 tracking-tight">Catálogo de Anuncios</h1>
+                <p class="text-slate-500 text-sm">Vista de productos activos y programados</p>
             </div>
-            <div class="flex gap-3">
-                <div class="bg-white px-4 py-2 rounded-xl shadow-sm border border-slate-100 flex items-center gap-3">
-                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                    <span class="text-xs font-semibold text-slate-600 uppercase tracking-wider"><span id="active-count">0</span> Activos</span>
+            
+            <div class="flex flex-wrap gap-2">
+                <div class="bg-white px-4 py-2 rounded-xl shadow-sm border border-slate-200 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                    <span class="text-xs font-bold text-slate-600"><span id="active-count">0</span> ACTIVOS</span>
                 </div>
-                <div class="bg-white px-4 py-2 rounded-xl shadow-sm border border-slate-100 flex items-center gap-3">
-                    <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
-                    <span class="text-xs font-semibold text-slate-600 uppercase tracking-wider"><span id="scheduled-count">0</span> Programados</span>
+                <div class="bg-white px-4 py-2 rounded-xl shadow-sm border border-slate-200 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+                    <span class="text-xs font-bold text-slate-600"><span id="scheduled-count">0</span> PROGRAMADOS</span>
                 </div>
             </div>
         </header>
 
-        <!-- Filtros y Búsqueda -->
-        <div class="mb-6 flex flex-col md:flex-row gap-4">
-            <div class="relative flex-grow">
-                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+        <!-- Buscador y Filtros -->
+        <div class="mb-8">
+            <div class="relative max-w-md">
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
                 </span>
-                <input type="text" id="searchInput" placeholder="Buscar por asesora, ciudad o anuncio..." 
-                    class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white transition-all shadow-sm">
-            </div>
-            <div class="flex gap-2 overflow-x-auto pb-2 md:pb-0 hide-scrollbar">
-                <button onclick="filterByStatus('all')" class="filter-btn active px-4 py-2 rounded-lg bg-slate-800 text-white text-sm font-medium transition-all whitespace-nowrap">Todos</button>
-                <button onclick="filterByStatus('Activo')" class="filter-btn px-4 py-2 rounded-lg bg-white text-slate-600 border border-slate-200 text-sm font-medium hover:bg-slate-50 transition-all whitespace-nowrap">Activos</button>
-                <button onclick="filterByStatus('Programado')" class="filter-btn px-4 py-2 rounded-lg bg-white text-slate-600 border border-slate-200 text-sm font-medium hover:bg-slate-50 transition-all whitespace-nowrap">Programados</button>
+                <input type="text" id="searchInput" placeholder="Buscar por ciudad, asesora o producto..." 
+                    class="w-full pl-12 pr-4 py-3 rounded-2xl border-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm text-sm">
             </div>
         </div>
 
-        <!-- Tabla de Anuncios -->
-        <div class="table-container overflow-x-auto bg-white border border-slate-200">
-            <table class="w-full text-left border-collapse">
-                <thead>
-                    <tr class="bg-slate-50 border-b border-slate-200">
-                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Anuncio</th>
-                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-center">Foto</th>
-                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Estado</th>
-                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Asesora</th>
-                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Ciudad</th>
-                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Inicio</th>
-                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Rendimiento (C/I/CTR)</th>
-                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-center">Video</th>
-                    </tr>
-                </thead>
-                <tbody id="adsTableBody" class="divide-y divide-slate-100">
-                    <!-- Los anuncios se cargan mediante JavaScript -->
-                </tbody>
-            </table>
+        <!-- Grid de Anuncios -->
+        <div id="adsGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-6">
+            <!-- Las tarjetas se cargan mediante JavaScript -->
         </div>
     </div>
 
     <!-- Modal de Video -->
-    <div id="videoModal" class="fixed inset-0 bg-black/90 z-50 hidden flex items-center justify-center p-4">
-        <button onclick="closeModal()" class="absolute top-6 right-6 text-white hover:text-slate-300 transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    <div id="videoModal" class="fixed inset-0 bg-black/95 z-50 hidden flex items-center justify-center p-4">
+        <button onclick="closeModal()" class="absolute top-6 right-6 text-white hover:scale-110 transition-transform">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
         </button>
-        <div class="max-w-[400px] w-full bg-black rounded-3xl overflow-hidden shadow-2xl ring-1 ring-white/20">
-            <div class="video-container">
-                <div id="videoPlaceholder" class="w-full h-full bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center p-6 text-center text-white">
-                    <div>
-                        <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        <div class="max-w-[380px] w-full">
+            <div class="video-container shadow-2xl ring-1 ring-white/10">
+                <div class="w-full h-full bg-gradient-to-b from-slate-800 to-black flex items-center justify-center text-center p-6">
+                    <div class="text-white">
+                        <div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-blue-500/50">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                         </div>
-                        <p id="modalTitle" class="font-bold text-lg mb-1"></p>
-                        <p id="modalAsesora" class="text-sm opacity-60"></p>
+                        <h2 id="modalTitle" class="font-bold text-xl mb-2"></h2>
+                        <p id="modalAsesora" class="text-blue-400 font-medium"></p>
+                        <p class="text-xs text-slate-500 mt-8 uppercase tracking-widest">Reproduciendo Reel...</p>
                     </div>
                 </div>
             </div>
@@ -121,115 +100,74 @@
 
     <script>
         const adsData = [
-            { 
-                id: 1, 
-                nombre: "Promo Verano 2024", 
-                foto: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400&h=400&fit=crop",
-                estado: "Activo", 
-                clics: "1.2k", 
-                impresiones: "45k", 
-                ctr: "2.6%", 
-                asesora: "Maria Garcia", 
-                ciudad: "Madrid", 
-                inicio: "2024-02-01" 
-            },
-            { 
-                id: 2, 
-                nombre: "Lanzamiento Colección", 
-                foto: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop",
-                estado: "Programado", 
-                clics: "0", 
-                impresiones: "0", 
-                ctr: "0%", 
-                asesora: "Lucia Fernandez", 
-                ciudad: "Barcelona", 
-                inicio: "2024-02-15" 
-            },
-            { 
-                id: 3, 
-                nombre: "Black Friday Anticipado", 
-                foto: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop",
-                estado: "Activo", 
-                clics: "3.8k", 
-                impresiones: "120k", 
-                ctr: "3.1%", 
-                asesora: "Maria Garcia", 
-                ciudad: "Valencia", 
-                inicio: "2024-01-20" 
-            },
-            { 
-                id: 4, 
-                nombre: "Curso de Inversión", 
-                foto: "https://images.unsplash.com/photo-1551288560-1997a6d6132a?w=400&h=400&fit=crop",
-                estado: "Activo", 
-                clics: "850", 
-                impresiones: "12k", 
-                ctr: "7.0%", 
-                asesora: "Elena Ruiz", 
-                ciudad: "Sevilla", 
-                inicio: "2024-02-05" 
-            },
-            { 
-                id: 5, 
-                nombre: "Workshop Inmobiliario", 
-                foto: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=400&fit=crop",
-                estado: "Programado", 
-                clics: "0", 
-                impresiones: "0", 
-                ctr: "0%", 
-                asesora: "Lucia Fernandez", 
-                ciudad: "Malaga", 
-                inicio: "2024-03-01" 
-            }
+            { id: 1, nombre: "Zapatillas Urban Pro", foto: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&h=900&fit=crop", estado: "Activo", asesora: "Maria Garcia", whatsapp: "+51900000001", ciudad: "Madrid", inicio: "2024-02-01" },
+            { id: 2, nombre: "Reloj Smart Elite", foto: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=900&fit=crop", estado: "Programado", asesora: "Lucia Fernandez", whatsapp: "+51900000002", ciudad: "Barcelona", inicio: "2024-02-15" },
+            { id: 3, nombre: "Audífonos Studio X", foto: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=900&fit=crop", estado: "Activo", asesora: "Maria Garcia", whatsapp: "+51900000001", ciudad: "Valencia", inicio: "2024-01-20" },
+            { id: 4, nombre: "Cámara Alpha 7", foto: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600&h=900&fit=crop", estado: "Activo", asesora: "Elena Ruiz", whatsapp: "+51900000003", ciudad: "Sevilla", inicio: "2024-02-05" },
+            { id: 5, nombre: "Mochila Explorer", foto: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&h=900&fit=crop", estado: "Programado", asesora: "Lucia Fernandez", whatsapp: "+51900000002", ciudad: "Malaga", inicio: "2024-03-01" },
+            { id: 6, nombre: "Lentes de Sol Aviator", foto: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=600&h=900&fit=crop", estado: "Activo", asesora: "Elena Ruiz", whatsapp: "+51900000003", ciudad: "Madrid", inicio: "2024-02-10" },
+            { id: 7, nombre: "Perfume Night Bloom", foto: "https://images.unsplash.com/photo-1541643600914-78b084683601?w=600&h=900&fit=crop", estado: "Programado", asesora: "Maria Garcia", whatsapp: "+51900000001", ciudad: "Bilbao", inicio: "2024-02-28" }
         ];
 
-        let currentFilter = 'all';
-
         function renderAds(data) {
-            const tbody = document.getElementById('adsTableBody');
-            tbody.innerHTML = '';
+            const grid = document.getElementById('adsGrid');
+            grid.innerHTML = '';
 
-            data.forEach(ad => {
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-50 transition-colors";
+            // Ordenar: Activos primero, luego Programados
+            const sortedData = [...data].sort((a, b) => {
+                if (a.estado === "Activo" && b.estado === "Programado") return -1;
+                if (a.estado === "Programado" && b.estado === "Activo") return 1;
+                return 0;
+            });
+
+            sortedData.forEach(ad => {
+                const card = document.createElement('div');
+                card.className = "ad-card relative group rounded-2xl md:rounded-[2rem] overflow-hidden shadow-md bg-white";
                 
-                const statusClass = ad.estado === 'Activo' ? 'status-active' : 'status-scheduled';
+                const statusBadge = ad.estado === 'Activo' ? 'status-badge-activo' : 'status-badge-programado';
                 
-                tr.innerHTML = `
-                    <td class="px-6 py-4">
-                        <div class="font-bold text-slate-800">${ad.nombre}</div>
-                    </td>
-                    <td class="px-6 py-4 text-center">
-                        <div class="inline-block">
-                            <img src="${ad.foto}" 
-                                 alt="${ad.nombre}" 
-                                 class="w-12 h-12 rounded-lg object-cover aspect-square shadow-sm border border-slate-200"
-                                 onerror="this.src='https://via.placeholder.com/100?text=S/F'">
-                        </div>
-                    </td>
-                    <td class="px-6 py-4">
-                        <span class="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider ${statusClass}">
+                card.innerHTML = `
+                    <!-- Fondo de Imagen -->
+                    <img src="${ad.foto}" alt="${ad.nombre}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    
+                    <!-- Capa de Degradado para lectura -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                    
+                    <!-- Contenido Superior (Estado) -->
+                    <div class="absolute top-3 left-3 md:top-5 md:left-5">
+                        <span class="${statusBadge} px-2 py-1 md:px-3 md:py-1 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest shadow-lg">
                             ${ad.estado}
                         </span>
-                    </td>
-                    <td class="px-6 py-4 text-sm text-slate-600 font-medium">${ad.asesora}</td>
-                    <td class="px-6 py-4 text-sm text-slate-500">${ad.ciudad}</td>
-                    <td class="px-6 py-4 text-sm text-slate-500 font-mono">${ad.inicio}</td>
-                    <td class="px-6 py-4">
-                        <div class="flex items-center gap-3">
-                            <span class="text-xs font-bold text-slate-700">${ad.clics}</span>
-                            <span class="text-[10px] text-slate-400">/</span>
-                            <span class="text-xs text-slate-500">${ad.impresiones}</span>
-                            <span class="px-2 py-0.5 bg-blue-50 text-blue-600 rounded text-[10px] font-bold">${ad.ctr}</span>
+                    </div>
+
+                    <!-- Botón de Video Reel -->
+                    <button onclick="openModal('${ad.nombre}', '${ad.asesora}')" class="absolute top-3 right-3 md:top-5 md:right-5 bg-white/10 backdrop-blur-md hover:bg-white/30 p-2 rounded-full text-white transition-all shadow-xl">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </button>
+
+                    <!-- Info Inferior -->
+                    <div class="absolute bottom-0 left-0 right-0 p-3 md:p-5">
+                        <div class="mb-1 text-[10px] text-white/70 uppercase tracking-widest font-bold">${ad.ciudad}</div>
+                        <h3 class="text-white font-bold text-sm md:text-lg mb-2 leading-tight">${ad.nombre}</h3>
+                        
+                        <div class="flex items-center justify-between gap-2 mt-4 pt-4 border-t border-white/10">
+                            <div class="flex items-center gap-2 overflow-hidden">
+                                <div class="w-6 h-6 md:w-8 md:h-8 rounded-full bg-blue-500 flex-shrink-0 flex items-center justify-center text-[10px] font-bold text-white uppercase">
+                                    ${ad.asesora.charAt(0)}
+                                </div>
+                                <div class="truncate">
+                                    <p class="text-[10px] text-white/60 leading-none mb-0.5">Asesora</p>
+                                    <p class="text-[11px] md:text-xs text-white font-medium truncate">${ad.asesora}</p>
+                                </div>
+                            </div>
+                            
+                            <a href="https://wa.me/${ad.whatsapp.replace('+', '')}" target="_blank" class="bg-green-500 hover:bg-green-400 p-2 rounded-xl text-white transition-colors shadow-lg shadow-green-900/20">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            </a>
                         </div>
-                    </td>
-                    <td class="px-6 py-4 text-center">
-                        <button onclick="openModal('${ad.nombre}', '${ad.asesora}')" class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-all">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 8 6 4-6 4Z"/></svg>
-                        </button>
-                    </td>
+                    </div>
                 `;
-                tbody.appendChild(tr);
+                grid.appendChild(card);
             });
 
             updateStats();
@@ -242,34 +180,21 @@
             document.getElementById('scheduled-count').textContent = scheduled;
         }
 
-        function filterByStatus(status) {
-            currentFilter = status;
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('bg-slate-800', 'text-white');
-                btn.classList.add('bg-white', 'text-slate-600');
-            });
-            event.currentTarget.classList.add('bg-slate-800', 'text-white');
-            event.currentTarget.classList.remove('bg-white', 'text-slate-600');
-            applyAllFilters();
-        }
-
-        function applyAllFilters() {
+        function applySearch() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const filtered = adsData.filter(ad => {
-                const matchesStatus = currentFilter === 'all' || ad.estado === currentFilter;
-                const matchesSearch = ad.nombre.toLowerCase().includes(searchTerm) || 
-                                     ad.asesora.toLowerCase().includes(searchTerm) || 
-                                     ad.ciudad.toLowerCase().includes(searchTerm);
-                return matchesStatus && matchesSearch;
+                return ad.nombre.toLowerCase().includes(searchTerm) || 
+                       ad.asesora.toLowerCase().includes(searchTerm) || 
+                       ad.ciudad.toLowerCase().includes(searchTerm);
             });
             renderAds(filtered);
         }
 
-        document.getElementById('searchInput').addEventListener('input', applyAllFilters);
+        document.getElementById('searchInput').addEventListener('input', applySearch);
 
         function openModal(title, asesora) {
             document.getElementById('modalTitle').textContent = title;
-            document.getElementById('modalAsesora').textContent = "Asesora: " + asesora;
+            document.getElementById('modalAsesora').textContent = "Gestionado por: " + asesora;
             document.getElementById('videoModal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
         }
@@ -279,10 +204,7 @@
             document.body.style.overflow = 'auto';
         }
 
-        document.getElementById('videoModal').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
-
+        // Inicializar
         renderAds(adsData);
     </script>
 </body>
