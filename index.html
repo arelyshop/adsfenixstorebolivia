@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizador de Anuncios - Tabla</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .status-active { background-color: #dcfce7; color: #166534; }
+        .status-scheduled { background-color: #fef9c3; color: #854d0e; }
+        
+        .video-container {
+            aspect-ratio: 9/16;
+            background: #000;
+            border-radius: 1rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .table-container {
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            background: white;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <header class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Control de Anuncios</h1>
+                <p class="text-slate-500 text-sm">Vista detallada con fotos de producto y métricas</p>
+            </div>
+            <div class="flex gap-3">
+                <div class="bg-white px-4 py-2 rounded-xl shadow-sm border border-slate-100 flex items-center gap-3">
+                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                    <span class="text-xs font-semibold text-slate-600 uppercase tracking-wider"><span id="active-count">0</span> Activos</span>
+                </div>
+                <div class="bg-white px-4 py-2 rounded-xl shadow-sm border border-slate-100 flex items-center gap-3">
+                    <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
+                    <span class="text-xs font-semibold text-slate-600 uppercase tracking-wider"><span id="scheduled-count">0</span> Programados</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Filtros y Búsqueda -->
+        <div class="mb-6 flex flex-col md:flex-row gap-4">
+            <div class="relative flex-grow">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                </span>
+                <input type="text" id="searchInput" placeholder="Buscar por asesora, ciudad o anuncio..." 
+                    class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white transition-all shadow-sm">
+            </div>
+            <div class="flex gap-2 overflow-x-auto pb-2 md:pb-0 hide-scrollbar">
+                <button onclick="filterByStatus('all')" class="filter-btn active px-4 py-2 rounded-lg bg-slate-800 text-white text-sm font-medium transition-all whitespace-nowrap">Todos</button>
+                <button onclick="filterByStatus('Activo')" class="filter-btn px-4 py-2 rounded-lg bg-white text-slate-600 border border-slate-200 text-sm font-medium hover:bg-slate-50 transition-all whitespace-nowrap">Activos</button>
+                <button onclick="filterByStatus('Programado')" class="filter-btn px-4 py-2 rounded-lg bg-white text-slate-600 border border-slate-200 text-sm font-medium hover:bg-slate-50 transition-all whitespace-nowrap">Programados</button>
+            </div>
+        </div>
+
+        <!-- Tabla de Anuncios -->
+        <div class="table-container overflow-x-auto bg-white border border-slate-200">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50 border-b border-slate-200">
+                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Anuncio</th>
+                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-center">Foto</th>
+                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Estado</th>
+                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Asesora</th>
+                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Ciudad</th>
+                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Inicio</th>
+                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Rendimiento (C/I/CTR)</th>
+                        <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-center">Video</th>
+                    </tr>
+                </thead>
+                <tbody id="adsTableBody" class="divide-y divide-slate-100">
+                    <!-- Los anuncios se cargan mediante JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal de Video -->
+    <div id="videoModal" class="fixed inset-0 bg-black/90 z-50 hidden flex items-center justify-center p-4">
+        <button onclick="closeModal()" class="absolute top-6 right-6 text-white hover:text-slate-300 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+        <div class="max-w-[400px] w-full bg-black rounded-3xl overflow-hidden shadow-2xl ring-1 ring-white/20">
+            <div class="video-container">
+                <div id="videoPlaceholder" class="w-full h-full bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center p-6 text-center text-white">
+                    <div>
+                        <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        </div>
+                        <p id="modalTitle" class="font-bold text-lg mb-1"></p>
+                        <p id="modalAsesora" class="text-sm opacity-60"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const adsData = [
+            { 
+                id: 1, 
+                nombre: "Promo Verano 2024", 
+                foto: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400&h=400&fit=crop",
+                estado: "Activo", 
+                clics: "1.2k", 
+                impresiones: "45k", 
+                ctr: "2.6%", 
+                asesora: "Maria Garcia", 
+                ciudad: "Madrid", 
+                inicio: "2024-02-01" 
+            },
+            { 
+                id: 2, 
+                nombre: "Lanzamiento Colección", 
+                foto: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop",
+                estado: "Programado", 
+                clics: "0", 
+                impresiones: "0", 
+                ctr: "0%", 
+                asesora: "Lucia Fernandez", 
+                ciudad: "Barcelona", 
+                inicio: "2024-02-15" 
+            },
+            { 
+                id: 3, 
+                nombre: "Black Friday Anticipado", 
+                foto: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop",
+                estado: "Activo", 
+                clics: "3.8k", 
+                impresiones: "120k", 
+                ctr: "3.1%", 
+                asesora: "Maria Garcia", 
+                ciudad: "Valencia", 
+                inicio: "2024-01-20" 
+            },
+            { 
+                id: 4, 
+                nombre: "Curso de Inversión", 
+                foto: "https://images.unsplash.com/photo-1551288560-1997a6d6132a?w=400&h=400&fit=crop",
+                estado: "Activo", 
+                clics: "850", 
+                impresiones: "12k", 
+                ctr: "7.0%", 
+                asesora: "Elena Ruiz", 
+                ciudad: "Sevilla", 
+                inicio: "2024-02-05" 
+            },
+            { 
+                id: 5, 
+                nombre: "Workshop Inmobiliario", 
+                foto: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=400&fit=crop",
+                estado: "Programado", 
+                clics: "0", 
+                impresiones: "0", 
+                ctr: "0%", 
+                asesora: "Lucia Fernandez", 
+                ciudad: "Malaga", 
+                inicio: "2024-03-01" 
+            }
+        ];
+
+        let currentFilter = 'all';
+
+        function renderAds(data) {
+            const tbody = document.getElementById('adsTableBody');
+            tbody.innerHTML = '';
+
+            data.forEach(ad => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition-colors";
+                
+                const statusClass = ad.estado === 'Activo' ? 'status-active' : 'status-scheduled';
+                
+                tr.innerHTML = `
+                    <td class="px-6 py-4">
+                        <div class="font-bold text-slate-800">${ad.nombre}</div>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <div class="inline-block">
+                            <img src="${ad.foto}" 
+                                 alt="${ad.nombre}" 
+                                 class="w-12 h-12 rounded-lg object-cover aspect-square shadow-sm border border-slate-200"
+                                 onerror="this.src='https://via.placeholder.com/100?text=S/F'">
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider ${statusClass}">
+                            ${ad.estado}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-slate-600 font-medium">${ad.asesora}</td>
+                    <td class="px-6 py-4 text-sm text-slate-500">${ad.ciudad}</td>
+                    <td class="px-6 py-4 text-sm text-slate-500 font-mono">${ad.inicio}</td>
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs font-bold text-slate-700">${ad.clics}</span>
+                            <span class="text-[10px] text-slate-400">/</span>
+                            <span class="text-xs text-slate-500">${ad.impresiones}</span>
+                            <span class="px-2 py-0.5 bg-blue-50 text-blue-600 rounded text-[10px] font-bold">${ad.ctr}</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <button onclick="openModal('${ad.nombre}', '${ad.asesora}')" class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 8 6 4-6 4Z"/></svg>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            updateStats();
+        }
+
+        function updateStats() {
+            const active = adsData.filter(ad => ad.estado === 'Activo').length;
+            const scheduled = adsData.filter(ad => ad.estado === 'Programado').length;
+            document.getElementById('active-count').textContent = active;
+            document.getElementById('scheduled-count').textContent = scheduled;
+        }
+
+        function filterByStatus(status) {
+            currentFilter = status;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-slate-800', 'text-white');
+                btn.classList.add('bg-white', 'text-slate-600');
+            });
+            event.currentTarget.classList.add('bg-slate-800', 'text-white');
+            event.currentTarget.classList.remove('bg-white', 'text-slate-600');
+            applyAllFilters();
+        }
+
+        function applyAllFilters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = adsData.filter(ad => {
+                const matchesStatus = currentFilter === 'all' || ad.estado === currentFilter;
+                const matchesSearch = ad.nombre.toLowerCase().includes(searchTerm) || 
+                                     ad.asesora.toLowerCase().includes(searchTerm) || 
+                                     ad.ciudad.toLowerCase().includes(searchTerm);
+                return matchesStatus && matchesSearch;
+            });
+            renderAds(filtered);
+        }
+
+        document.getElementById('searchInput').addEventListener('input', applyAllFilters);
+
+        function openModal(title, asesora) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalAsesora').textContent = "Asesora: " + asesora;
+            document.getElementById('videoModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('videoModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('videoModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        renderAds(adsData);
+    </script>
+</body>
+</html>
