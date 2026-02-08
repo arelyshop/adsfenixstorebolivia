@@ -13,20 +13,18 @@
             background-color: #f1f5f9;
         }
 
-        /* Animación para el estado Activo */
-        @keyframes pulse-green {
-            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
-        }
-
+        /* Estados estáticos para mejor rendimiento */
         .status-badge-activo { 
             background-color: #22c55e; 
             color: white; 
-            animation: pulse-green 2s infinite;
+            box-shadow: 0 2px 4px rgba(34, 197, 94, 0.3);
         }
 
-        .status-badge-programado { background-color: #eab308; color: white; }
+        .status-badge-programado { 
+            background-color: #eab308; 
+            color: white; 
+            box-shadow: 0 2px 4px rgba(234, 179, 8, 0.3);
+        }
         
         .ad-card {
             aspect-ratio: 2/3;
@@ -43,6 +41,14 @@
             border-radius: 1.5rem;
             overflow: hidden;
             position: relative;
+        }
+
+        /* Estilos para tipos de anuncio */
+        .tipo-tag {
+            background-color: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
         }
 
         /* Clase para el botón de filtro seleccionado */
@@ -66,7 +72,7 @@
                 <h1 class="text-2xl font-bold text-slate-800 tracking-tight cursor-pointer hover:text-blue-600 transition-colors" onclick="setFilter('all')">
                     Catálogo de Anuncios
                 </h1>
-                <p class="text-slate-500 text-sm">Monitoreo de anuncios y fechas de publicación</p>
+                <p class="text-slate-500 text-sm">Filtra por tipo, ciudad o estado de publicación</p>
             </div>
             
             <div class="flex flex-wrap gap-2">
@@ -74,7 +80,7 @@
                     <span class="text-xs font-bold text-slate-600 uppercase">TODOS</span>
                 </button>
                 <button onclick="setFilter('Activo')" id="btn-activo" class="filter-btn bg-white px-4 py-2 rounded-xl shadow-sm border border-slate-200 flex items-center gap-2 hover:bg-slate-50 transition-all">
-                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                    <span class="w-2 h-2 rounded-full bg-green-500"></span>
                     <span class="text-xs font-bold text-slate-600 uppercase"><span id="active-count">0</span> ACTIVOS</span>
                 </button>
                 <button onclick="setFilter('Programado')" id="btn-programado" class="filter-btn bg-white px-4 py-2 rounded-xl shadow-sm border border-slate-200 flex items-center gap-2 hover:bg-slate-50 transition-all">
@@ -90,7 +96,7 @@
                 <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
                 </span>
-                <input type="text" id="searchInput" placeholder="Buscar por ciudad, asesora o producto..." 
+                <input type="text" id="searchInput" placeholder="Buscar por ciudad, tipo, asesora o producto..." 
                     class="w-full pl-12 pr-4 py-3 rounded-2xl border-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm text-sm">
             </div>
         </div>
@@ -124,26 +130,23 @@
 
     <script>
         const adsData = [
-            { id: 1, nombre: "Zapatillas Urban Pro", foto: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&h=900&fit=crop", estado: "Activo", asesora: "Maria Garcia", whatsapp: "+51900000001", ciudad: "Madrid", inicio: "01/02/2024" },
-            { id: 2, nombre: "Reloj Smart Elite", foto: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=900&fit=crop", estado: "Programado", asesora: "Lucia Fernandez", whatsapp: "+51900000002", ciudad: "Barcelona", inicio: "15/02/2024" },
-            { id: 3, nombre: "Audífonos Studio X", foto: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=900&fit=crop", estado: "Activo", asesora: "Maria Garcia", whatsapp: "+51900000001", ciudad: "Valencia", inicio: "20/01/2024" },
-            { id: 4, nombre: "Cámara Alpha 7", foto: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600&h=900&fit=crop", estado: "Activo", asesora: "Elena Ruiz", whatsapp: "+51900000003", ciudad: "Sevilla", inicio: "05/02/2024" },
-            { id: 5, nombre: "Mochila Explorer", foto: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&h=900&fit=crop", estado: "Programado", asesora: "Lucia Fernandez", whatsapp: "+51900000002", ciudad: "Malaga", inicio: "01/03/2024" },
-            { id: 6, nombre: "Lentes de Sol Aviator", foto: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=600&h=900&fit=crop", estado: "Activo", asesora: "Elena Ruiz", whatsapp: "+51900000003", ciudad: "Madrid", inicio: "10/02/2024" },
-            { id: 7, nombre: "Perfume Night Bloom", foto: "https://images.unsplash.com/photo-1541643600914-78b084683601?w=600&h=900&fit=crop", estado: "Programado", asesora: "Maria Garcia", whatsapp: "+51900000001", ciudad: "Bilbao", inicio: "28/02/2024" }
+            { id: 1, nombre: "Zapatillas Urban Pro", foto: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&h=900&fit=crop", estado: "Activo", tipo: "PRODUCTO SOLO", asesora: "Maria Garcia", whatsapp: "+51900000001", ciudad: "Madrid", inicio: "01/02/2024" },
+            { id: 2, nombre: "Reloj Smart Elite", foto: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=900&fit=crop", estado: "Programado", tipo: "COMBO", asesora: "Lucia Fernandez", whatsapp: "+51900000002", ciudad: "Barcelona", inicio: "15/02/2024" },
+            { id: 3, nombre: "Audífonos Studio X", foto: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=900&fit=crop", estado: "Activo", tipo: "TRICOMBO", asesora: "Maria Garcia", whatsapp: "+51900000001", ciudad: "Valencia", inicio: "20/01/2024" },
+            { id: 4, nombre: "Cámara Alpha 7", foto: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600&h=900&fit=crop", estado: "Activo", tipo: "PRODUCTO SOLO", asesora: "Elena Ruiz", whatsapp: "+51900000003", ciudad: "Sevilla", inicio: "05/02/2024" },
+            { id: 5, nombre: "Mochila Explorer", foto: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&h=900&fit=crop", estado: "Programado", tipo: "COMBO", asesora: "Lucia Fernandez", whatsapp: "+51900000002", ciudad: "Malaga", inicio: "01/03/2024" },
+            { id: 6, nombre: "Lentes de Sol Aviator", foto: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=600&h=900&fit=crop", estado: "Activo", tipo: "PRODUCTO SOLO", asesora: "Elena Ruiz", whatsapp: "+51900000003", ciudad: "Madrid", inicio: "10/02/2024" },
+            { id: 7, nombre: "Perfume Night Bloom", foto: "https://images.unsplash.com/photo-1541643600914-78b084683601?w=600&h=900&fit=crop", estado: "Programado", tipo: "TRICOMBO", asesora: "Maria Garcia", whatsapp: "+51900000001", ciudad: "Bilbao", inicio: "28/02/2024" }
         ];
 
         let currentStatusFilter = 'all';
 
         function setFilter(status) {
             currentStatusFilter = status;
-            
-            // Actualizar interfaz de los botones
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('filter-active'));
             if (status === 'all') document.getElementById('btn-all').classList.add('filter-active');
             if (status === 'Activo') document.getElementById('btn-activo').classList.add('filter-active');
             if (status === 'Programado') document.getElementById('btn-programado').classList.add('filter-active');
-            
             applyAllFilters();
         }
 
@@ -187,8 +190,16 @@
 
                     <!-- Información Inferior -->
                     <div class="absolute bottom-0 left-0 right-0 p-3 md:p-5">
-                        <div class="mb-1 text-[10px] text-white/70 uppercase tracking-widest font-bold">${ad.ciudad}</div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-[10px] text-white/70 uppercase tracking-widest font-bold">${ad.ciudad}</span>
+                            <span class="text-[10px] text-white/40">•</span>
+                            <span class="px-2 py-0.5 rounded text-[8px] font-bold uppercase tracking-tighter tipo-tag">
+                                ${ad.tipo}
+                            </span>
+                        </div>
+                        
                         <h3 class="text-white font-bold text-sm md:text-lg mb-2 leading-tight">${ad.nombre}</h3>
+                        
                         <div class="flex items-center justify-between gap-2 mt-4 pt-4 border-t border-white/10">
                             <div class="flex items-center gap-2 overflow-hidden">
                                 <div class="w-6 h-6 md:w-8 md:h-8 rounded-full bg-blue-500 flex-shrink-0 flex items-center justify-center text-[10px] font-bold text-white uppercase">
@@ -223,7 +234,8 @@
                 const matchesStatus = currentStatusFilter === 'all' || ad.estado === currentStatusFilter;
                 const matchesSearch = ad.nombre.toLowerCase().includes(searchTerm) || 
                                      ad.asesora.toLowerCase().includes(searchTerm) || 
-                                     ad.ciudad.toLowerCase().includes(searchTerm);
+                                     ad.ciudad.toLowerCase().includes(searchTerm) ||
+                                     ad.tipo.toLowerCase().includes(searchTerm);
                 return matchesStatus && matchesSearch;
             });
             
