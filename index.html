@@ -3,70 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MKT Fenix Store</title>
+    <title>MKT Fenix Store - Visualizador</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f1f5f9;
-        }
-
-        /* Estados estáticos */
-        .status-badge-activo { 
-            background-color: #22c55e; 
-            color: white; 
-            box-shadow: 0 2px 4px rgba(34, 197, 94, 0.3);
-        }
-
-        .status-badge-programado { 
-            background-color: #eab308; 
-            color: white; 
-            box-shadow: 0 2px 4px rgba(234, 179, 8, 0.3);
-        }
-        
-        .ad-card {
-            aspect-ratio: 2/3;
-            transition: transform 0.2s ease-in-out;
-        }
-        
-        .ad-card:hover {
-            transform: translateY(-4px);
-        }
-
-        .video-container {
-            aspect-ratio: 9/16;
-            background: #000;
-            border-radius: 1.5rem;
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* Estilos para tipos de anuncio */
-        .tipo-tag {
-            background-color: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-        }
-
-        /* Clase para el botón de filtro seleccionado */
-        .filter-active {
-            border-color: #3b82f6 !important;
-            ring: 2px;
-            ring-color: #3b82f6;
-            background-color: #eff6ff !important;
-        }
-
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        /* Tooltip de copiado */
-        .copy-feedback {
-            animation: fadeInOut 1.5s ease-in-out forwards;
-        }
-
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
+        .ad-card { aspect-ratio: 2/3; transition: transform 0.2s ease-in-out; }
+        .ad-card:hover { transform: translateY(-4px); }
+        .status-badge-activo { background-color: #22c55e; color: white; }
+        .status-badge-programado { background-color: #eab308; color: white; }
+        .status-badge-pendiente { background-color: #94a3b8; color: white; }
+        .tipo-tag { background-color: rgba(255, 255, 255, 0.15); backdrop-filter: blur(4px); border: 1px solid rgba(255, 255, 255, 0.3); color: white; }
+        .filter-active { border-color: #3b82f6 !important; background-color: #eff6ff !important; }
+        .copy-feedback { animation: fadeInOut 1.5s ease-in-out forwards; }
         @keyframes fadeInOut {
             0% { opacity: 0; transform: translateY(5px); }
             20% { opacity: 1; transform: translateY(0); }
@@ -75,15 +24,13 @@
         }
     </style>
 </head>
-<body class="p-4 md:p-6">
+<body class="p-4 md:p-8 min-h-screen">
 
     <div class="max-w-[1600px] mx-auto">
         <!-- Encabezado -->
         <header class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-                <h1 class="text-3xl font-extrabold text-slate-800 tracking-tighter cursor-pointer hover:text-blue-600 transition-colors uppercase" onclick="setFilter('all')">
-                    MKT FENIX STORE
-                </h1>
+                <h1 class="text-3xl font-extrabold text-slate-800 tracking-tighter uppercase">MKT FENIX STORE</h1>
                 <p class="text-slate-500 text-sm font-medium">Anuncios activos y próximas fechas de publicación</p>
             </div>
             
@@ -103,180 +50,144 @@
         </header>
 
         <!-- Buscador -->
-        <div class="mb-8">
-            <div class="relative max-w-md">
+        <div class="mb-8 flex justify-between items-center gap-4">
+            <div class="relative max-w-md flex-grow">
                 <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
                 </span>
-                <input type="text" id="searchInput" placeholder="Buscar por ciudad, tipo, asesora..." 
-                    class="w-full pl-12 pr-4 py-3 rounded-2xl border-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm text-sm">
+                <input type="text" id="searchInput" placeholder="Buscar anuncios..." class="w-full pl-12 pr-4 py-3 rounded-2xl border-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm text-sm">
             </div>
+            <a href="/admin/admin.html" class="hidden md:flex items-center gap-2 text-slate-400 hover:text-slate-600 transition-colors text-sm font-medium">
+                Acceso Admin
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+            </a>
         </div>
 
         <!-- Cuadrícula de Anuncios -->
         <div id="adsGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-6">
-            <!-- Las tarjetas se cargan mediante JavaScript -->
+            <div class="col-span-full py-20 text-center text-slate-400 italic">Conectando con Fenix Store...</div>
         </div>
     </div>
 
     <!-- Modal de Video -->
     <div id="videoModal" class="fixed inset-0 bg-black/95 z-50 hidden flex items-center justify-center p-4">
-        <button onclick="closeModal()" class="absolute top-6 right-6 text-white hover:scale-110 transition-transform">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-        </button>
-        <div class="max-w-[380px] w-full">
-            <div class="video-container shadow-2xl ring-1 ring-white/10">
-                <div class="w-full h-full bg-gradient-to-b from-slate-800 to-black flex items-center justify-center text-center p-6">
-                    <div class="text-white">
-                        <div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-blue-500/50">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                        </div>
-                        <h2 id="modalTitle" class="font-bold text-xl mb-2"></h2>
-                        <p id="modalAsesora" class="text-blue-400 font-medium"></p>
-                        <p class="text-xs text-slate-500 mt-8 uppercase tracking-widest">Reproduciendo Reel...</p>
-                    </div>
+        <button onclick="closeModal()" class="absolute top-6 right-6 text-white"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+        <div class="max-w-[380px] w-full bg-slate-900 rounded-[2.5rem] overflow-hidden shadow-2xl">
+            <div class="aspect-[9/16] flex items-center justify-center p-8 text-center text-white">
+                <div>
+                    <div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+                    <h2 id="modalTitle" class="font-bold text-xl mb-2"></h2>
+                    <p id="modalAsesora" class="text-blue-400 font-medium"></p>
+                    <p id="modalVideoStatus" class="text-[10px] mt-4 uppercase tracking-widest text-slate-500"></p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        const adsData = [
-            { id: 1, nombre: "Zapatillas Urban Pro", foto: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&h=900&fit=crop", estado: "Activo", tipo: "PRODUCTO SOLO", asesora: "Maria Garcia", whatsapp: "+51900000001", ciudad: "Madrid", inicio: "01/02/2024" },
-            { id: 2, nombre: "Reloj Smart Elite", foto: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=900&fit=crop", estado: "Programado", tipo: "COMBO", asesora: "Lucia Fernandez", whatsapp: "+51900000002", ciudad: "Barcelona", inicio: "15/02/2024" },
-            { id: 3, nombre: "Audífonos Studio X", foto: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=900&fit=crop", estado: "Activo", tipo: "TRICOMBO", asesora: "Maria Garcia", whatsapp: "+51900000001", ciudad: "Valencia", inicio: "20/01/2024" },
-            { id: 4, nombre: "Cámara Alpha 7", foto: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600&h=900&fit=crop", estado: "Activo", tipo: "PRODUCTO SOLO", asesora: "Elena Ruiz", whatsapp: "+51900000003", ciudad: "Sevilla", inicio: "05/02/2024" },
-            { id: 5, nombre: "Mochila Explorer", foto: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&h=900&fit=crop", estado: "Programado", tipo: "COMBO", asesora: "Lucia Fernandez", whatsapp: "+51900000002", ciudad: "Malaga", inicio: "01/03/2024" },
-            { id: 6, nombre: "Lentes de Sol Aviator", foto: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=600&h=900&fit=crop", estado: "Activo", tipo: "PRODUCTO SOLO", asesora: "Elena Ruiz", whatsapp: "+51900000003", ciudad: "Madrid", inicio: "10/02/2024" },
-            { id: 7, nombre: "Perfume Night Bloom", foto: "https://images.unsplash.com/photo-1541643600914-78b084683601?w=600&h=900&fit=crop", estado: "Programado", tipo: "TRICOMBO", asesora: "Maria Garcia", whatsapp: "+51900000001", ciudad: "Bilbao", inicio: "28/02/2024" }
-        ];
+        const API_URL = '/.netlify/functions/api';
+        let allAds = [];
+        let currentFilter = 'all';
 
-        let currentStatusFilter = 'all';
-
-        function setFilter(status) {
-            currentStatusFilter = status;
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('filter-active'));
-            if (status === 'all') document.getElementById('btn-all').classList.add('filter-active');
-            if (status === 'Activo') document.getElementById('btn-activo').classList.add('filter-active');
-            if (status === 'Programado') document.getElementById('btn-programado').classList.add('filter-active');
-            applyAllFilters();
+        async function fetchData() {
+            try {
+                const response = await fetch(`${API_URL}/anuncios`);
+                if (!response.ok) throw new Error();
+                allAds = await response.json();
+                renderPublicView();
+            } catch (e) {
+                // Si la API no responde, mostramos el mock para propósitos visuales en el editor
+                allAds = [{ id: 1, nombre: "Cargando...", foto_url: "", tipo: "PRODUCTO SOLO", asesora_nombre: "Sistema", ciudad: "-", whatsapp: "-", estado: "pendiente", fecha_inicio: "-", video_reel: "pendiente" }];
+                renderPublicView();
+            }
         }
 
-        function copyToClipboard(text, element) {
-            const tempInput = document.createElement("input");
-            tempInput.value = text;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand("copy");
-            document.body.removeChild(tempInput);
-
-            const originalHTML = element.innerHTML;
-            element.innerHTML = '<span class="text-green-400 font-bold copy-feedback italic text-[10px]">¡Copiado!</span>';
-            setTimeout(() => {
-                element.innerHTML = originalHTML;
-            }, 1500);
-        }
-
-        function renderAds(data) {
+        function renderPublicView() {
             const grid = document.getElementById('adsGrid');
             grid.innerHTML = '';
-
-            const sortedData = [...data].sort((a, b) => {
-                if (a.estado === "Activo" && b.estado === "Programado") return -1;
-                if (a.estado === "Programado" && b.estado === "Activo") return 1;
-                return 0;
+            
+            const filtered = allAds.filter(ad => {
+                const matchesStatus = currentFilter === 'all' || ad.estado === currentFilter;
+                const search = document.getElementById('searchInput').value.toLowerCase();
+                const matchesSearch = ad.nombre.toLowerCase().includes(search) || ad.asesora_nombre.toLowerCase().includes(search);
+                return matchesStatus && matchesSearch;
             });
 
-            sortedData.forEach(ad => {
-                const card = document.createElement('div');
-                card.className = "ad-card relative group rounded-2xl md:rounded-[2rem] overflow-hidden shadow-md bg-white";
-                
-                const statusBadge = ad.estado === 'Activo' ? 'status-badge-activo' : 'status-badge-programado';
-                const dateLabel = ad.estado === 'Activo' ? 'Activo desde' : 'Publicación';
-                
-                card.innerHTML = `
-                    <img src="${ad.foto}" alt="${ad.nombre}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
-                    
-                    <div class="absolute top-3 left-3 md:top-5 md:left-5 flex flex-col items-start gap-1">
-                        <span class="${statusBadge} px-2 py-1 md:px-3 md:py-1 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-widest shadow-lg">
-                            ${ad.estado}
-                        </span>
-                        <div class="bg-black/40 backdrop-blur-sm px-2 py-0.5 rounded-lg">
-                            <p class="text-[8px] md:text-[9px] text-white/90 font-medium">
-                                ${dateLabel}: <span class="font-bold">${ad.inicio}</span>
-                            </p>
-                        </div>
-                    </div>
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div class="col-span-full py-20 text-center text-slate-400 italic">No hay anuncios que coincidan con la búsqueda.</div>';
+                return;
+            }
 
-                    <button onclick="openModal('${ad.nombre}', '${ad.asesora}')" class="absolute top-3 right-3 md:top-5 md:right-5 bg-white/10 backdrop-blur-md hover:bg-white/30 p-2 rounded-full text-white transition-all shadow-xl">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                    </button>
-
-                    <div class="absolute bottom-0 left-0 right-0 p-3 md:p-5">
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="text-[10px] text-white/70 uppercase tracking-widest font-bold">${ad.ciudad}</span>
-                            <span class="text-[10px] text-white/40">•</span>
-                            <span class="px-2 py-0.5 rounded text-[8px] font-bold uppercase tracking-tighter tipo-tag">
-                                ${ad.tipo}
-                            </span>
-                        </div>
-                        
-                        <h3 class="text-white font-bold text-sm md:text-lg mb-2 leading-tight">${ad.nombre}</h3>
-                        
-                        <div class="flex items-center justify-between gap-2 mt-4 pt-4 border-t border-white/10">
-                            <div class="flex items-center gap-2 overflow-hidden">
-                                <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-blue-600 flex-shrink-0 flex items-center justify-center text-[10px] font-bold text-white uppercase shadow-inner">
-                                    ${ad.asesora.charAt(0)}
-                                </div>
-                                <div class="truncate flex flex-col">
-                                    <p class="text-[11px] md:text-xs text-white font-bold truncate">${ad.asesora}</p>
-                                    <button onclick="copyToClipboard('${ad.whatsapp}', this)" class="text-left text-[9px] md:text-[10px] text-white/70 hover:text-white transition-colors flex items-center gap-1">
-                                        <span class="font-mono">${ad.whatsapp}</span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-50"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-                                    </button>
-                                </div>
+            filtered.forEach(ad => {
+                const badgeClass = ad.estado === 'Activo' ? 'status-badge-activo' : (ad.estado === 'Programado' ? 'status-badge-programado' : 'status-badge-pendiente');
+                const dateLabel = ad.estado === 'Activo' ? 'Activo desde' : (ad.estado === 'Programado' ? 'Publicación' : 'Registro');
+                
+                grid.innerHTML += `
+                    <div class="ad-card relative group rounded-[2rem] overflow-hidden shadow-md bg-white">
+                        <img src="${ad.foto_url}" class="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-110" onerror="this.src='https://via.placeholder.com/400x600?text=Fenix+Store'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                        <div class="absolute top-4 left-4 flex flex-col gap-1">
+                            <span class="${badgeClass} px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg">${ad.estado}</span>
+                            <div class="bg-black/40 backdrop-blur-sm px-2 py-0.5 rounded-lg">
+                                <p class="text-[9px] text-white/90 font-medium">${dateLabel}: <span class="font-bold">${ad.fecha_inicio}</span></p>
                             </div>
-                            
-                            <a href="https://wa.me/${ad.whatsapp.replace('+', '')}" target="_blank" class="bg-green-500 hover:bg-green-400 p-2 rounded-xl text-white transition-all shadow-lg shadow-green-900/20 active:scale-90">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 510 512.459" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd">
-                                    <path fill="white" d="M435.689 74.468C387.754 26.471 324 .025 256.071 0 116.098 0 2.18 113.906 2.131 253.916c-.024 44.758 11.677 88.445 33.898 126.946L0 512.459l134.617-35.311c37.087 20.238 78.85 30.891 121.345 30.903h.109c139.949 0 253.88-113.917 253.928-253.928.024-67.855-26.361-131.645-74.31-179.643v-.012zm-179.618 390.7h-.085c-37.868-.011-75.016-10.192-107.428-29.417l-7.707-4.577-79.886 20.953 21.32-77.889-5.017-7.987c-21.125-33.605-32.29-72.447-32.266-112.322.049-116.366 94.729-211.046 211.155-211.046 56.373.025 109.364 22.003 149.214 61.903 39.853 39.888 61.781 92.927 61.757 149.313-.05 116.377-94.728 211.058-211.057 211.058v.011zm115.768-158.067c-6.344-3.178-37.537-18.52-43.358-20.639-5.82-2.119-10.044-3.177-14.27 3.178-4.225 6.357-16.388 20.651-20.09 24.875-3.702 4.238-7.403 4.762-13.747 1.583-6.343-3.178-26.787-9.874-51.029-31.487-18.86-16.827-31.597-37.598-35.297-43.955-3.702-6.355-.39-9.789 2.775-12.943 2.849-2.848 6.344-7.414 9.522-11.116s4.225-6.355 6.343-10.581c2.12-4.238 1.06-7.937-.522-11.117-1.584-3.177-14.271-34.409-19.568-47.108-5.151-12.37-10.385-10.69-14.269-10.897-3.703-.183-7.927-.219-12.164-.219s-11.105 1.582-16.925 7.939c-5.82 6.354-22.209 21.709-22.209 52.927 0 31.22 22.733 61.405 25.911 65.642 3.177 4.237 44.745 68.318 108.389 95.812 15.135 6.538 26.957 10.446 36.175 13.368 15.196 4.834 29.027 4.153 39.96 2.52 12.19-1.825 37.54-15.353 42.824-30.172 5.283-14.818 5.283-27.529 3.701-30.172-1.582-2.641-5.819-4.237-12.163-7.414l.011-.024z"/>
-                                </svg>
-                            </a>
+                        </div>
+                        <button onclick="openModal('${ad.nombre}', '${ad.asesora_nombre}', '${ad.video_reel}')" class="absolute top-4 right-4 bg-white/10 backdrop-blur-md p-2 rounded-full text-white hover:bg-white/30 transition-all"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>
+                        <div class="absolute bottom-0 left-0 right-0 p-5">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="text-[10px] text-white/70 uppercase tracking-widest font-bold">${ad.ciudad}</span>
+                                <span class="px-2 py-0.5 rounded text-[8px] font-bold uppercase tipo-tag">${ad.tipo}</span>
+                            </div>
+                            <h3 class="text-white font-bold text-sm md:text-lg mb-2 leading-tight truncate">${ad.nombre}</h3>
+                            <div class="flex items-center justify-between gap-2 mt-4 pt-4 border-t border-white/10">
+                                <div class="flex items-center gap-2 overflow-hidden">
+                                    <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-[10px] font-bold text-white uppercase flex-shrink-0">${ad.asesora_nombre.charAt(0)}</div>
+                                    <div class="flex flex-col truncate">
+                                        <p class="text-[11px] text-white font-bold truncate">${ad.asesora_nombre}</p>
+                                        <button onclick="copyToClipboard('${ad.whatsapp}', this)" class="text-left text-[9px] text-white/70 hover:text-white flex items-center gap-1 transition-colors">
+                                            <span>${ad.whatsapp}</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <a href="https://wa.me/${ad.whatsapp.replace('+', '')}" target="_blank" class="bg-green-500 p-2 rounded-xl text-white shadow-lg hover:bg-green-400 active:scale-90 transition-all">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 510 512.459" fill="white">
+                                        <path d="M435.689 74.468C387.754 26.471 324 .025 256.071 0 116.098 0 2.18 113.906 2.131 253.916c-.024 44.758 11.677 88.445 33.898 126.946L0 512.459l134.617-35.311c37.087 20.238 78.85 30.891 121.345 30.903h.109c139.949 0 253.88-113.917 253.928-253.928.024-67.855-26.361-131.645-74.31-179.643v-.012zm-179.618 390.7h-.085c-37.868-.011-75.016-10.192-107.428-29.417l-7.707-4.577-79.886 20.953 21.32-77.889-5.017-7.987c-21.125-33.605-32.29-72.447-32.266-112.322.049-116.366 94.729-211.046 211.155-211.046 56.373.025 109.364 22.003 149.214 61.903 39.853 39.888 61.781 92.927 61.757 149.313-.05 116.377-94.728 211.058-211.057 211.058v.011zm115.768-158.067c-6.344-3.178-37.537-18.52-43.358-20.639-5.82-2.119-10.044-3.177-14.27 3.178-4.225 6.357-16.388 20.651-20.09 24.875-3.702 4.238-7.403 4.762-13.747 1.583-6.343-3.178-26.787-9.874-51.029-31.487-18.86-16.827-31.597-37.598-35.297-43.955-3.702-6.355-.39-9.789 2.775-12.943 2.849-2.848 6.344-7.414 9.522-11.116s4.225-6.355 6.343-10.581c2.12-4.238 1.06-7.937-.522-11.117-1.584-3.177-14.271-34.409-19.568-47.108-5.151-12.37-10.385-10.69-14.269-10.897-3.703-.183-7.927-.219-12.164-.219s-11.105 1.582-16.925 7.939c-5.82 6.354-22.209 21.709-22.209 52.927 0 31.22 22.733 61.405 25.911 65.642 3.177 4.237 44.745 68.318 108.389 95.812 15.135 6.538 26.957 10.446 36.175 13.368 15.196 4.834 29.027 4.153 39.96 2.52 12.19-1.825 37.54-15.353 42.824-30.172 5.283-14.818 5.283-27.529 3.701-30.172-1.582-2.641-5.819-4.237-12.163-7.414l.011-.024z"/>
+                                    </svg>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 `;
-                grid.appendChild(card);
             });
+            updateHeaderCounts();
         }
 
-        function updateCounts() {
-            const active = adsData.filter(ad => ad.estado === 'Activo').length;
-            const scheduled = adsData.filter(ad => ad.estado === 'Programado').length;
-            document.getElementById('active-count').textContent = active;
-            document.getElementById('scheduled-count').textContent = scheduled;
+        function updateHeaderCounts() {
+            document.getElementById('active-count').innerText = allAds.filter(a => a.estado === 'Activo').length;
+            document.getElementById('scheduled-count').innerText = allAds.filter(a => a.estado === 'Programado').length;
         }
 
-        function applyAllFilters() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            
-            const filtered = adsData.filter(ad => {
-                const matchesStatus = currentStatusFilter === 'all' || ad.estado === currentStatusFilter;
-                const matchesSearch = ad.nombre.toLowerCase().includes(searchTerm) || 
-                                     ad.asesora.toLowerCase().includes(searchTerm) || 
-                                     ad.ciudad.toLowerCase().includes(searchTerm) ||
-                                     ad.tipo.toLowerCase().includes(searchTerm);
-                return matchesStatus && matchesSearch;
-            });
-            
-            renderAds(filtered);
+        function setFilter(status) {
+            currentFilter = status;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('filter-active'));
+            document.getElementById(`btn-${status.toLowerCase()}`).classList.add('filter-active');
+            renderPublicView();
         }
 
-        document.getElementById('searchInput').addEventListener('input', applyAllFilters);
+        function copyToClipboard(text, element) {
+            const temp = document.createElement("input");
+            temp.value = text; document.body.appendChild(temp);
+            temp.select(); document.execCommand("copy");
+            document.body.removeChild(temp);
+            const original = element.innerHTML;
+            element.innerHTML = '<span class="text-green-400 font-bold copy-feedback italic text-[10px]">¡Copiado!</span>';
+            setTimeout(() => { element.innerHTML = original; }, 1500);
+        }
 
-        function openModal(title, asesora) {
-            document.getElementById('modalTitle').textContent = title;
-            document.getElementById('modalAsesora').textContent = "Gestionado por: " + asesora;
+        function openModal(title, asesora, video) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalAsesora').innerText = `Gestión: ${asesora}`;
+            document.getElementById('modalVideoStatus').innerText = `Video Reel: ${video.toUpperCase()}`;
             document.getElementById('videoModal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
         }
@@ -286,9 +197,10 @@
             document.body.style.overflow = 'auto';
         }
 
+        document.getElementById('searchInput').oninput = renderPublicView;
+        
         // Inicializar
-        updateCounts();
-        renderAds(adsData);
+        fetchData();
     </script>
 </body>
 </html>
