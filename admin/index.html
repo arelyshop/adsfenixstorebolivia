@@ -70,15 +70,15 @@
             </div>
         </div>
 
-        <!-- SELECTOR DE PESTAÑAS (GRANDE Y ELEGANTE) -->
+        <!-- SELECTOR DE PESTAÑAS (ANUNCIOS SELECCIONADO POR DEFECTO) -->
         <div class="flex justify-center mb-16">
             <div class="bg-white p-2 rounded-[2.5rem] shadow-xl border border-slate-100 flex gap-2">
                 <button onclick="switchTab('ads')" id="tabBtnAds" 
-                    class="tab-btn active w-64 py-5 rounded-[2rem] text-sm uppercase tracking-[0.2em] font-black transition-all duration-300 text-slate-400 bg-transparent">
+                    class="tab-btn active w-64 py-5 rounded-[2rem] text-sm uppercase tracking-[0.2em] font-black transition-all duration-300 text-white bg-blue-600 shadow-xl shadow-blue-200">
                     Anuncios
                 </button>
                 <button onclick="switchTab('asesoras')" id="tabBtnAsesoras" 
-                    class="tab-btn w-64 py-5 rounded-[2rem] text-sm uppercase tracking-[0.2em] font-black transition-all duration-300 text-slate-400 bg-transparent">
+                    class="tab-btn w-64 py-5 rounded-[2rem] text-sm uppercase tracking-[0.2em] font-black transition-all duration-300 text-slate-400 bg-transparent hover:bg-slate-100">
                     Asesoras
                 </button>
             </div>
@@ -112,7 +112,7 @@
                             <div><p class="text-blue-400 mb-1">WhatsApp</p><p id="infoWhatsapp" class="text-slate-700 text-xs">-</p></div>
                         </div>
                         
-                        <!-- OPCIONES FINALES ACTUALIZADAS -->
+                        <!-- OPCIONES FINALES -->
                         <div class="grid grid-cols-2 gap-4">
                             <div class="space-y-1">
                                 <label class="text-[10px] font-black text-slate-400 uppercase ml-2">Fecha de publicación</label>
@@ -204,7 +204,6 @@
             document.getElementById('sectionAds').classList.toggle('hidden-section', tab !== 'ads');
             document.getElementById('sectionAsesoras').classList.toggle('hidden-section', tab !== 'asesoras');
             
-            // Actualización visual de las pestañas
             const btnAds = document.getElementById('tabBtnAds');
             const btnAsesoras = document.getElementById('tabBtnAsesoras');
             
