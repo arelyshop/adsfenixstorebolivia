@@ -25,7 +25,6 @@
         /* Estados de anuncios ACTUALIZADOS */
         .status-badge-activo { background-color: #22c55e; color: white; box-shadow: 0 2px 4px rgba(34, 197, 94, 0.3); }
         .status-badge-programado { background-color: #eab308; color: white; box-shadow: 0 2px 4px rgba(234, 179, 8, 0.3); }
-        .status-badge-finalizado { background-color: #64748b; color: white; }
 
         .tipo-tag { 
             background-color: rgba(255, 255, 255, 0.15); 
@@ -120,7 +119,11 @@
         async function fetchData() {
             try {
                 const response = await fetch(`${API_URL}/anuncios`);
-                allAds = await response.json();
+                const data = await response.json();
+                
+                // CAMBIO PRINCIPAL: Filtrar solo anuncios Activos y Programados
+                allAds = data.filter(ad => ad.estado === 'Activo' || ad.estado === 'Programado');
+                
                 renderPublicView();
             } catch (e) {
                 console.error("Error al cargar datos");
@@ -143,13 +146,13 @@
             });
 
             if (filtered.length === 0) {
-                grid.innerHTML = '<div class="col-span-full py-20 text-center text-slate-400 italic">No se encontraron anuncios.</div>';
+                grid.innerHTML = '<div class="col-span-full py-20 text-center text-slate-400 italic">No se encontraron anuncios vigentes.</div>';
                 updateHeaderCounts();
                 return;
             }
 
             filtered.forEach(ad => {
-                const badgeClass = ad.estado === 'Activo' ? 'status-badge-activo' : (ad.estado === 'Programado' ? 'status-badge-programado' : 'status-badge-finalizado');
+                const badgeClass = ad.estado === 'Activo' ? 'status-badge-activo' : 'status-badge-programado';
                 
                 grid.innerHTML += `
                     <div class="ad-card relative group rounded-[2rem] overflow-hidden shadow-md bg-white">
