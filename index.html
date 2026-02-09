@@ -13,7 +13,6 @@
             background-color: #f1f5f9; 
         }
 
-        /* Proporción de tarjeta tipo catálogo vertical */
         .ad-card { 
             aspect-ratio: 2/3; 
             transition: transform 0.2s ease-in-out; 
@@ -23,12 +22,11 @@
             transform: translateY(-4px); 
         }
 
-        /* Estados de anuncios */
+        /* Estados de anuncios ACTUALIZADOS */
         .status-badge-activo { background-color: #22c55e; color: white; box-shadow: 0 2px 4px rgba(34, 197, 94, 0.3); }
         .status-badge-programado { background-color: #eab308; color: white; box-shadow: 0 2px 4px rgba(234, 179, 8, 0.3); }
-        .status-badge-pendiente { background-color: #94a3b8; color: white; }
+        .status-badge-finalizado { background-color: #64748b; color: white; }
 
-        /* Etiqueta de tipo de producto */
         .tipo-tag { 
             background-color: rgba(255, 255, 255, 0.15); 
             backdrop-filter: blur(4px); 
@@ -36,14 +34,12 @@
             color: white; 
         }
 
-        /* Estilo para filtros activos */
         .filter-active { 
             border-color: #3b82f6 !important; 
             background-color: #eff6ff !important; 
             color: #1d4ed8 !important;
         }
 
-        /* Animación de feedback al copiar */
         .copy-feedback { 
             animation: fadeInOut 1.5s ease-in-out forwards; 
         }
@@ -55,15 +51,6 @@
             100% { opacity: 0; transform: translateY(-5px); }
         }
 
-        /* Contenedor de video modal */
-        .video-container {
-            aspect-ratio: 9/16;
-            background: #000;
-            border-radius: 1.5rem;
-            overflow: hidden;
-            position: relative;
-        }
-
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
@@ -71,14 +58,12 @@
 <body class="p-4 md:p-8 min-h-screen">
 
     <div class="max-w-[1600px] mx-auto">
-        <!-- Encabezado Principal -->
         <header class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
                 <h1 class="text-3xl font-extrabold text-slate-800 tracking-tighter uppercase">MKT FENIX STORE</h1>
-                <p class="text-slate-500 text-sm font-medium">Anuncios activos y próximas fechas de publicación</p>
+                <p class="text-slate-500 text-sm font-medium">Anuncios activos y próximas publicaciones</p>
             </div>
             
-            <!-- Botones de Filtro Rápido -->
             <div class="flex flex-wrap gap-2">
                 <button onclick="setFilter('all')" id="btn-all" class="filter-btn bg-white px-4 py-2 rounded-xl shadow-sm border border-slate-200 flex items-center gap-2 hover:bg-slate-50 transition-all filter-active">
                     <span class="text-xs font-bold uppercase tracking-wider">TODOS</span>
@@ -94,7 +79,6 @@
             </div>
         </header>
 
-        <!-- Barra de Búsqueda -->
         <div class="mb-8">
             <div class="relative max-w-md">
                 <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
@@ -104,14 +88,12 @@
             </div>
         </div>
 
-        <!-- Cuadrícula de Anuncios -->
         <div id="adsGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-6">
-            <!-- Cargando... -->
-            <div class="col-span-full py-20 text-center text-slate-400 italic">Conectando con Fenix Store...</div>
+            <div class="col-span-full py-20 text-center text-slate-400 italic">Cargando anuncios...</div>
         </div>
     </div>
 
-    <!-- Modal de Video -->
+    <!-- Modal -->
     <div id="videoModal" class="fixed inset-0 bg-black/95 z-50 hidden flex items-center justify-center p-4">
         <button onclick="closeModal()" class="absolute top-6 right-6 text-white hover:scale-110 transition-transform">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
@@ -119,7 +101,7 @@
         <div class="max-w-[380px] w-full bg-slate-900 rounded-[2.5rem] overflow-hidden shadow-2xl">
             <div class="aspect-[9/16] flex items-center justify-center p-8 text-center text-white">
                 <div>
-                    <div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-blue-500/50">
+                    <div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
                         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                     </div>
                     <h2 id="modalTitle" class="font-bold text-xl mb-2"></h2>
@@ -138,13 +120,10 @@
         async function fetchData() {
             try {
                 const response = await fetch(`${API_URL}/anuncios`);
-                if (!response.ok) throw new Error();
                 allAds = await response.json();
                 renderPublicView();
             } catch (e) {
-                console.error("Error al cargar datos desde Neon");
-                // Mock para visualización si la API no está disponible en este momento
-                allAds = []; 
+                console.error("Error al cargar datos");
                 renderPublicView();
             }
         }
@@ -164,14 +143,13 @@
             });
 
             if (filtered.length === 0) {
-                grid.innerHTML = '<div class="col-span-full py-20 text-center text-slate-400 italic">No hay anuncios que coincidan con la búsqueda.</div>';
+                grid.innerHTML = '<div class="col-span-full py-20 text-center text-slate-400 italic">No se encontraron anuncios.</div>';
                 updateHeaderCounts();
                 return;
             }
 
             filtered.forEach(ad => {
-                const badgeClass = ad.estado === 'Activo' ? 'status-badge-activo' : (ad.estado === 'Programado' ? 'status-badge-programado' : 'status-badge-pendiente');
-                const dateLabel = ad.estado === 'Activo' ? 'Activo desde' : (ad.estado === 'Programado' ? 'Publicación' : 'Registro');
+                const badgeClass = ad.estado === 'Activo' ? 'status-badge-activo' : (ad.estado === 'Programado' ? 'status-badge-programado' : 'status-badge-finalizado');
                 
                 grid.innerHTML += `
                     <div class="ad-card relative group rounded-[2rem] overflow-hidden shadow-md bg-white">
@@ -180,7 +158,7 @@
                         <div class="absolute top-4 left-4 flex flex-col gap-1">
                             <span class="${badgeClass} px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg">${ad.estado}</span>
                             <div class="bg-black/40 backdrop-blur-sm px-2 py-0.5 rounded-lg">
-                                <p class="text-[9px] text-white/90 font-medium">${dateLabel}: <span class="font-bold">${ad.fecha_inicio}</span></p>
+                                <p class="text-[9px] text-white/90 font-medium">Inicio: <span class="font-bold">${ad.fecha_inicio}</span></p>
                             </div>
                         </div>
                         <button onclick="openModal('${ad.nombre}', '${ad.asesora_nombre}', '${ad.video_reel}')" class="absolute top-4 right-4 bg-white/10 backdrop-blur-md p-2 rounded-full text-white hover:bg-white/30 transition-all">
@@ -197,12 +175,12 @@
                                     <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-[10px] font-bold text-white uppercase flex-shrink-0">${ad.asesora_nombre.charAt(0)}</div>
                                     <div class="flex flex-col truncate">
                                         <p class="text-[11px] text-white font-bold truncate">${ad.asesora_nombre}</p>
-                                        <button onclick="copyToClipboard('${ad.whatsapp}', this)" class="text-left text-[9px] text-white/70 hover:text-white flex items-center gap-1 transition-colors">
+                                        <button onclick="copyToClipboard('${ad.whatsapp}', this)" class="text-left text-[9px] text-white/70 hover:text-white flex items-center gap-1">
                                             <span>${ad.whatsapp}</span>
                                         </button>
                                     </div>
                                 </div>
-                                <a href="https://wa.me/${ad.whatsapp.replace(/\D/g, '')}" target="_blank" class="bg-green-500 p-2 rounded-xl text-white shadow-lg hover:bg-green-400 active:scale-90 transition-all">
+                                <a href="https://wa.me/${ad.whatsapp.replace(/\D/g, '')}" target="_blank" class="bg-green-500 p-2 rounded-xl text-white shadow-lg hover:bg-green-400 transition-all">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 510 512.459" fill="white">
                                         <path d="M435.689 74.468C387.754 26.471 324 .025 256.071 0 116.098 0 2.18 113.906 2.131 253.916c-.024 44.758 11.677 88.445 33.898 126.946L0 512.459l134.617-35.311c37.087 20.238 78.85 30.891 121.345 30.903h.109c139.949 0 253.88-113.917 253.928-253.928.024-67.855-26.361-131.645-74.31-179.643v-.012zm-179.618 390.7h-.085c-37.868-.011-75.016-10.192-107.428-29.417l-7.707-4.577-79.886 20.953 21.32-77.889-5.017-7.987c-21.125-33.605-32.29-72.447-32.266-112.322.049-116.366 94.729-211.046 211.155-211.046 56.373.025 109.364 22.003 149.214 61.903 39.853 39.888 61.781 92.927 61.757 149.313-.05 116.377-94.728 211.058-211.057 211.058v.011zm115.768-158.067c-6.344-3.178-37.537-18.52-43.358-20.639-5.82-2.119-10.044-3.177-14.27 3.178-4.225 6.357-16.388 20.651-20.09 24.875-3.702 4.238-7.403 4.762-13.747 1.583-6.343-3.178-26.787-9.874-51.029-31.487-18.86-16.827-31.597-37.598-35.297-43.955-3.702-6.355-.39-9.789 2.775-12.943 2.849-2.848 6.344-7.414 9.522-11.116s4.225-6.355 6.343-10.581c2.12-4.238 1.06-7.937-.522-11.117-1.584-3.177-14.271-34.409-19.568-47.108-5.151-12.37-10.385-10.69-14.269-10.897-3.703-.183-7.927-.219-12.164-.219s-11.105 1.582-16.925 7.939c-5.82 6.354-22.209 21.709-22.209 52.927 0 31.22 22.733 61.405 25.911 65.642 3.177 4.237 44.745 68.318 108.389 95.812 15.135 6.538 26.957 10.446 36.175 13.368 15.196 4.834 29.027 4.153 39.96 2.52 12.19-1.825 37.54-15.353 42.824-30.172 5.283-14.818 5.283-27.529 3.701-30.172-1.582-2.641-5.819-4.237-12.163-7.414l.011-.024z"/>
                                     </svg>
@@ -252,8 +230,6 @@
         }
 
         document.getElementById('searchInput').oninput = renderPublicView;
-        
-        // Inicializar carga de datos
         fetchData();
     </script>
 </body>
