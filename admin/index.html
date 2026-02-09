@@ -9,62 +9,39 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
         .hidden-section { display: none !important; }
-        .fade-in { animation: fadeIn 0.5s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        
-        /* DISEÑO DE PESTAÑAS AMPLIAS Y ELEGANTES */
-        .tab-btn { 
-            @apply px-20 py-5 rounded-[1.8rem] text-[14px] uppercase tracking-[0.2em] font-extrabold transition-all duration-300 flex items-center justify-center text-slate-400 bg-transparent border-none outline-none cursor-pointer;
-        }
-        
-        /* ESTADO ACTIVO: Azul vibrante con sombra amplia */
-        .tab-btn.active { 
-            @apply bg-blue-600 text-white;
-            box-shadow: 0 15px 30px -10px rgba(37, 99, 235, 0.6);
-        }
+        .fade-in { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .tab-btn:not(.active):hover {
-            @apply bg-slate-100 text-slate-600;
-        }
-        
-        /* Feedback de copiado */
-        .copy-success {
-            animation: copyPop 1.5s ease-out forwards;
-        }
-        @keyframes copyPop {
-            0% { opacity: 0; transform: scale(0.8); }
-            20% { opacity: 1; transform: scale(1.1); }
-            80% { opacity: 1; transform: scale(1); }
-            100% { opacity: 0; transform: scale(0.9); }
-        }
-
+        /* Estilo de scroll personalizado */
         .custom-scroll::-webkit-scrollbar { width: 6px; }
         .custom-scroll::-webkit-scrollbar-track { background: transparent; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+
+        /* Animación para el feedback de copiado */
+        .copy-success { animation: copyPop 1.5s ease-out forwards; }
+        @keyframes copyPop {
+            0% { opacity: 0; transform: scale(0.8); }
+            20% { opacity: 1; transform: scale(1.05); }
+            80% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0.95); }
+        }
     </style>
 </head>
 <body class="min-h-screen">
 
     <!-- SECCIÓN DE LOGIN -->
     <div id="loginSection" class="min-h-screen flex items-center justify-center p-4 bg-slate-100">
-        <div class="max-w-md w-full bg-white p-8 md:p-12 rounded-[3.5rem] shadow-2xl border border-slate-100 fade-in">
+        <div class="max-w-md w-full bg-white p-10 rounded-[3.5rem] shadow-2xl border border-slate-100 fade-in">
             <div class="text-center mb-10">
                 <div class="w-20 h-20 bg-slate-900 rounded-3xl flex items-center justify-center text-white font-black italic text-3xl mx-auto mb-6 shadow-xl">F</div>
-                <h1 class="text-2xl font-black text-slate-800 uppercase tracking-tighter">Panel de Acceso</h1>
-                <p class="text-slate-400 text-sm italic">SISTEMA MKT FENIX STORE</p>
+                <h1 class="text-2xl font-black text-slate-800 uppercase tracking-tighter">Acceso Administrativo</h1>
+                <p class="text-slate-400 text-sm italic">MKT FENIX STORE</p>
             </div>
-            
             <form id="loginForm" class="space-y-6">
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2 ml-4">Usuario</label>
-                    <input type="text" id="userInput" required placeholder="Ingresa tu usuario" class="w-full bg-slate-50 border-none rounded-2xl p-5 focus:ring-2 focus:ring-blue-500 text-sm transition-all outline-none">
-                </div>
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2 ml-4">Contraseña</label>
-                    <input type="password" id="passInput" required placeholder="Ingresa tu contraseña" class="w-full bg-slate-50 border-none rounded-2xl p-5 focus:ring-2 focus:ring-blue-500 text-sm transition-all outline-none">
-                </div>
+                <input type="text" id="userInput" required placeholder="Usuario" class="w-full bg-slate-50 border-none rounded-2xl p-5 focus:ring-2 focus:ring-blue-500 text-sm outline-none transition-all">
+                <input type="password" id="passInput" required placeholder="Contraseña" class="w-full bg-slate-50 border-none rounded-2xl p-5 focus:ring-2 focus:ring-blue-500 text-sm outline-none transition-all">
                 <div id="loginErrorMessage" class="hidden text-red-500 text-[10px] font-bold uppercase text-center bg-red-50 p-3 rounded-xl border border-red-100">Credenciales incorrectas</div>
-                <button type="submit" id="btnLogin" class="w-full bg-slate-900 text-white font-black py-5 rounded-2xl shadow-lg hover:bg-slate-800 active:scale-95 transition-all uppercase tracking-[0.1em] text-sm">Entrar al Panel</button>
+                <button type="submit" id="btnLogin" class="w-full bg-slate-900 text-white font-black py-5 rounded-2xl shadow-lg hover:bg-blue-600 transition-all uppercase tracking-widest text-sm">Entrar al Sistema</button>
             </form>
         </div>
     </div>
@@ -75,33 +52,34 @@
             <div>
                 <a href="../index.html" class="text-blue-600 font-bold text-sm flex items-center gap-2 mb-2 hover:translate-x-[-4px] transition-transform">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-                    Ver Visualizador Público
+                    Regresar al Visualizador
                 </a>
                 <h1 class="text-4xl font-black text-slate-800 uppercase tracking-tighter">Administración</h1>
             </div>
-            
             <div class="flex items-center gap-4">
                 <div class="bg-white px-6 py-3 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4">
                     <div class="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
                     <div class="flex flex-col text-right">
                         <span id="displayUsername" class="text-xs font-black text-slate-800 uppercase leading-none">Admin</span>
-                        <span id="displayRole" class="text-[10px] text-slate-400 font-bold uppercase">Administrador</span>
+                        <span class="text-[10px] text-slate-400 font-bold uppercase">Conectado</span>
                     </div>
                 </div>
-                <button onclick="logout()" class="p-3.5 bg-red-50 text-red-500 rounded-2xl hover:bg-red-100 transition-colors shadow-sm" title="Cerrar Sesión">
+                <button onclick="logout()" class="p-3.5 bg-red-50 text-red-500 rounded-2xl hover:bg-red-100 transition-colors shadow-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
                 </button>
             </div>
         </div>
 
-        <!-- NAVEGACIÓN DE PESTAÑAS MEJORADA -->
-        <div class="flex flex-row justify-center mb-16">
-            <div class="flex flex-row gap-2 bg-white p-2 rounded-[2.5rem] shadow-xl border border-slate-100">
-                <button onclick="switchTab('ads')" id="tabBtnAds" class="tab-btn active">
-                    ANUNCIOS
+        <!-- SELECTOR DE PESTAÑAS (GRANDE Y ELEGANTE) -->
+        <div class="flex justify-center mb-16">
+            <div class="bg-white p-2 rounded-[2.5rem] shadow-xl border border-slate-100 flex gap-2">
+                <button onclick="switchTab('ads')" id="tabBtnAds" 
+                    class="tab-btn active w-64 py-5 rounded-[2rem] text-sm uppercase tracking-[0.2em] font-black transition-all duration-300 text-slate-400 bg-transparent">
+                    Anuncios
                 </button>
-                <button onclick="switchTab('asesoras')" id="tabBtnAsesoras" class="tab-btn">
-                    ASESORAS
+                <button onclick="switchTab('asesoras')" id="tabBtnAsesoras" 
+                    class="tab-btn w-64 py-5 rounded-[2rem] text-sm uppercase tracking-[0.2em] font-black transition-all duration-300 text-slate-400 bg-transparent">
+                    Asesoras
                 </button>
             </div>
         </div>
@@ -110,7 +88,7 @@
         <div id="sectionAds" class="grid grid-cols-1 lg:grid-cols-12 gap-10">
             <div class="lg:col-span-4">
                 <div class="bg-white p-10 rounded-[3.5rem] shadow-sm border border-slate-100">
-                    <h2 class="text-2xl font-black text-slate-800 mb-8 flex items-center gap-4">Nuevo Anuncio</h2>
+                    <h2 class="text-2xl font-black text-slate-800 mb-8">Nuevo Anuncio</h2>
                     <form id="adForm" class="space-y-5">
                         <input type="text" id="formNombre" placeholder="Nombre del Anuncio" required class="w-full bg-slate-50 p-5 rounded-2xl border-none focus:ring-2 focus:ring-blue-500 text-sm outline-none">
                         <input type="url" id="formFoto" placeholder="URL de la Foto" required class="w-full bg-slate-50 p-5 rounded-2xl border-none focus:ring-2 focus:ring-blue-500 text-sm outline-none">
@@ -140,7 +118,7 @@
                                 <option value="Realizado">Realizado</option>
                             </select>
                         </div>
-                        <button type="submit" class="w-full bg-blue-600 text-white font-black py-5 rounded-[2rem] shadow-xl shadow-blue-200 uppercase tracking-widest text-xs mt-4">Guardar Anuncio</button>
+                        <button type="submit" class="w-full bg-blue-600 text-white font-black py-5 rounded-[2rem] shadow-xl shadow-blue-200 uppercase tracking-widest text-xs mt-4 hover:bg-blue-700 transition-colors">Guardar Anuncio</button>
                     </form>
                 </div>
             </div>
@@ -167,31 +145,27 @@
                     <form id="asesoraForm" class="space-y-5">
                         <input type="text" id="formAsesoraNombre" required placeholder="Nombre Completo" class="w-full bg-slate-50 p-5 rounded-2xl border-none text-sm outline-none">
                         <input type="text" id="formAsesoraCiudad" required placeholder="Ciudad" class="w-full bg-slate-50 p-5 rounded-2xl border-none text-sm outline-none">
-                        <input type="text" id="formAsesoraWhatsApp" required placeholder="WhatsApp (+591...)" class="w-full bg-slate-50 p-5 rounded-2xl border-none text-sm outline-none">
-                        <button type="submit" class="w-full bg-emerald-600 text-white font-black py-5 rounded-[2rem] uppercase text-xs tracking-widest mt-2">Registrar Asesora</button>
+                        <input type="text" id="formAsesoraWhatsApp" required placeholder="WhatsApp" class="w-full bg-slate-50 p-5 rounded-2xl border-none text-sm outline-none">
+                        <button type="submit" class="w-full bg-emerald-600 text-white font-black py-5 rounded-[2rem] uppercase text-xs tracking-widest mt-2 hover:bg-emerald-700 transition-colors">Registrar</button>
                     </form>
                 </div>
-
                 <div class="bg-slate-900 p-10 rounded-[3.5rem] shadow-xl text-white">
                     <h2 class="text-lg font-black mb-4">Carga Masiva</h2>
-                    <p class="text-slate-400 text-[10px] mb-8 font-bold uppercase tracking-widest">CSV: Nombre, Ciudad, WhatsApp</p>
+                    <p class="text-slate-400 text-[10px] mb-8 font-bold uppercase tracking-widest">Formato: Nombre, Ciudad, WhatsApp</p>
                     <input type="file" id="csvFileInput" accept=".csv" class="hidden">
                     <button onclick="document.getElementById('csvFileInput').click()" class="w-full border-2 border-dashed border-slate-700 text-slate-300 py-6 rounded-[2rem] hover:border-blue-500 hover:text-white transition-all text-xs font-bold uppercase tracking-widest">Subir CSV</button>
                     <div id="csvProgress" class="mt-4 text-center text-[10px] font-bold text-blue-400 hidden uppercase tracking-widest">Procesando...</div>
                 </div>
             </div>
-
             <div class="lg:col-span-9">
                 <div class="bg-white rounded-[3.5rem] shadow-sm border border-slate-100 overflow-hidden">
                     <div class="p-10 bg-slate-50/50 border-b border-slate-100">
                         <div class="flex flex-col md:flex-row justify-between items-center gap-8">
                             <div>
                                 <h2 class="font-black text-xl uppercase tracking-widest text-slate-800">Directorio de Asesoras</h2>
-                                <p class="text-slate-400 text-xs font-medium mt-1">Gestiona los contactos de la tienda</p>
+                                <p class="text-slate-400 text-xs font-medium mt-1">Gestión de contactos para Bolivia</p>
                             </div>
-                            <div class="relative w-full md:w-[450px]">
-                                <input type="text" id="searchAsesorasInput" oninput="renderAsesoras()" placeholder="Buscar por nombre, ciudad o whatsapp..." class="w-full bg-white border border-slate-200 rounded-2xl px-8 py-5 text-sm focus:ring-4 focus:ring-blue-100 focus:outline-none transition-all shadow-sm">
-                            </div>
+                            <input type="text" id="searchAsesorasInput" oninput="renderAsesoras()" placeholder="Buscar asesora o ciudad..." class="w-full md:w-[450px] bg-white border border-slate-200 rounded-2xl px-8 py-5 text-sm focus:ring-4 focus:ring-blue-100 focus:outline-none transition-all shadow-sm">
                         </div>
                     </div>
                     <div class="overflow-x-auto custom-scroll" style="max-height: 850px;">
@@ -221,9 +195,17 @@
             document.getElementById('sectionAds').classList.toggle('hidden-section', tab !== 'ads');
             document.getElementById('sectionAsesoras').classList.toggle('hidden-section', tab !== 'asesoras');
             
-            // Actualizar pestañas amplias
-            document.getElementById('tabBtnAds').classList.toggle('active', tab === 'ads');
-            document.getElementById('tabBtnAsesoras').classList.toggle('active', tab === 'asesoras');
+            // Actualización visual de las pestañas
+            const btnAds = document.getElementById('tabBtnAds');
+            const btnAsesoras = document.getElementById('tabBtnAsesoras');
+            
+            if(tab === 'ads') {
+                btnAds.className = "tab-btn active w-64 py-5 rounded-[2rem] text-sm uppercase tracking-[0.2em] font-black transition-all duration-300 text-white bg-blue-600 shadow-xl shadow-blue-200";
+                btnAsesoras.className = "tab-btn w-64 py-5 rounded-[2rem] text-sm uppercase tracking-[0.2em] font-black transition-all duration-300 text-slate-400 bg-transparent hover:bg-slate-100";
+            } else {
+                btnAsesoras.className = "tab-btn active w-64 py-5 rounded-[2rem] text-sm uppercase tracking-[0.2em] font-black transition-all duration-300 text-white bg-blue-600 shadow-xl shadow-blue-200";
+                btnAds.className = "tab-btn w-64 py-5 rounded-[2rem] text-sm uppercase tracking-[0.2em] font-black transition-all duration-300 text-slate-400 bg-transparent hover:bg-slate-100";
+            }
         }
 
         document.getElementById('loginForm').onsubmit = async (e) => {
@@ -237,7 +219,7 @@
                     sessionStorage.setItem('fenix_admin_user', JSON.stringify(data.user));
                     checkSession();
                 } else { document.getElementById('loginErrorMessage').classList.remove('hidden'); }
-            } catch (err) { console.error("Error en servidor"); }
+            } catch (err) { console.error("Error servidor"); }
         };
 
         function checkSession() {
@@ -262,7 +244,7 @@
                     select.innerHTML += `<option value="${a.id}">${a.nombre}</option>`;
                 });
                 renderAsesoras();
-            } catch (e) { console.error("Error"); }
+            } catch (e) { console.error("Error al cargar"); }
         }
 
         function renderAsesoras() {
@@ -280,30 +262,24 @@
                     <td class="p-10">
                         <div class="flex flex-col gap-3">
                             <span class="font-extrabold text-lg text-slate-800">${a.nombre}</span>
-                            <button onclick="copyToClip('${a.nombre}', this)" class="w-fit text-[10px] uppercase font-bold text-blue-500 bg-blue-50 px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all flex items-center gap-2 hover:bg-blue-600 hover:text-white">
-                                Copiar Nombre
-                            </button>
+                            <button onclick="copyToClip('${a.nombre}', this)" class="w-fit text-[10px] uppercase font-bold text-blue-500 bg-blue-50 px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all hover:bg-blue-600 hover:text-white">Copiar Nombre</button>
                         </div>
                     </td>
                     <td class="p-10">
                         <div class="flex flex-col gap-3">
                             <span class="text-sm font-semibold text-slate-500">${a.ciudad}</span>
-                            <button onclick="copyToClip('${a.ciudad}', this)" class="w-fit text-[10px] uppercase font-bold text-slate-400 bg-slate-100 px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all hover:bg-slate-600 hover:text-white">
-                                Copiar Ciudad
-                            </button>
+                            <button onclick="copyToClip('${a.ciudad}', this)" class="w-fit text-[10px] uppercase font-bold text-slate-400 bg-slate-100 px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all hover:bg-slate-600 hover:text-white">Copiar Ciudad</button>
                         </div>
                     </td>
                     <td class="p-10">
                         <div class="flex flex-col gap-3">
                             <span class="text-sm font-bold font-mono text-slate-600">${a.whatsapp}</span>
-                            <button onclick="copyToClip('${a.whatsapp}', this)" class="w-fit text-[10px] uppercase font-bold text-emerald-500 bg-emerald-50 px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all hover:bg-emerald-600 hover:text-white">
-                                Copiar WhatsApp
-                            </button>
+                            <button onclick="copyToClip('${a.whatsapp}', this)" class="w-fit text-[10px] uppercase font-bold text-emerald-500 bg-emerald-50 px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all hover:bg-emerald-600 hover:text-white">Copiar WhatsApp</button>
                         </div>
                     </td>
                     <td class="p-10 text-right">
-                        <button onclick="deleteAsesora(${a.id})" class="text-red-300 hover:text-red-600 p-4 rounded-2xl hover:bg-red-50 transition-all active:scale-90">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+                        <button onclick="deleteAsesora(${a.id})" class="text-red-300 hover:text-red-600 p-4 rounded-2xl hover:bg-red-50 transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
                         </button>
                     </td>
                 </tr>`;
@@ -314,7 +290,7 @@
             const input = document.createElement('textarea');
             input.value = text; document.body.appendChild(input); input.select(); document.execCommand('copy'); document.body.removeChild(input);
             const originalHTML = element.innerHTML;
-            element.classList.add('copy-success'); element.innerHTML = '<span class="text-white font-black">¡COPIADO!</span>';
+            element.classList.add('copy-success'); element.innerHTML = '¡COPIADO!';
             setTimeout(() => { element.classList.remove('copy-success'); element.innerHTML = originalHTML; }, 1500);
         }
 
@@ -345,13 +321,13 @@
                         }
                     }
                 }
-                alert(`✅ Registradas ${count} asesoras.`);
+                alert(`✅ Se registraron ${count} asesoras.`);
                 progress.classList.add('hidden'); document.getElementById('csvFileInput').value = ""; fetchAsesoras();
             };
             reader.readAsText(file);
         });
 
-        async function deleteAsesora(id) { if (confirm("¿Eliminar asesora?")) { await fetch(`${API_URL}/asesoras`, { method: 'DELETE', body: JSON.stringify({id}) }); fetchAsesoras(); } }
+        async function deleteAsesora(id) { if (confirm("¿Eliminar asesora y sus anuncios vinculados?")) { await fetch(`${API_URL}/asesoras`, { method: 'DELETE', body: JSON.stringify({id}) }); fetchAsesoras(); fetchAds(); } }
 
         function updateAsesoraDisplay() { const aser = allAsesoras.find(a => a.id == document.getElementById('formAsesora').value); document.getElementById('infoCiudad').innerText = aser ? aser.ciudad : "-"; document.getElementById('infoWhatsapp').innerText = aser ? aser.whatsapp : "-"; }
 
@@ -364,16 +340,20 @@
                     <tr class="hover:bg-slate-50 transition-all">
                         <td class="p-8">
                             <div class="flex items-center gap-6">
-                                <img src="${ad.foto_url}" class="w-16 h-16 rounded-2xl object-cover shadow-sm" onerror="this.src='https://via.placeholder.com/50'">
+                                <img src="${ad.foto_url}" class="w-16 h-16 rounded-2xl object-cover shadow-sm" onerror="this.src='https://via.placeholder.com/100'">
                                 <div class="flex flex-col">
                                     <span class="font-extrabold text-base text-slate-700">${ad.nombre}</span>
-                                    <span class="text-[10px] text-slate-400 font-black uppercase tracking-[0.1em] mt-1">${ad.tipo}</span>
+                                    <span class="text-[10px] text-slate-400 font-black uppercase mt-1">${ad.tipo}</span>
                                 </div>
                             </div>
                         </td>
-                        <td class="p-8 text-[11px] font-bold text-slate-500 italic uppercase tracking-wider">${ad.asesora_nombre}</td>
-                        <td class="p-8"><span class="px-4 py-2 bg-slate-100 rounded-xl text-[10px] font-black uppercase tracking-widest">${ad.estado}</span></td>
-                        <td class="p-8 text-right"><button onclick="deleteAd(${ad.id})" class="text-red-300 hover:text-red-600 transition-all"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></button></td>
+                        <td class="p-8 text-[11px] font-bold text-slate-500 italic uppercase">${ad.asesora_nombre}</td>
+                        <td class="p-8"><span class="px-4 py-2 bg-slate-100 rounded-xl text-[10px] font-black uppercase">${ad.estado}</span></td>
+                        <td class="p-8 text-right">
+                            <button onclick="deleteAd(${ad.id})" class="text-red-300 hover:text-red-600 transition-all">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                            </button>
+                        </td>
                     </tr>`;
                 });
             } catch (e) { }
@@ -386,7 +366,7 @@
             document.getElementById('adForm').reset(); fetchAds();
         };
 
-        async function deleteAd(id) { if (confirm("¿Borrar anuncio?")) { await fetch(`${API_URL}/anuncios`, { method: 'DELETE', body: JSON.stringify({id}) }); fetchAds(); } }
+        async function deleteAd(id) { if (confirm("¿Borrar anuncio permanentemente?")) { await fetch(`${API_URL}/anuncios`, { method: 'DELETE', body: JSON.stringify({id}) }); fetchAds(); } }
 
         checkSession();
     </script>
