@@ -120,10 +120,13 @@
                             </select>
                         </div>
                         
-                        <!-- BUSCADOR DE ASESORAS (REEMPLAZO DE SELECT) -->
+                        <!-- BUSCADOR DE ASESORAS CON ICONO SVG -->
                         <div class="relative">
-                            <input type="text" id="asesoraSearchInput" placeholder="🔍 Buscar Asesora..." autocomplete="off" 
-                                class="w-full bg-slate-50 p-5 rounded-2xl border-none focus:ring-2 focus:ring-blue-500 text-sm font-bold outline-none"
+                            <span class="absolute left-5 top-1/2 -translate-y-1/2 pointer-events-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#cbd5e1"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
+                            </span>
+                            <input type="text" id="asesoraSearchInput" placeholder="Buscar Asesora..." autocomplete="off" 
+                                class="w-full bg-slate-50 pl-12 pr-5 py-5 rounded-2xl border-none focus:ring-2 focus:ring-blue-500 text-sm font-bold outline-none"
                                 onfocus="showAsesoraResults()" oninput="filterAsesoras(this.value)">
                             <input type="hidden" id="formAsesora" required>
                             <div id="asesoraSearchResults" class="search-results hidden custom-scroll">
@@ -271,7 +274,7 @@
                 const res = await fetch(`${API_URL}/asesoras`);
                 allAsesoras = await res.json();
                 renderAsesoras();
-                filterAsesoras(''); // Inicializar el buscador del formulario
+                filterAsesoras(''); 
             } catch (e) { console.error("Error al cargar"); }
         }
 
