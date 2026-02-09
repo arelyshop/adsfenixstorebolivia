@@ -228,16 +228,16 @@
                         <img src="${ad.foto_url}" class="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-110" onerror="this.src='https://via.placeholder.com/400x600?text=Fenix+Store'">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
                         
-                        <!-- Overlay de Tuerca Girando si está EN PROCESO -->
+                        <!-- Indicador de En Proceso centralizado y más pequeño -->
                         ${enProceso ? `
-                            <div class="absolute inset-0 flex flex-col items-center justify-center z-10 pointer-events-none bg-black/30 backdrop-blur-[2px]">
-                                <div class="bg-white/20 p-4 rounded-full border border-white/30 shadow-2xl">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin-slow">
+                            <div class="absolute inset-0 flex flex-col items-center justify-center z-10 pointer-events-none">
+                                <div class="bg-black/40 p-3 rounded-2xl flex flex-col items-center shadow-xl border border-white/10">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="animate-spin-slow">
                                         <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
                                         <circle cx="12" cy="12" r="3"/>
                                     </svg>
+                                    <span class="text-white text-[8px] font-black uppercase tracking-widest mt-2">Video en Edición</span>
                                 </div>
-                                <span class="text-white text-[10px] font-black uppercase tracking-[0.2em] mt-3 drop-shadow-md">Video en Edición</span>
                             </div>
                         ` : ''}
 
