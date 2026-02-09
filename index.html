@@ -214,7 +214,7 @@
             filtered.forEach(ad => {
                 const isActivo = ad.estado === 'Activo';
                 const badgeClass = isActivo ? 'status-badge-activo' : 'status-badge-programado';
-                const datePrefix = isActivo ? '(Desde)' : 'Inicio:';
+                const datePrefix = isActivo ? 'Desde:' : 'Inicio:';
                 
                 // Lógica de color para tipo de anuncio
                 const esPromo = ad.tipo === 'COMBO' || ad.tipo === 'TRICOMBO';
