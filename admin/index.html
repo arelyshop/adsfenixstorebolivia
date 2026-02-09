@@ -13,6 +13,10 @@
         /* Animación de entrada suave */
         .fade-in { animation: fadeIn 0.5s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .tab-btn.active {
+            @apply bg-slate-800 text-white shadow-lg;
+        }
     </style>
 </head>
 <body class="min-h-screen">
@@ -51,7 +55,7 @@
 
     <!-- PANEL PRINCIPAL DE ADMIN -->
     <div id="adminPanel" class="hidden-section p-4 md:p-8 max-w-[1400px] mx-auto fade-in">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
             <div>
                 <a href="../index.html" class="text-blue-600 font-bold text-sm flex items-center gap-2 mb-2 hover:translate-x-[-4px] transition-transform">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
@@ -74,8 +78,15 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            <!-- Formulario de Registro -->
+        <!-- Navegación de Pestañas -->
+        <div class="flex gap-2 mb-8 bg-slate-200/50 p-1.5 rounded-2xl w-fit">
+            <button onclick="switchTab('ads')" id="tabBtnAds" class="tab-btn active px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider transition-all">Anuncios</button>
+            <button onclick="switchTab('asesoras')" id="tabBtnAsesoras" class="tab-btn px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider transition-all">Asesoras</button>
+        </div>
+
+        <!-- SECCIÓN DE ANUNCIOS -->
+        <div id="sectionAds" class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <!-- Formulario Anuncios -->
             <div class="lg:col-span-4">
                 <div class="bg-white p-8 rounded-[3rem] shadow-sm border border-slate-100 sticky top-8">
                     <h2 class="text-xl font-black text-slate-800 mb-8 flex items-center gap-3">
@@ -125,13 +136,13 @@
                         </div>
                         
                         <button type="submit" id="btnSubmitAd" class="w-full bg-blue-600 text-white font-black py-5 rounded-3xl shadow-xl shadow-blue-200 hover:bg-blue-700 active:scale-95 transition-all uppercase tracking-widest text-xs mt-4">
-                            Guardar en Base de Datos
+                            Guardar Anuncio
                         </button>
                     </form>
                 </div>
             </div>
 
-            <!-- Tabla de Gestión -->
+            <!-- Tabla Anuncios -->
             <div class="lg:col-span-8">
                 <div class="bg-white rounded-[3rem] shadow-sm border border-slate-100 overflow-hidden">
                     <div class="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
@@ -158,6 +169,66 @@
                 </div>
             </div>
         </div>
+
+        <!-- SECCIÓN DE ASESORAS -->
+        <div id="sectionAsesoras" class="grid grid-cols-1 lg:grid-cols-12 gap-8 hidden-section">
+            <!-- Formulario Asesoras -->
+            <div class="lg:col-span-4">
+                <div class="bg-white p-8 rounded-[3rem] shadow-sm border border-slate-100 sticky top-8">
+                    <h2 class="text-xl font-black text-slate-800 mb-8 flex items-center gap-3">
+                        <span class="p-2 bg-emerald-600 rounded-xl text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+                        </span>
+                        Nueva Asesora
+                    </h2>
+                    <form id="asesoraForm" class="space-y-4">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1 ml-2">Nombre Completo</label>
+                            <input type="text" id="formAsesoraNombre" required placeholder="Ej: María García" class="w-full bg-slate-50 p-4 rounded-2xl border-none focus:ring-2 focus:ring-emerald-500 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1 ml-2">Ciudad</label>
+                            <input type="text" id="formAsesoraCiudad" required placeholder="Ej: Madrid" class="w-full bg-slate-50 p-4 rounded-2xl border-none focus:ring-2 focus:ring-emerald-500 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1 ml-2">WhatsApp</label>
+                            <input type="text" id="formAsesoraWhatsApp" required placeholder="Ej: +34 600 000 000" class="w-full bg-slate-50 p-4 rounded-2xl border-none focus:ring-2 focus:ring-emerald-500 text-sm">
+                        </div>
+                        
+                        <button type="submit" id="btnSubmitAsesora" class="w-full bg-emerald-600 text-white font-black py-5 rounded-3xl shadow-xl shadow-emerald-200 hover:bg-emerald-700 active:scale-95 transition-all uppercase tracking-widest text-xs mt-4">
+                            Registrar Asesora
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Tabla Asesoras -->
+            <div class="lg:col-span-8">
+                <div class="bg-white rounded-[3rem] shadow-sm border border-slate-100 overflow-hidden">
+                    <div class="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
+                        <h2 class="font-black text-slate-700 uppercase text-xs tracking-widest">Lista de Asesoras</h2>
+                        <button onclick="fetchAsesoras()" class="text-slate-400 hover:text-emerald-500 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                    <th class="p-6">Nombre</th>
+                                    <th class="p-6">Ciudad</th>
+                                    <th class="p-6">WhatsApp</th>
+                                    <th class="p-6 text-center">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody id="asesorasTableBody" class="divide-y divide-slate-50">
+                                <!-- Los datos se cargan dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -165,6 +236,26 @@
         const AUTH_URL = '/.netlify/functions/auth';
         
         let allAsesoras = [];
+
+        // --- NAVEGACIÓN DE PESTAÑAS ---
+        function switchTab(tab) {
+            const sectionAds = document.getElementById('sectionAds');
+            const sectionAsesoras = document.getElementById('sectionAsesoras');
+            const btnAds = document.getElementById('tabBtnAds');
+            const btnAsesoras = document.getElementById('tabBtnAsesoras');
+
+            if (tab === 'ads') {
+                sectionAds.classList.remove('hidden-section');
+                sectionAsesoras.classList.add('hidden-section');
+                btnAds.classList.add('active');
+                btnAsesoras.classList.remove('active');
+            } else {
+                sectionAds.classList.add('hidden-section');
+                sectionAsesoras.classList.remove('hidden-section');
+                btnAds.classList.remove('active');
+                btnAsesoras.classList.add('active');
+            }
+        }
 
         // --- LÓGICA DE LOGIN ---
         document.getElementById('loginForm').onsubmit = async (e) => {
@@ -222,19 +313,86 @@
             window.location.reload();
         }
 
-        // --- GESTIÓN DE DATOS ---
+        // --- GESTIÓN DE ASESORAS ---
         async function fetchAsesoras() {
             try {
                 const res = await fetch(`${API_URL}/asesoras`);
                 allAsesoras = await res.json();
+                
+                // Actualizar Dropdown de Anuncios
                 const select = document.getElementById('formAsesora');
                 select.innerHTML = '<option value="">Selecciona Asesora...</option>';
+                
+                // Actualizar Tabla de Asesoras
+                const tbody = document.getElementById('asesorasTableBody');
+                tbody.innerHTML = '';
+
                 allAsesoras.forEach(a => {
                     select.innerHTML += `<option value="${a.id}">${a.nombre}</option>`;
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-slate-50/50 transition-colors">
+                            <td class="p-6 font-bold text-slate-700 text-sm">${a.nombre}</td>
+                            <td class="p-6 text-sm text-slate-500">${a.ciudad}</td>
+                            <td class="p-6 text-sm text-slate-500 font-mono">${a.whatsapp}</td>
+                            <td class="p-6 text-center">
+                                <button onclick="deleteAsesora(${a.id})" title="Eliminar Asesora" class="p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                                </button>
+                            </td>
+                        </tr>`;
                 });
             } catch (e) { console.error("Error al cargar asesoras", e); }
         }
 
+        document.getElementById('asesoraForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btnSubmitAsesora');
+            btn.innerText = "REGISTRANDO...";
+            btn.disabled = true;
+
+            const payload = {
+                nombre: document.getElementById('formAsesoraNombre').value,
+                ciudad: document.getElementById('formAsesoraCiudad').value,
+                whatsapp: document.getElementById('formAsesoraWhatsApp').value
+            };
+
+            try {
+                // Nota: Asegúrate de que tu función /.netlify/functions/api soporte POST /asesoras
+                const res = await fetch(`${API_URL}/asesoras`, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload) 
+                });
+                
+                if (res.ok) {
+                    alert("✅ Asesora registrada exitosamente");
+                    document.getElementById('asesoraForm').reset();
+                    fetchAsesoras();
+                } else {
+                    alert("Error al registrar asesora");
+                }
+            } catch (err) {
+                alert("Error de conexión");
+            } finally {
+                btn.innerText = "Registrar Asesora";
+                btn.disabled = false;
+            }
+        };
+
+        async function deleteAsesora(id) {
+            if(!confirm("¿Estás seguro de eliminar esta asesora? Se podrían ver afectados los anuncios vinculados.")) return;
+            try {
+                await fetch(`${API_URL}/asesoras`, { 
+                    method: 'DELETE', 
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({id}) 
+                });
+                fetchAsesoras();
+                fetchAds(); // Refrescar anuncios por si acaso
+            } catch (err) { alert("Error al eliminar asesora"); }
+        }
+
+        // --- GESTIÓN DE ANUNCIOS ---
         function updateAsesoraDisplay() {
             const id = document.getElementById('formAsesora').value;
             const aser = allAsesoras.find(a => a.id == id);
@@ -252,7 +410,7 @@
                 tbody.innerHTML = '';
                 
                 if (data.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="4" class="p-10 text-center text-slate-400">No hay registros aún.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="4" class="p-10 text-center text-slate-400">No hay anuncios aún.</td></tr>';
                     return;
                 }
 
@@ -272,7 +430,7 @@
                             <td class="p-6 text-xs font-bold text-slate-500 italic">${ad.asesora_nombre}</td>
                             <td class="p-6"><span class="px-3 py-1 rounded-lg text-[9px] font-black uppercase ${statusClass}">${ad.estado}</span></td>
                             <td class="p-6 text-center">
-                                <button onclick="deleteAd(${ad.id})" title="Eliminar" class="p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all active:scale-90">
+                                <button onclick="deleteAd(${ad.id})" title="Eliminar Anuncio" class="p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
                                 </button>
                             </td>
@@ -305,22 +463,22 @@
                 });
                 
                 if (res.ok) {
-                    alert("✅ Anuncio guardado correctamente en Neon");
+                    alert("✅ Anuncio guardado correctamente");
                     document.getElementById('adForm').reset();
                     document.getElementById('infoCiudad').innerText = "-";
                     document.getElementById('infoWhatsapp').innerText = "-";
                     fetchAds();
                 }
             } catch (err) {
-                alert("Error al intentar guardar el anuncio");
+                alert("Error al guardar el anuncio");
             } finally {
-                btn.innerText = "Guardar en Base de Datos";
+                btn.innerText = "Guardar Anuncio";
                 btn.disabled = false;
             }
         };
 
         async function deleteAd(id) {
-            if(!confirm("¿Estás seguro de que deseas eliminar este anuncio permanentemente?")) return;
+            if(!confirm("¿Deseas eliminar este anuncio?")) return;
             try {
                 await fetch(`${API_URL}/anuncios`, { 
                     method: 'DELETE', 
@@ -328,7 +486,7 @@
                     body: JSON.stringify({id}) 
                 });
                 fetchAds();
-            } catch (err) { alert("Error al eliminar el registro"); }
+            } catch (err) { alert("Error al eliminar"); }
         }
 
         checkSession();
