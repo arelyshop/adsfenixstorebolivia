@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "pg": "^8.11.0"
+  }
+}
+3.  **Variable de Entorno:**
+* Ve a tu panel de **Netlify** > **Site Configuration** > **Environment variables**.
+* Crea una variable llamada `DATABASE_URL`.
+* Pega allí el "Connection String" que te da **Neon** (asegúrate de que incluya el usuario y la contraseña).
