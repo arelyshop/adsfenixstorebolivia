@@ -111,13 +111,22 @@
                             <div><p class="text-blue-400 mb-1">Ciudad</p><p id="infoCiudad" class="text-slate-700 text-xs">-</p></div>
                             <div><p class="text-blue-400 mb-1">WhatsApp</p><p id="infoWhatsapp" class="text-slate-700 text-xs">-</p></div>
                         </div>
+                        
+                        <!-- OPCIONES FINALES ACTUALIZADAS -->
                         <div class="grid grid-cols-2 gap-4">
-                            <input type="date" id="formFecha" required class="bg-slate-50 p-5 rounded-2xl border-none text-sm outline-none">
-                            <select id="formVideo" class="bg-slate-50 p-5 rounded-2xl border-none text-sm font-bold outline-none">
-                                <option value="Pendiente">Pendiente</option>
-                                <option value="Realizado">Realizado</option>
-                            </select>
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-black text-slate-400 uppercase ml-2">Fecha de publicación</label>
+                                <input type="date" id="formFecha" required class="w-full bg-slate-50 p-5 rounded-2xl border-none text-sm outline-none">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-black text-slate-400 uppercase ml-2">Video REEL</label>
+                                <select id="formVideo" class="w-full bg-slate-50 p-5 rounded-2xl border-none text-sm font-bold outline-none">
+                                    <option value="Pendiente">Pendiente</option>
+                                    <option value="Realizado">Realizado</option>
+                                </select>
+                            </div>
                         </div>
+
                         <button type="submit" class="w-full bg-blue-600 text-white font-black py-5 rounded-[2rem] shadow-xl shadow-blue-200 uppercase tracking-widest text-xs mt-4 hover:bg-blue-700 transition-colors">Guardar Anuncio</button>
                     </form>
                 </div>
