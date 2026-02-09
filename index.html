@@ -1,50 +1,33 @@
 <!DOCTYPE html>
-<html lang="es" prefix="og: http://ogp.me/ns#">
+<html lang="es" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Título y Descripción -->
     <title>MKT Fenix Store - Visualizador</title>
-    <meta name="description" content="Sistema de gestión y visualización de anuncios activos y programados de Fenix Store.">
+
+    <!-- SEO and Social Sharing Meta Tags (Estructura Arelyshop compatible) -->
+    <meta name="description" content="Consulta los anuncios activos y las próximas promociones de Fenix Store Bolivia.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://adsfenixstorebolivia.netlify.app/">
+    <meta property="og:title" content="MKT Fenix Store - Visualizador">
+    <meta property="og:description" content="Consulta los anuncios activos y las próximas promociones de Fenix Store Bolivia.">
+    <meta property="og:image" content="https://adsfenixstorebolivia.netlify.app/images/preview.jpg">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://adsfenixstorebolivia.netlify.app/">
+    <meta name="twitter:title" content="MKT Fenix Store - Visualizador">
+    <meta name="twitter:description" content="Consulta los anuncios activos y las próximas promociones de Fenix Store Bolivia.">
+    <meta name="twitter:image" content="https://adsfenixstorebolivia.netlify.app/images/preview.jpg">
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="images/favicon.png">
-    <link rel="shortcut icon" type="image/png" href="images/favicon.png">
-    <link rel="apple-touch-icon" href="images/favicon.png">
-
-    <!-- 
-        CONFIGURACIÓN PARA WHATSAPP / REDES SOCIALES (Open Graph)
-        Asegúrate de que la URL de og:image sea accesible públicamente.
-    -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://adsfenixstorebolivia.netlify.app/"> 
-    <meta property="og:title" content="MKT FENIX STORE | Visualizador de Anuncios">
-    <meta property="og:description" content="Consulta los anuncios activos y las próximas promociones de Fenix Store Bolivia.">
-    
-    <!-- WhatsApp y Facebook requieren rutas absolutas -->
-    <meta property="og:image" content="https://adsfenixstorebolivia.netlify.app/images/preview.jpg">
-    <meta property="og:image:secure_url" content="https://adsfenixstorebolivia.netlify.app/images/preview.jpg">
-    <meta property="og:image:type" content="image/jpeg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-
-    <!-- Etiquetas adicionales para forzar la detección en WhatsApp -->
-    <link itemprop="thumbnailUrl" href="https://adsfenixstorebolivia.netlify.app/images/preview.jpg">
-    <span itemprop="thumbnail" itemscope itemtype="http://schema.org/ImageObject">
-        <link itemprop="url" href="https://adsfenixstorebolivia.netlify.app/images/preview.jpg">
-    </span>
-
-    <!-- Twitter / X -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="MKT FENIX STORE | Anuncios">
-    <meta name="twitter:description" content="Consulta los anuncios activos y promociones de nuestras asesoras.">
-    <meta name="twitter:image" content="https://adsfenixstorebolivia.netlify.app/images/preview.jpg">
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        
         body { 
             font-family: 'Inter', sans-serif; 
             background-color: #f1f5f9; 
