@@ -8,23 +8,20 @@
     <title>MKT Fenix Store - Visualizador</title>
     <meta name="description" content="Sistema de gestión y visualización de anuncios activos y programados de Fenix Store.">
 
-    <!-- Favicon Mejorado -->
-    <!-- Se añaden múltiples formatos para asegurar compatibilidad en todos los navegadores -->
-    <link rel="icon" type="image/webp" href="/images/favicon.webp">
-    <link rel="shortcut icon" type="image/webp" href="/images/favicon.webp">
-    <link rel="apple-touch-icon" href="/images/favicon.webp">
+    <!-- Favicon con el formato que te funcionó -->
+    <link rel="icon" type="image/webp" href="images/favicon.webp">
+    <link rel="shortcut icon" type="image/webp" href="images/favicon.webp">
+    <link rel="apple-touch-icon" href="images/favicon.webp">
 
     <!-- 
         CONFIGURACIÓN PARA REDES SOCIALES (Open Graph)
-        IMPORTANTE: Para que WhatsApp muestre la imagen, el dominio en 'og:url' y 'og:image' 
-        debe ser el dominio real de tu página en Netlify.
+        Se mantiene la URL absoluta para asegurar que WhatsApp lea la portada.
     -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://mkt-fenix-store.netlify.app/"> 
     <meta property="og:title" content="MKT FENIX STORE | Anuncios">
     <meta property="og:description" content="Consulta los anuncios activos y promociones de nuestras asesoras.">
     
-    <!-- WhatsApp prefiere rutas de imagen raíz o absolutas -->
     <meta property="og:image" content="https://mkt-fenix-store.netlify.app/images/portada.webp">
     <meta property="og:image:secure_url" content="https://mkt-fenix-store.netlify.app/images/portada.webp">
     <meta property="og:image:type" content="image/webp">
@@ -55,14 +52,12 @@
             transform: translateY(-4px); 
         }
 
-        /* Animación para el estado Activo */
         @keyframes pulse-live {
             0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
             70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
             100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
         }
 
-        /* Animación para el icono en proceso */
         @keyframes spin-slow {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
@@ -72,7 +67,6 @@
             animation: spin-slow 4s linear infinite;
         }
 
-        /* Animación para el botón de actualizar */
         @keyframes spin-once {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -93,7 +87,6 @@
             color: white; 
         }
 
-        /* Estilo base para etiquetas de tipo */
         .tipo-tag-default { 
             background-color: rgba(255, 255, 255, 0.15); 
             backdrop-filter: blur(4px); 
@@ -101,9 +94,8 @@
             color: white; 
         }
 
-        /* Estilo resaltado para Combos/Tricombos */
         .tipo-tag-resaltado {
-            background-color: #dc2626; /* Rojo intenso */
+            background-color: #dc2626; 
             border: 1px solid #ef4444;
             color: white;
             box-shadow: 0 2px 4px rgba(220, 38, 38, 0.3);
@@ -140,7 +132,6 @@
             </div>
             
             <div class="flex flex-wrap items-center gap-2">
-                <!-- Botón de Actualizar Datos -->
                 <button onclick="refreshData(this)" class="bg-white p-2.5 rounded-xl shadow-sm border border-slate-200 hover:bg-slate-50 transition-all text-slate-600 flex items-center justify-center mr-2 group" title="Actualizar datos">
                     <svg id="refreshIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="group-active:scale-95 transition-transform"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></svg>
                 </button>
@@ -201,7 +192,6 @@
                             <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Ciudad</p>
                             <p id="modalCiudad" class="text-slate-800 font-black"></p>
                         </div>
-                        <!-- Contenedor de Video REEL con colores dinámicos -->
                         <div id="modalVideoStatusContainer" class="p-4 rounded-2xl transition-colors duration-300">
                             <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Video REEL</p>
                             <p id="modalVideoStatus" class="font-black"></p>
@@ -228,10 +218,7 @@
             try {
                 const response = await fetch(`${API_URL}/anuncios`);
                 const data = await response.json();
-                
-                // Filtrar solo anuncios Activos y Programados
                 allAds = data.filter(ad => ad.estado === 'Activo' || ad.estado === 'Programado');
-                
                 renderPublicView();
             } catch (e) {
                 console.error("Error al cargar datos");
