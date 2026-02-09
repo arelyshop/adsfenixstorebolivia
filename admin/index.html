@@ -35,60 +35,70 @@
 </head>
 <body class="min-h-screen">
 
-    <!-- LOGIN -->
+    <!-- SECCIÓN DE LOGIN -->
     <div id="loginSection" class="min-h-screen flex items-center justify-center p-4 bg-slate-100">
         <div class="max-w-md w-full bg-white p-10 rounded-[3.5rem] shadow-2xl border border-slate-100 fade-in">
             <div class="text-center mb-10">
                 <div class="w-20 h-20 bg-slate-900 rounded-3xl flex items-center justify-center text-white font-black italic text-3xl mx-auto mb-6 shadow-xl">F</div>
                 <h1 class="text-2xl font-black text-slate-800 uppercase tracking-tighter">Acceso Administrativo</h1>
+                <p class="text-slate-400 text-sm italic">MKT FENIX STORE</p>
             </div>
             <form id="loginForm" class="space-y-6">
-                <input type="text" id="userInput" required placeholder="Usuario" class="w-full bg-slate-50 border-none rounded-2xl p-5 text-sm outline-none">
-                <input type="password" id="passInput" required placeholder="Contraseña" class="w-full bg-slate-50 border-none rounded-2xl p-5 text-sm outline-none">
-                <div id="loginErrorMessage" class="hidden text-red-500 text-[10px] font-bold uppercase text-center bg-red-50 p-3 rounded-xl">Credenciales incorrectas</div>
-                <button type="submit" class="w-full bg-slate-900 text-white font-black py-5 rounded-2xl shadow-lg uppercase tracking-widest text-sm">Entrar</button>
+                <input type="text" id="userInput" required placeholder="Usuario" class="w-full bg-slate-50 border-none rounded-2xl p-5 focus:ring-2 focus:ring-blue-500 text-sm outline-none transition-all">
+                <input type="password" id="passInput" required placeholder="Contraseña" class="w-full bg-slate-50 border-none rounded-2xl p-5 focus:ring-2 focus:ring-blue-500 text-sm outline-none transition-all">
+                <div id="loginErrorMessage" class="hidden text-red-500 text-[10px] font-bold uppercase text-center bg-red-50 p-3 rounded-xl border border-red-100">Credenciales incorrectas</div>
+                <button type="submit" id="btnLogin" class="w-full bg-slate-900 text-white font-black py-5 rounded-2xl shadow-lg hover:bg-blue-600 transition-all uppercase tracking-widest text-sm">Entrar al Sistema</button>
             </form>
         </div>
     </div>
 
     <!-- PANEL PRINCIPAL -->
     <div id="adminPanel" class="hidden-section p-4 md:p-8 max-w-[1600px] mx-auto fade-in">
-        <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
             <div>
                 <a href="../index.html" class="text-blue-600 font-bold text-sm flex items-center gap-2 mb-2 hover:translate-x-[-4px] transition-transform">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-                    Visualizador
+                    Regresar al Visualizador
                 </a>
                 <h1 class="text-4xl font-black text-slate-800 uppercase tracking-tighter">Administración</h1>
             </div>
             <div class="flex items-center gap-4">
                 <div class="bg-white px-6 py-3 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4">
                     <div class="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
-                    <span id="displayUsername" class="text-xs font-black text-slate-800 uppercase">Admin</span>
+                    <div class="flex flex-col text-right">
+                        <span id="displayUsername" class="text-xs font-black text-slate-800 uppercase leading-none">Admin</span>
+                        <span class="text-[10px] text-slate-400 font-bold uppercase">Conectado</span>
+                    </div>
                 </div>
-                <button onclick="logout()" class="p-3.5 bg-red-50 text-red-500 rounded-2xl hover:bg-red-100 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+                <button onclick="logout()" class="p-3.5 bg-red-50 text-red-500 rounded-2xl hover:bg-red-100 transition-colors shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
                 </button>
-            </div>
-        </header>
-
-        <!-- TABS -->
-        <div class="flex justify-center mb-16">
-            <div class="bg-white p-2 rounded-[2.5rem] shadow-xl border border-slate-100 flex gap-2">
-                <button onclick="switchTab('ads')" id="tabBtnAds" class="tab-btn active w-64 py-5 rounded-[2rem] text-sm uppercase tracking-[0.2em] font-black transition-all duration-300 text-white bg-blue-600">Anuncios</button>
-                <button onclick="switchTab('asesoras')" id="tabBtnAsesoras" class="tab-btn w-64 py-5 rounded-[2rem] text-sm uppercase tracking-[0.2em] font-black transition-all duration-300 text-slate-400 bg-transparent">Asesoras</button>
             </div>
         </div>
 
-        <!-- SECCIÓN ANUNCIOS -->
+        <!-- SELECTOR DE PESTAÑAS -->
+        <div class="flex justify-center mb-16">
+            <div class="bg-white p-2 rounded-[2.5rem] shadow-xl border border-slate-100 flex gap-2">
+                <button onclick="switchTab('ads')" id="tabBtnAds" 
+                    class="tab-btn active w-64 py-5 rounded-[2rem] text-sm uppercase tracking-[0.2em] font-black transition-all duration-300 text-white bg-blue-600 shadow-xl shadow-blue-200">
+                    Anuncios
+                </button>
+                <button onclick="switchTab('asesoras')" id="tabBtnAsesoras" 
+                    class="tab-btn w-64 py-5 rounded-[2rem] text-sm uppercase tracking-[0.2em] font-black transition-all duration-300 text-slate-400 bg-transparent hover:bg-slate-100">
+                    Asesoras
+                </button>
+            </div>
+        </div>
+
+        <!-- SECCIÓN DE ANUNCIOS -->
         <div id="sectionAds" class="grid grid-cols-1 lg:grid-cols-12 gap-10">
             <div class="lg:col-span-4">
                 <div class="bg-white p-10 rounded-[3.5rem] shadow-sm border border-slate-100">
                     <h2 id="adFormTitle" class="text-2xl font-black text-slate-800 mb-8">Nuevo Anuncio</h2>
                     <form id="adForm" class="space-y-5">
                         <input type="hidden" id="formAdId">
-                        <input type="text" id="formNombre" placeholder="Nombre del Anuncio" required class="w-full bg-slate-50 p-5 rounded-2xl border-none outline-none text-sm">
-                        <input type="url" id="formFoto" placeholder="URL de la Foto" required class="w-full bg-slate-50 p-5 rounded-2xl border-none outline-none text-sm">
+                        <input type="text" id="formNombre" placeholder="Nombre del Anuncio" required class="w-full bg-slate-50 p-5 rounded-2xl border-none focus:ring-2 focus:ring-blue-500 text-sm outline-none">
+                        <input type="url" id="formFoto" placeholder="URL de la Foto" required class="w-full bg-slate-50 p-5 rounded-2xl border-none focus:ring-2 focus:ring-blue-500 text-sm outline-none">
                         <div class="grid grid-cols-2 gap-4">
                             <select id="formTipo" class="bg-slate-50 p-5 rounded-2xl border-none text-sm font-bold outline-none">
                                 <option value="PRODUCTO SOLO">Producto Solo</option>
@@ -101,33 +111,40 @@
                                 <option value="Finalizado">Finalizado</option>
                             </select>
                         </div>
+                        
+                        <!-- BUSCADOR DE ASESORAS CON ICONO SVG -->
                         <div class="relative">
                             <span class="absolute left-5 top-1/2 -translate-y-1/2 pointer-events-none">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#cbd5e1"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
                             </span>
-                            <input type="text" id="asesoraSearchInput" placeholder="Buscar Asesora..." autocomplete="off" class="w-full bg-slate-50 pl-12 pr-5 py-5 rounded-2xl border-none text-sm font-bold outline-none" onfocus="showAsesoraResults()" oninput="filterAsesoras(this.value)">
+                            <input type="text" id="asesoraSearchInput" placeholder="Buscar Asesora..." autocomplete="off" 
+                                class="w-full bg-slate-50 pl-12 pr-5 py-5 rounded-2xl border-none focus:ring-2 focus:ring-blue-500 text-sm font-bold outline-none"
+                                onfocus="showAsesoraResults()" oninput="filterAsesoras(this.value)">
                             <input type="hidden" id="formAsesora" required>
                             <div id="asesoraSearchResults" class="search-results hidden custom-scroll"></div>
                         </div>
+
                         <div class="grid grid-cols-2 gap-5 p-6 bg-blue-50 rounded-2xl text-[10px] font-black uppercase">
                             <div><p class="text-blue-400 mb-1">Ciudad</p><p id="infoCiudad" class="text-slate-700 text-xs">-</p></div>
                             <div><p class="text-blue-400 mb-1">WhatsApp</p><p id="infoWhatsapp" class="text-slate-700 text-xs">-</p></div>
                         </div>
+                        
                         <div class="grid grid-cols-2 gap-4">
                             <div class="space-y-1">
-                                <label class="text-[10px] font-black text-slate-400 uppercase ml-2">Publicación</label>
-                                <input type="date" id="formFecha" required class="w-full bg-slate-50 p-5 rounded-2xl text-sm outline-none">
+                                <label class="text-[10px] font-black text-slate-400 uppercase ml-2">Fecha de publicación</label>
+                                <input type="date" id="formFecha" required class="w-full bg-slate-50 p-5 rounded-2xl border-none text-sm outline-none">
                             </div>
                             <div class="space-y-1">
                                 <label class="text-[10px] font-black text-slate-400 uppercase ml-2">Video REEL</label>
-                                <select id="formVideo" class="w-full bg-slate-50 p-5 rounded-2xl text-sm font-bold outline-none">
+                                <select id="formVideo" class="w-full bg-slate-50 p-5 rounded-2xl border-none text-sm font-bold outline-none">
                                     <option value="Pendiente">Pendiente</option>
                                     <option value="Realizado">Realizado</option>
                                 </select>
                             </div>
                         </div>
+
                         <div class="flex flex-col gap-2">
-                            <button type="submit" id="adSubmitBtn" class="w-full bg-blue-600 text-white font-black py-5 rounded-[2rem] uppercase tracking-widest text-xs hover:bg-blue-700 transition-colors">Guardar Anuncio</button>
+                            <button type="submit" id="adSubmitBtn" class="w-full bg-blue-600 text-white font-black py-5 rounded-[2rem] shadow-xl shadow-blue-200 uppercase tracking-widest text-xs mt-4 hover:bg-blue-700 transition-colors">Guardar Anuncio</button>
                             <button type="button" id="adCancelBtn" onclick="resetAdForm()" class="hidden w-full bg-slate-100 text-slate-500 font-bold py-3 rounded-xl text-[10px] uppercase">Cancelar Edición</button>
                         </div>
                     </form>
@@ -135,9 +152,9 @@
             </div>
             <div class="lg:col-span-8">
                 <div class="bg-white rounded-[3.5rem] shadow-sm border border-slate-100 overflow-hidden">
-                    <div class="p-8 bg-slate-50 flex justify-between items-center border-b">
+                    <div class="p-8 bg-slate-50/50 flex justify-between items-center border-b border-slate-100">
                         <h2 class="font-black text-xs uppercase tracking-[0.2em] text-slate-500">Historial de Anuncios</h2>
-                        <button onclick="fetchAds()" class="text-blue-500 font-bold text-[10px] uppercase tracking-widest">Actualizar</button>
+                        <button onclick="fetchAds()" class="text-blue-500 font-bold text-[10px] uppercase tracking-widest hover:underline">Actualizar</button>
                     </div>
                     <div class="overflow-x-auto custom-scroll" style="max-height: 800px;">
                         <table class="w-full text-left">
@@ -148,23 +165,22 @@
             </div>
         </div>
 
-        <!-- SECCIÓN ASESORAS -->
+        <!-- SECCIÓN DE ASESORAS -->
         <div id="sectionAsesoras" class="grid grid-cols-1 lg:grid-cols-12 gap-10 hidden-section">
             <div class="lg:col-span-3 space-y-8">
                 <div class="bg-white p-10 rounded-[3.5rem] shadow-sm border border-slate-100">
                     <h2 id="asesoraFormTitle" class="text-2xl font-black text-slate-800 mb-8">Nueva Asesora</h2>
                     <form id="asesoraForm" class="space-y-5">
                         <input type="hidden" id="formAsesoraId">
-                        <input type="text" id="formAsesoraNombre" required placeholder="Nombre Completo" class="w-full bg-slate-50 p-5 rounded-2xl outline-none text-sm">
-                        <input type="text" id="formAsesoraCiudad" required placeholder="Ciudad" class="w-full bg-slate-50 p-5 rounded-2xl outline-none text-sm">
-                        <input type="text" id="formAsesoraWhatsApp" required placeholder="WhatsApp" class="w-full bg-slate-50 p-5 rounded-2xl outline-none text-sm">
+                        <input type="text" id="formAsesoraNombre" required placeholder="Nombre Completo" class="w-full bg-slate-50 p-5 rounded-2xl border-none text-sm outline-none">
+                        <input type="text" id="formAsesoraCiudad" required placeholder="Ciudad" class="w-full bg-slate-50 p-5 rounded-2xl border-none text-sm outline-none">
+                        <input type="text" id="formAsesoraWhatsApp" required placeholder="WhatsApp" class="w-full bg-slate-50 p-5 rounded-2xl border-none text-sm outline-none">
                         <div class="flex flex-col gap-2">
-                            <button type="submit" id="asesoraSubmitBtn" class="w-full bg-emerald-600 text-white font-black py-5 rounded-[2rem] uppercase text-xs tracking-widest">Registrar</button>
+                            <button type="submit" id="asesoraSubmitBtn" class="w-full bg-emerald-600 text-white font-black py-5 rounded-[2rem] uppercase text-xs tracking-widest mt-2 hover:bg-emerald-700 transition-colors">Registrar</button>
                             <button type="button" id="asesoraCancelBtn" onclick="resetAsesoraForm()" class="hidden w-full bg-slate-100 text-slate-500 font-bold py-3 rounded-xl text-[10px] uppercase">Cancelar Edición</button>
                         </div>
                     </form>
                 </div>
-                <!-- CARGA MASIVA -->
                 <div class="bg-slate-900 p-10 rounded-[3.5rem] shadow-xl text-white">
                     <h2 class="text-lg font-black mb-4">Carga Masiva</h2>
                     <input type="file" id="csvFileInput" accept=".csv" class="hidden">
@@ -174,12 +190,13 @@
             </div>
             <div class="lg:col-span-9">
                 <div class="bg-white rounded-[3.5rem] shadow-sm border border-slate-100 overflow-hidden">
-                    <div class="p-10 bg-slate-50 border-b">
+                    <div class="p-10 bg-slate-50/50 border-b border-slate-100">
                         <div class="flex flex-col md:flex-row justify-between items-center gap-8">
                             <div>
-                                <h2 class="font-black text-xl uppercase tracking-widest text-slate-800">Directorio</h2>
-                                <p class="text-slate-400 text-xs font-medium mt-1">Contactos para Bolivia</p>
+                                <h2 class="font-black text-xl uppercase tracking-widest text-slate-800">Directorio de Asesoras</h2>
+                                <p class="text-slate-400 text-xs font-medium mt-1">Gestión de contactos para Bolivia</p>
                             </div>
+                            <!-- BUSCADOR DEL DIRECTORIO CON ICONO SVG -->
                             <div class="relative w-full md:w-[450px]">
                                 <span class="absolute left-6 top-1/2 -translate-y-1/2 pointer-events-none">
                                     <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="22px" fill="#cbd5e1"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
@@ -190,6 +207,14 @@
                     </div>
                     <div class="overflow-x-auto custom-scroll" style="max-height: 850px;">
                         <table class="w-full text-left">
+                            <thead>
+                                <tr class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] bg-white sticky top-0 z-10 border-b border-slate-100">
+                                    <th class="p-10 pb-6">Asesora</th>
+                                    <th class="p-10 pb-6">Ciudad</th>
+                                    <th class="p-10 pb-6">Contacto</th>
+                                    <th class="p-10 pb-6 text-right">Acciones</th>
+                                </tr>
+                            </thead>
                             <tbody id="asesorasTableBody" class="divide-y divide-slate-100"></tbody>
                         </table>
                     </div>
@@ -207,8 +232,10 @@
         function switchTab(tab) {
             document.getElementById('sectionAds').classList.toggle('hidden-section', tab !== 'ads');
             document.getElementById('sectionAsesoras').classList.toggle('hidden-section', tab !== 'asesoras');
+            
             const btnAds = document.getElementById('tabBtnAds');
             const btnAsesoras = document.getElementById('tabBtnAsesoras');
+            
             if(tab === 'ads') {
                 btnAds.className = "tab-btn active w-64 py-5 rounded-[2rem] text-sm uppercase tracking-[0.2em] font-black transition-all duration-300 text-white bg-blue-600 shadow-xl shadow-blue-200";
                 btnAsesoras.className = "tab-btn w-64 py-5 rounded-[2rem] text-sm uppercase tracking-[0.2em] font-black transition-all duration-300 text-slate-400 bg-transparent hover:bg-slate-100";
@@ -265,12 +292,32 @@
             const searchTerm = document.getElementById('searchAsesorasInput').value.toLowerCase();
             const tbody = document.getElementById('asesorasTableBody');
             tbody.innerHTML = '';
-            const filtered = allAsesoras.filter(a => a.nombre.toLowerCase().includes(searchTerm) || a.ciudad.toLowerCase().includes(searchTerm));
+            const filtered = allAsesoras.filter(a => 
+                a.nombre.toLowerCase().includes(searchTerm) || 
+                a.whatsapp.includes(searchTerm) || 
+                a.ciudad.toLowerCase().includes(searchTerm)
+            );
             filtered.forEach(a => {
                 tbody.innerHTML += `
-                <tr class="hover:bg-slate-50 group">
-                    <td class="p-10"><span class="font-extrabold text-lg text-slate-800">${a.nombre}</span></td>
-                    <td class="p-10"><span class="text-sm font-semibold text-slate-500">${a.ciudad}</span></td>
+                <tr class="hover:bg-slate-50 transition-colors group">
+                    <td class="p-10">
+                        <div class="flex flex-col gap-3">
+                            <span class="font-extrabold text-lg text-slate-800">${a.nombre}</span>
+                            <button onclick="copyToClip('${a.nombre}', this)" class="w-fit text-[10px] uppercase font-bold text-blue-500 bg-blue-50 px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all hover:bg-blue-600 hover:text-white">Copiar Nombre</button>
+                        </div>
+                    </td>
+                    <td class="p-10">
+                        <div class="flex flex-col gap-3">
+                            <span class="text-sm font-semibold text-slate-500">${a.ciudad}</span>
+                            <button onclick="copyToClip('${a.ciudad}', this)" class="w-fit text-[10px] uppercase font-bold text-slate-400 bg-slate-100 px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all hover:bg-slate-600 hover:text-white">Copiar Ciudad</button>
+                        </div>
+                    </td>
+                    <td class="p-10">
+                        <div class="flex flex-col gap-3">
+                            <span class="text-sm font-bold font-mono text-slate-600">${a.whatsapp}</span>
+                            <button onclick="copyToClip('${a.whatsapp}', this)" class="w-fit text-[10px] uppercase font-bold text-emerald-500 bg-emerald-50 px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all hover:bg-emerald-600 hover:text-white">Copiar WhatsApp</button>
+                        </div>
+                    </td>
                     <td class="p-10 text-right space-x-2">
                         <button onclick="editAsesora(${a.id})" class="text-blue-400 hover:text-blue-600 p-3 rounded-xl hover:bg-blue-50 transition-all">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
@@ -315,10 +362,39 @@
                 ciudad: document.getElementById('formAsesoraCiudad').value,
                 whatsapp: document.getElementById('formAsesoraWhatsApp').value
             };
-            const method = id ? 'PUT' : 'POST';
-            await fetch(`${API_URL}/asesoras`, { method, body: JSON.stringify(payload) });
+            await fetch(`${API_URL}/asesoras`, { method: id ? 'PUT' : 'POST', body: JSON.stringify(payload) });
             resetAsesoraForm(); fetchAsesoras();
         };
+
+        function copyToClip(text, element) {
+            const input = document.createElement('textarea');
+            input.value = text; document.body.appendChild(input); input.select(); document.execCommand('copy'); document.body.removeChild(input);
+            const originalHTML = element.innerHTML;
+            element.classList.add('copy-success'); element.innerHTML = '¡COPIADO!';
+            setTimeout(() => { element.classList.remove('copy-success'); element.innerHTML = originalHTML; }, 1500);
+        }
+
+        document.getElementById('csvFileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0]; if (!file) return;
+            const reader = new FileReader();
+            reader.onload = async function(event) {
+                const text = event.target.result; const rows = text.split('\n');
+                const progress = document.getElementById('csvProgress'); progress.classList.remove('hidden');
+                let count = 0;
+                for (let i = 0; i < rows.length; i++) {
+                    const columns = rows[i].split(',');
+                    if (columns.length >= 3) {
+                        const payload = { nombre: columns[0].trim(), ciudad: columns[1].trim(), whatsapp: columns[2].trim() };
+                        if (payload.nombre && payload.nombre !== "Nombre") { 
+                            try { await fetch(`${API_URL}/asesoras`, { method: 'POST', body: JSON.stringify(payload) }); count++; progress.innerText = `Cargando: ${count}...`; } catch (err) { }
+                        }
+                    }
+                }
+                alert(`✅ Se registraron ${count} asesoras.`);
+                progress.classList.add('hidden'); document.getElementById('csvFileInput').value = ""; fetchAsesoras();
+            };
+            reader.readAsText(file);
+        });
 
         // --- GESTIÓN DE ANUNCIOS ---
         function renderAds() {
@@ -329,21 +405,21 @@
                 <tr class="hover:bg-slate-50 transition-all">
                     <td class="p-8">
                         <div class="flex items-center gap-6">
-                            <img src="${ad.foto_url}" class="w-16 h-16 rounded-2xl object-cover" onerror="this.src='https://via.placeholder.com/100'">
+                            <img src="${ad.foto_url}" class="w-16 h-16 rounded-2xl object-cover shadow-sm" onerror="this.src='https://via.placeholder.com/100'">
                             <div class="flex flex-col">
                                 <span class="font-extrabold text-base text-slate-700">${ad.nombre}</span>
-                                <span class="text-[10px] text-slate-400 font-black uppercase">${ad.tipo}</span>
+                                <span class="text-[10px] text-slate-400 font-black uppercase mt-1">${ad.tipo}</span>
                             </div>
                         </div>
                     </td>
-                    <td class="p-8 text-[11px] font-bold text-slate-500 uppercase italic">${ad.asesora_nombre}</td>
+                    <td class="p-8 text-[11px] font-bold text-slate-500 italic uppercase">${ad.asesora_nombre}</td>
                     <td class="p-8"><span class="px-4 py-2 bg-slate-100 rounded-xl text-[10px] font-black uppercase">${ad.estado}</span></td>
                     <td class="p-8 text-right space-x-2">
-                        <button onclick="editAd(${ad.id})" class="text-blue-400 hover:text-blue-600 p-2">
+                        <button onclick="editAd(${ad.id})" class="text-blue-400 hover:text-blue-600 p-3 rounded-xl hover:bg-blue-50 transition-all">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
                         </button>
-                        <button onclick="deleteAd(${ad.id})" class="text-red-300 hover:text-red-600 p-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18m-2 0v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/></svg>
+                        <button onclick="deleteAd(${ad.id})" class="text-red-300 hover:text-red-600 p-3 rounded-xl hover:bg-red-50 transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
                         </button>
                     </td>
                 </tr>`;
@@ -361,7 +437,6 @@
             document.getElementById('formFecha').value = ad.fecha_iso;
             document.getElementById('formVideo').value = ad.video_reel;
             
-            // Cargar asesora seleccionada
             const aser = allAsesoras.find(x => x.id == ad.asesora_id);
             if(aser) selectAsesora(aser);
 
@@ -396,28 +471,32 @@
                 fecha_inicio: document.getElementById('formFecha').value,
                 video_reel: document.getElementById('formVideo').value
             };
-            const method = id ? 'PUT' : 'POST';
-            await fetch(`${API_URL}/anuncios`, { method, body: JSON.stringify(payload) });
+            await fetch(`${API_URL}/anuncios`, { method: id ? 'PUT' : 'POST', body: JSON.stringify(payload) });
             resetAdForm(); fetchAds();
         };
 
-        /* Buscador del Formulario */
+        /* Lógica del Buscador de Asesoras */
         function showAsesoraResults() { document.getElementById('asesoraSearchResults').classList.remove('hidden'); filterAsesoras(document.getElementById('asesoraSearchInput').value); }
         function filterAsesoras(q) {
             const div = document.getElementById('asesoraSearchResults');
-            const filtered = allAsesoras.filter(a => a.nombre.toLowerCase().includes(q.toLowerCase()));
-            div.innerHTML = filtered.map(a => `<div onclick='selectAsesora(${JSON.stringify(a)})' class="p-4 hover:bg-blue-50 cursor-pointer border-b"><p class="font-bold text-sm">${a.nombre}</p><p class="text-[10px] uppercase font-black text-slate-400">${a.ciudad}</p></div>`).join('');
-            if(!filtered.length) div.innerHTML = '<p class="p-4 text-xs italic">Sin resultados</p>';
+            const filtered = allAsesoras.filter(a => a.nombre.toLowerCase().includes(q.toLowerCase()) || a.ciudad.toLowerCase().includes(q.toLowerCase()));
+            div.innerHTML = filtered.map(a => `
+                <div onclick='selectAsesora(${JSON.stringify(a)})' class="p-4 hover:bg-blue-50 cursor-pointer border-b">
+                    <p class="text-sm font-bold text-slate-800">${a.nombre}</p>
+                    <p class="text-[10px] text-slate-400 uppercase font-black">${a.ciudad}</p>
+                </div>`).join('');
+            if(!filtered.length) div.innerHTML = '<div class="p-4 text-xs italic">Sin resultados</div>';
         }
         function selectAsesora(a) {
             document.getElementById('asesoraSearchInput').value = a.nombre;
             document.getElementById('formAsesora').value = a.id;
-            document.getElementById('infoCiudad').innerText = a.city || a.ciudad;
+            document.getElementById('infoCiudad').innerText = a.ciudad;
             document.getElementById('infoWhatsapp').innerText = a.whatsapp;
             document.getElementById('asesoraSearchResults').classList.add('hidden');
         }
+        document.addEventListener('click', (e) => { if (!e.target.closest('.relative')) document.getElementById('asesoraSearchResults').classList.add('hidden'); });
 
-        // --- ELIMINACIÓN ---
+        // --- BORRAR ---
         async function deleteAd(id) { if(confirm("¿Borrar anuncio?")) { await fetch(`${API_URL}/anuncios`, { method: 'DELETE', body: JSON.stringify({id}) }); fetchAds(); } }
         async function deleteAsesora(id) { if(confirm("¿Borrar asesora?")) { await fetch(`${API_URL}/asesoras`, { method: 'DELETE', body: JSON.stringify({id}) }); fetchAsesoras(); fetchAds(); } }
 
