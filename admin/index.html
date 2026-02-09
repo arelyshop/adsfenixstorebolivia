@@ -12,14 +12,15 @@
         .fade-in { animation: fadeIn 0.5s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         
-        /* DISEÑO DE PESTAÑAS CENTRADAS */
+        /* DISEÑO DE PESTAÑAS AMPLIAS Y ELEGANTES */
         .tab-btn { 
-            @apply px-10 py-3 rounded-2xl text-[12px] uppercase tracking-widest font-black transition-all duration-300 flex flex-row items-center justify-center gap-3 text-slate-400 bg-transparent border-none outline-none cursor-pointer;
+            @apply px-20 py-5 rounded-[1.8rem] text-[14px] uppercase tracking-[0.2em] font-extrabold transition-all duration-300 flex items-center justify-center text-slate-400 bg-transparent border-none outline-none cursor-pointer;
         }
         
-        /* ESTADO ACTIVO: Azul vibrante con sombra */
+        /* ESTADO ACTIVO: Azul vibrante con sombra amplia */
         .tab-btn.active { 
-            @apply bg-blue-600 text-white shadow-xl shadow-blue-200;
+            @apply bg-blue-600 text-white;
+            box-shadow: 0 15px 30px -10px rgba(37, 99, 235, 0.6);
         }
 
         .tab-btn:not(.active):hover {
@@ -46,109 +47,110 @@
 
     <!-- SECCIÓN DE LOGIN -->
     <div id="loginSection" class="min-h-screen flex items-center justify-center p-4 bg-slate-100">
-        <div class="max-w-md w-full bg-white p-8 md:p-12 rounded-[3rem] shadow-2xl border border-slate-100 fade-in">
-            <div class="text-center mb-8">
+        <div class="max-w-md w-full bg-white p-8 md:p-12 rounded-[3.5rem] shadow-2xl border border-slate-100 fade-in">
+            <div class="text-center mb-10">
                 <div class="w-20 h-20 bg-slate-900 rounded-3xl flex items-center justify-center text-white font-black italic text-3xl mx-auto mb-6 shadow-xl">F</div>
                 <h1 class="text-2xl font-black text-slate-800 uppercase tracking-tighter">Panel de Acceso</h1>
                 <p class="text-slate-400 text-sm italic">SISTEMA MKT FENIX STORE</p>
             </div>
             
-            <form id="loginForm" class="space-y-5">
+            <form id="loginForm" class="space-y-6">
                 <div>
                     <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2 ml-4">Usuario</label>
-                    <input type="text" id="userInput" required placeholder="Ingresa tu usuario" class="w-full bg-slate-50 border-none rounded-2xl p-4 focus:ring-2 focus:ring-blue-500 text-sm transition-all">
+                    <input type="text" id="userInput" required placeholder="Ingresa tu usuario" class="w-full bg-slate-50 border-none rounded-2xl p-5 focus:ring-2 focus:ring-blue-500 text-sm transition-all outline-none">
                 </div>
                 <div>
                     <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2 ml-4">Contraseña</label>
-                    <input type="password" id="passInput" required placeholder="Ingresa tu contraseña" class="w-full bg-slate-50 border-none rounded-2xl p-4 focus:ring-2 focus:ring-blue-500 text-sm transition-all">
+                    <input type="password" id="passInput" required placeholder="Ingresa tu contraseña" class="w-full bg-slate-50 border-none rounded-2xl p-5 focus:ring-2 focus:ring-blue-500 text-sm transition-all outline-none">
                 </div>
-                <div id="loginErrorMessage" class="hidden text-red-500 text-[10px] font-bold uppercase text-center bg-red-50 p-2 rounded-xl border border-red-100">Credenciales incorrectas</div>
-                <button type="submit" id="btnLogin" class="w-full bg-slate-900 text-white font-bold py-5 rounded-2xl shadow-lg hover:bg-slate-800 active:scale-95 transition-all uppercase tracking-widest text-sm">Entrar al Panel</button>
+                <div id="loginErrorMessage" class="hidden text-red-500 text-[10px] font-bold uppercase text-center bg-red-50 p-3 rounded-xl border border-red-100">Credenciales incorrectas</div>
+                <button type="submit" id="btnLogin" class="w-full bg-slate-900 text-white font-black py-5 rounded-2xl shadow-lg hover:bg-slate-800 active:scale-95 transition-all uppercase tracking-[0.1em] text-sm">Entrar al Panel</button>
             </form>
         </div>
     </div>
 
     <!-- PANEL PRINCIPAL -->
     <div id="adminPanel" class="hidden-section p-4 md:p-8 max-w-[1600px] mx-auto fade-in">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
             <div>
                 <a href="../index.html" class="text-blue-600 font-bold text-sm flex items-center gap-2 mb-2 hover:translate-x-[-4px] transition-transform">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
                     Ver Visualizador Público
                 </a>
-                <h1 class="text-3xl font-black text-slate-800 uppercase tracking-tighter">Administración</h1>
+                <h1 class="text-4xl font-black text-slate-800 uppercase tracking-tighter">Administración</h1>
             </div>
             
             <div class="flex items-center gap-4">
-                <div class="bg-white px-5 py-3 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4">
+                <div class="bg-white px-6 py-3 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4">
                     <div class="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
                     <div class="flex flex-col text-right">
                         <span id="displayUsername" class="text-xs font-black text-slate-800 uppercase leading-none">Admin</span>
                         <span id="displayRole" class="text-[10px] text-slate-400 font-bold uppercase">Administrador</span>
                     </div>
                 </div>
-                <button onclick="logout()" class="p-3 bg-red-50 text-red-500 rounded-2xl hover:bg-red-100 transition-colors shadow-sm" title="Cerrar Sesión">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+                <button onclick="logout()" class="p-3.5 bg-red-50 text-red-500 rounded-2xl hover:bg-red-100 transition-colors shadow-sm" title="Cerrar Sesión">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
                 </button>
             </div>
         </div>
 
-        <!-- SELECTOR DE PESTAÑAS CENTRADO -->
-        <div class="flex flex-row justify-center mb-12">
-            <div class="flex flex-row gap-1 bg-white p-1.5 rounded-[2rem] shadow-lg border border-slate-100">
+        <!-- NAVEGACIÓN DE PESTAÑAS MEJORADA -->
+        <div class="flex flex-row justify-center mb-16">
+            <div class="flex flex-row gap-2 bg-white p-2 rounded-[2.5rem] shadow-xl border border-slate-100">
                 <button onclick="switchTab('ads')" id="tabBtnAds" class="tab-btn active">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
-                    <span>Anuncios</span>
+                    ANUNCIOS
                 </button>
                 <button onclick="switchTab('asesoras')" id="tabBtnAsesoras" class="tab-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
-                    <span>Asesoras</span>
+                    ASESORAS
                 </button>
             </div>
         </div>
 
         <!-- SECCIÓN DE ANUNCIOS -->
-        <div id="sectionAds" class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div id="sectionAds" class="grid grid-cols-1 lg:grid-cols-12 gap-10">
             <div class="lg:col-span-4">
-                <div class="bg-white p-8 rounded-[3rem] shadow-sm border border-slate-100">
-                    <h2 class="text-xl font-black text-slate-800 mb-8 flex items-center gap-3"><span class="p-2 bg-blue-600 rounded-xl text-white"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span>Nuevo Anuncio</h2>
-                    <form id="adForm" class="space-y-4">
-                        <input type="text" id="formNombre" placeholder="Nombre del Anuncio" required class="w-full bg-slate-50 p-4 rounded-2xl border-none focus:ring-2 focus:ring-blue-500 text-sm">
-                        <input type="url" id="formFoto" placeholder="URL de la Foto" required class="w-full bg-slate-50 p-4 rounded-2xl border-none focus:ring-2 focus:ring-blue-500 text-sm">
-                        <div class="grid grid-cols-2 gap-3">
-                            <select id="formTipo" class="bg-slate-50 p-4 rounded-2xl border-none text-sm font-bold">
+                <div class="bg-white p-10 rounded-[3.5rem] shadow-sm border border-slate-100">
+                    <h2 class="text-2xl font-black text-slate-800 mb-8 flex items-center gap-4">Nuevo Anuncio</h2>
+                    <form id="adForm" class="space-y-5">
+                        <input type="text" id="formNombre" placeholder="Nombre del Anuncio" required class="w-full bg-slate-50 p-5 rounded-2xl border-none focus:ring-2 focus:ring-blue-500 text-sm outline-none">
+                        <input type="url" id="formFoto" placeholder="URL de la Foto" required class="w-full bg-slate-50 p-5 rounded-2xl border-none focus:ring-2 focus:ring-blue-500 text-sm outline-none">
+                        <div class="grid grid-cols-2 gap-4">
+                            <select id="formTipo" class="bg-slate-50 p-5 rounded-2xl border-none text-sm font-bold outline-none">
                                 <option value="PRODUCTO SOLO">Producto Solo</option>
                                 <option value="COMBO">Combo</option>
                                 <option value="TRICOMBO">Tricombo</option>
                             </select>
-                            <select id="formEstado" class="bg-slate-50 p-4 rounded-2xl border-none text-sm font-bold">
+                            <select id="formEstado" class="bg-slate-50 p-5 rounded-2xl border-none text-sm font-bold outline-none">
                                 <option value="Activo">Activo</option>
                                 <option value="Programado">Programado</option>
                                 <option value="Finalizado">Finalizado</option>
                             </select>
                         </div>
-                        <select id="formAsesora" required onchange="updateAsesoraDisplay()" class="w-full bg-slate-50 p-4 rounded-2xl border-none text-sm font-bold">
+                        <select id="formAsesora" required onchange="updateAsesoraDisplay()" class="w-full bg-slate-50 p-5 rounded-2xl border-none text-sm font-bold outline-none">
                             <option value="">Selecciona Asesora...</option>
                         </select>
-                        <div class="grid grid-cols-2 gap-4 p-5 bg-blue-50 rounded-2xl text-[10px] font-black uppercase">
-                            <div><p class="text-blue-400">Ciudad</p><p id="infoCiudad" class="text-slate-700">-</p></div>
-                            <div><p class="text-blue-400">WhatsApp</p><p id="infoWhatsapp" class="text-slate-700">-</p></div>
+                        <div class="grid grid-cols-2 gap-5 p-6 bg-blue-50 rounded-2xl text-[10px] font-black uppercase">
+                            <div><p class="text-blue-400 mb-1">Ciudad</p><p id="infoCiudad" class="text-slate-700 text-xs">-</p></div>
+                            <div><p class="text-blue-400 mb-1">WhatsApp</p><p id="infoWhatsapp" class="text-slate-700 text-xs">-</p></div>
                         </div>
-                        <div class="grid grid-cols-2 gap-3">
-                            <input type="date" id="formFecha" required class="bg-slate-50 p-4 rounded-2xl border-none text-sm">
-                            <select id="formVideo" class="bg-slate-50 p-4 rounded-2xl border-none text-sm font-bold">
+                        <div class="grid grid-cols-2 gap-4">
+                            <input type="date" id="formFecha" required class="bg-slate-50 p-5 rounded-2xl border-none text-sm outline-none">
+                            <select id="formVideo" class="bg-slate-50 p-5 rounded-2xl border-none text-sm font-bold outline-none">
                                 <option value="Pendiente">Pendiente</option>
                                 <option value="Realizado">Realizado</option>
                             </select>
                         </div>
-                        <button type="submit" class="w-full bg-blue-600 text-white font-black py-5 rounded-3xl shadow-xl shadow-blue-200 uppercase tracking-widest text-xs">Guardar Anuncio</button>
+                        <button type="submit" class="w-full bg-blue-600 text-white font-black py-5 rounded-[2rem] shadow-xl shadow-blue-200 uppercase tracking-widest text-xs mt-4">Guardar Anuncio</button>
                     </form>
                 </div>
             </div>
             <div class="lg:col-span-8">
-                <div class="bg-white rounded-[3rem] shadow-sm border border-slate-100 overflow-hidden">
-                    <div class="p-6 bg-slate-50/50 flex justify-between items-center border-b border-slate-100"><h2 class="font-black text-xs uppercase tracking-widest text-slate-600">Historial de Anuncios</h2><button onclick="fetchAds()" class="text-blue-500 font-bold text-[10px] uppercase">Actualizar</button></div>
-                    <div class="overflow-x-auto custom-scroll" style="max-height: 700px;">
+                <div class="bg-white rounded-[3.5rem] shadow-sm border border-slate-100 overflow-hidden">
+                    <div class="p-8 bg-slate-50/50 flex justify-between items-center border-b border-slate-100">
+                        <h2 class="font-black text-xs uppercase tracking-[0.2em] text-slate-500">Historial de Anuncios</h2>
+                        <button onclick="fetchAds()" class="text-blue-500 font-bold text-[10px] uppercase tracking-widest hover:underline">Actualizar</button>
+                    </div>
+                    <div class="overflow-x-auto custom-scroll" style="max-height: 800px;">
                         <table class="w-full text-left">
                             <tbody id="adminTableBody" class="divide-y divide-slate-50"></tbody>
                         </table>
@@ -158,49 +160,48 @@
         </div>
 
         <!-- SECCIÓN DE ASESORAS -->
-        <div id="sectionAsesoras" class="grid grid-cols-1 lg:grid-cols-12 gap-8 hidden-section">
-            <div class="lg:col-span-3 space-y-6">
-                <div class="bg-white p-8 rounded-[3rem] shadow-sm border border-slate-100">
-                    <h2 class="text-xl font-black text-slate-800 mb-8 flex items-center gap-3"><span class="p-2 bg-emerald-600 rounded-xl text-white"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span>Nueva Asesora</h2>
-                    <form id="asesoraForm" class="space-y-4">
-                        <input type="text" id="formAsesoraNombre" required placeholder="Nombre Completo" class="w-full bg-slate-50 p-4 rounded-2xl border-none text-sm">
-                        <input type="text" id="formAsesoraCiudad" required placeholder="Ciudad" class="w-full bg-slate-50 p-4 rounded-2xl border-none text-sm">
-                        <input type="text" id="formAsesoraWhatsApp" required placeholder="WhatsApp (+591...)" class="w-full bg-slate-50 p-4 rounded-2xl border-none text-sm">
-                        <button type="submit" class="w-full bg-emerald-600 text-white font-black py-5 rounded-3xl uppercase text-xs tracking-widest">Registrar Asesora</button>
+        <div id="sectionAsesoras" class="grid grid-cols-1 lg:grid-cols-12 gap-10 hidden-section">
+            <div class="lg:col-span-3 space-y-8">
+                <div class="bg-white p-10 rounded-[3.5rem] shadow-sm border border-slate-100">
+                    <h2 class="text-2xl font-black text-slate-800 mb-8">Nueva Asesora</h2>
+                    <form id="asesoraForm" class="space-y-5">
+                        <input type="text" id="formAsesoraNombre" required placeholder="Nombre Completo" class="w-full bg-slate-50 p-5 rounded-2xl border-none text-sm outline-none">
+                        <input type="text" id="formAsesoraCiudad" required placeholder="Ciudad" class="w-full bg-slate-50 p-5 rounded-2xl border-none text-sm outline-none">
+                        <input type="text" id="formAsesoraWhatsApp" required placeholder="WhatsApp (+591...)" class="w-full bg-slate-50 p-5 rounded-2xl border-none text-sm outline-none">
+                        <button type="submit" class="w-full bg-emerald-600 text-white font-black py-5 rounded-[2rem] uppercase text-xs tracking-widest mt-2">Registrar Asesora</button>
                     </form>
                 </div>
 
-                <div class="bg-slate-900 p-8 rounded-[3rem] shadow-xl text-white">
-                    <h2 class="text-lg font-black mb-4 flex items-center gap-3"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Carga Masiva</h2>
-                    <p class="text-slate-400 text-[10px] mb-6 font-bold uppercase tracking-tight">Formato CSV: Nombre, Ciudad, WhatsApp</p>
+                <div class="bg-slate-900 p-10 rounded-[3.5rem] shadow-xl text-white">
+                    <h2 class="text-lg font-black mb-4">Carga Masiva</h2>
+                    <p class="text-slate-400 text-[10px] mb-8 font-bold uppercase tracking-widest">CSV: Nombre, Ciudad, WhatsApp</p>
                     <input type="file" id="csvFileInput" accept=".csv" class="hidden">
-                    <button onclick="document.getElementById('csvFileInput').click()" class="w-full border-2 border-dashed border-slate-700 text-slate-300 py-6 rounded-3xl hover:border-blue-500 hover:text-white transition-all text-xs font-bold uppercase">Subir Archivo .CSV</button>
-                    <div id="csvProgress" class="mt-4 text-center text-[10px] font-bold text-blue-400 hidden">Procesando...</div>
+                    <button onclick="document.getElementById('csvFileInput').click()" class="w-full border-2 border-dashed border-slate-700 text-slate-300 py-6 rounded-[2rem] hover:border-blue-500 hover:text-white transition-all text-xs font-bold uppercase tracking-widest">Subir CSV</button>
+                    <div id="csvProgress" class="mt-4 text-center text-[10px] font-bold text-blue-400 hidden uppercase tracking-widest">Procesando...</div>
                 </div>
             </div>
 
             <div class="lg:col-span-9">
-                <div class="bg-white rounded-[3rem] shadow-sm border border-slate-100 overflow-hidden">
-                    <div class="p-8 bg-slate-50/50 border-b border-slate-100">
-                        <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="bg-white rounded-[3.5rem] shadow-sm border border-slate-100 overflow-hidden">
+                    <div class="p-10 bg-slate-50/50 border-b border-slate-100">
+                        <div class="flex flex-col md:flex-row justify-between items-center gap-8">
                             <div>
-                                <h2 class="font-black text-lg uppercase tracking-widest text-slate-800">Directorio de Asesoras</h2>
-                                <p class="text-slate-400 text-xs font-medium">Gestiona y copia rápidamente la información de contacto</p>
+                                <h2 class="font-black text-xl uppercase tracking-widest text-slate-800">Directorio de Asesoras</h2>
+                                <p class="text-slate-400 text-xs font-medium mt-1">Gestiona los contactos de la tienda</p>
                             </div>
-                            <div class="relative w-full md:w-96">
-                                <input type="text" id="searchAsesorasInput" oninput="renderAsesoras()" placeholder="Buscar por nombre, ciudad o whatsapp..." class="w-full bg-white border border-slate-200 rounded-2xl px-6 py-4 text-sm focus:ring-4 focus:ring-blue-100 focus:outline-none transition-all shadow-sm">
-                                <svg class="absolute right-5 top-4.5 text-slate-400" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                            <div class="relative w-full md:w-[450px]">
+                                <input type="text" id="searchAsesorasInput" oninput="renderAsesoras()" placeholder="Buscar por nombre, ciudad o whatsapp..." class="w-full bg-white border border-slate-200 rounded-2xl px-8 py-5 text-sm focus:ring-4 focus:ring-blue-100 focus:outline-none transition-all shadow-sm">
                             </div>
                         </div>
                     </div>
-                    <div class="overflow-x-auto custom-scroll" style="max-height: 800px;">
+                    <div class="overflow-x-auto custom-scroll" style="max-height: 850px;">
                         <table class="w-full text-left">
                             <thead>
-                                <tr class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] bg-white sticky top-0 z-10">
-                                    <th class="p-8 pb-4">Asesora</th>
-                                    <th class="p-8 pb-4">Ciudad</th>
-                                    <th class="p-8 pb-4">Contacto</th>
-                                    <th class="p-8 pb-4 text-right">Acciones</th>
+                                <tr class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] bg-white sticky top-0 z-10 border-b border-slate-100">
+                                    <th class="p-10 pb-6">Asesora</th>
+                                    <th class="p-10 pb-6">Ciudad</th>
+                                    <th class="p-10 pb-6">Contacto</th>
+                                    <th class="p-10 pb-6 text-right">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody id="asesorasTableBody" class="divide-y divide-slate-100"></tbody>
@@ -219,6 +220,8 @@
         function switchTab(tab) {
             document.getElementById('sectionAds').classList.toggle('hidden-section', tab !== 'ads');
             document.getElementById('sectionAsesoras').classList.toggle('hidden-section', tab !== 'asesoras');
+            
+            // Actualizar pestañas amplias
             document.getElementById('tabBtnAds').classList.toggle('active', tab === 'ads');
             document.getElementById('tabBtnAsesoras').classList.toggle('active', tab === 'asesoras');
         }
@@ -259,7 +262,7 @@
                     select.innerHTML += `<option value="${a.id}">${a.nombre}</option>`;
                 });
                 renderAsesoras();
-            } catch (e) { console.error("Error al cargar asesoras"); }
+            } catch (e) { console.error("Error"); }
         }
 
         function renderAsesoras() {
@@ -274,18 +277,35 @@
             filtered.forEach(a => {
                 tbody.innerHTML += `
                 <tr class="hover:bg-slate-50 transition-colors group">
-                    <td class="p-8">
-                        <div class="flex flex-col gap-2">
-                            <span class="font-extrabold text-base text-slate-800">${a.nombre}</span>
-                            <button onclick="copyToClip('${a.nombre}', this)" class="w-fit text-[10px] uppercase font-bold text-blue-500 bg-blue-50 px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all flex items-center gap-2 hover:bg-blue-600 hover:text-white">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                    <td class="p-10">
+                        <div class="flex flex-col gap-3">
+                            <span class="font-extrabold text-lg text-slate-800">${a.nombre}</span>
+                            <button onclick="copyToClip('${a.nombre}', this)" class="w-fit text-[10px] uppercase font-bold text-blue-500 bg-blue-50 px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all flex items-center gap-2 hover:bg-blue-600 hover:text-white">
                                 Copiar Nombre
                             </button>
                         </div>
                     </td>
-                    <td class="p-8"><div class="flex flex-col gap-2"><span class="text-sm font-semibold text-slate-500">${a.ciudad}</span><button onclick="copyToClip('${a.ciudad}', this)" class="w-fit text-[10px] uppercase font-bold text-slate-400 bg-slate-100 px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all flex items-center gap-2 hover:bg-slate-600 hover:text-white">Copiar Ciudad</button></div></td>
-                    <td class="p-8"><div class="flex flex-col gap-2"><span class="text-sm font-bold font-mono text-slate-600">${a.whatsapp}</span><button onclick="copyToClip('${a.whatsapp}', this)" class="w-fit text-[10px] uppercase font-bold text-emerald-500 bg-emerald-50 px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all flex items-center gap-2 hover:bg-emerald-600 hover:text-white">Copiar WhatsApp</button></div></td>
-                    <td class="p-8 text-right"><button onclick="deleteAsesora(${a.id})" class="text-red-300 hover:text-red-600 transition-all active:scale-90"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg></button></td>
+                    <td class="p-10">
+                        <div class="flex flex-col gap-3">
+                            <span class="text-sm font-semibold text-slate-500">${a.ciudad}</span>
+                            <button onclick="copyToClip('${a.ciudad}', this)" class="w-fit text-[10px] uppercase font-bold text-slate-400 bg-slate-100 px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all hover:bg-slate-600 hover:text-white">
+                                Copiar Ciudad
+                            </button>
+                        </div>
+                    </td>
+                    <td class="p-10">
+                        <div class="flex flex-col gap-3">
+                            <span class="text-sm font-bold font-mono text-slate-600">${a.whatsapp}</span>
+                            <button onclick="copyToClip('${a.whatsapp}', this)" class="w-fit text-[10px] uppercase font-bold text-emerald-500 bg-emerald-50 px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all hover:bg-emerald-600 hover:text-white">
+                                Copiar WhatsApp
+                            </button>
+                        </div>
+                    </td>
+                    <td class="p-10 text-right">
+                        <button onclick="deleteAsesora(${a.id})" class="text-red-300 hover:text-red-600 p-4 rounded-2xl hover:bg-red-50 transition-all active:scale-90">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+                        </button>
+                    </td>
                 </tr>`;
             });
         }
@@ -321,17 +341,17 @@
                     if (columns.length >= 3) {
                         const payload = { nombre: columns[0].trim(), ciudad: columns[1].trim(), whatsapp: columns[2].trim() };
                         if (payload.nombre && payload.nombre !== "Nombre") { 
-                            try { await fetch(`${API_URL}/asesoras`, { method: 'POST', body: JSON.stringify(payload) }); count++; progress.innerText = `Cargando: ${count}...`; } catch (err) { console.error("Error en fila " + i); }
+                            try { await fetch(`${API_URL}/asesoras`, { method: 'POST', body: JSON.stringify(payload) }); count++; progress.innerText = `Cargando: ${count}...`; } catch (err) { }
                         }
                     }
                 }
-                alert(`✅ Se registraron ${count} asesoras exitosamente.`);
+                alert(`✅ Registradas ${count} asesoras.`);
                 progress.classList.add('hidden'); document.getElementById('csvFileInput').value = ""; fetchAsesoras();
             };
             reader.readAsText(file);
         });
 
-        async function deleteAsesora(id) { if (confirm("¿Estás seguro de eliminar esta asesora?")) { await fetch(`${API_URL}/asesoras`, { method: 'DELETE', body: JSON.stringify({id}) }); fetchAsesoras(); } }
+        async function deleteAsesora(id) { if (confirm("¿Eliminar asesora?")) { await fetch(`${API_URL}/asesoras`, { method: 'DELETE', body: JSON.stringify({id}) }); fetchAsesoras(); } }
 
         function updateAsesoraDisplay() { const aser = allAsesoras.find(a => a.id == document.getElementById('formAsesora').value); document.getElementById('infoCiudad').innerText = aser ? aser.ciudad : "-"; document.getElementById('infoWhatsapp').innerText = aser ? aser.whatsapp : "-"; }
 
@@ -342,13 +362,21 @@
                 data.forEach(ad => {
                     tbody.innerHTML += `
                     <tr class="hover:bg-slate-50 transition-all">
-                        <td class="p-6"><div class="flex items-center gap-4"><img src="${ad.foto_url}" class="w-12 h-12 rounded-xl object-cover shadow-sm" onerror="this.src='https://via.placeholder.com/50'"><div class="flex flex-col"><span class="font-bold text-sm text-slate-700">${ad.nombre}</span><span class="text-[10px] text-slate-400 font-black uppercase tracking-wider">${ad.tipo}</span></div></div></td>
-                        <td class="p-6 text-[10px] font-bold text-slate-500 italic uppercase">${ad.asesora_nombre}</td>
-                        <td class="p-6"><span class="px-3 py-1 bg-slate-100 rounded-lg text-[9px] font-black uppercase tracking-widest">${ad.estado}</span></td>
-                        <td class="p-6 text-right"><button onclick="deleteAd(${ad.id})" class="text-red-300 hover:text-red-600 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></button></td>
+                        <td class="p-8">
+                            <div class="flex items-center gap-6">
+                                <img src="${ad.foto_url}" class="w-16 h-16 rounded-2xl object-cover shadow-sm" onerror="this.src='https://via.placeholder.com/50'">
+                                <div class="flex flex-col">
+                                    <span class="font-extrabold text-base text-slate-700">${ad.nombre}</span>
+                                    <span class="text-[10px] text-slate-400 font-black uppercase tracking-[0.1em] mt-1">${ad.tipo}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="p-8 text-[11px] font-bold text-slate-500 italic uppercase tracking-wider">${ad.asesora_nombre}</td>
+                        <td class="p-8"><span class="px-4 py-2 bg-slate-100 rounded-xl text-[10px] font-black uppercase tracking-widest">${ad.estado}</span></td>
+                        <td class="p-8 text-right"><button onclick="deleteAd(${ad.id})" class="text-red-300 hover:text-red-600 transition-all"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></button></td>
                     </tr>`;
                 });
-            } catch (e) { console.error("Error al cargar anuncios"); }
+            } catch (e) { }
         }
 
         document.getElementById('adForm').onsubmit = async (e) => {
@@ -358,7 +386,7 @@
             document.getElementById('adForm').reset(); fetchAds();
         };
 
-        async function deleteAd(id) { if (confirm("¿Eliminar este anuncio permanentemente?")) { await fetch(`${API_URL}/anuncios`, { method: 'DELETE', body: JSON.stringify({id}) }); fetchAds(); } }
+        async function deleteAd(id) { if (confirm("¿Borrar anuncio?")) { await fetch(`${API_URL}/anuncios`, { method: 'DELETE', body: JSON.stringify({id}) }); fetchAds(); } }
 
         checkSession();
     </script>
