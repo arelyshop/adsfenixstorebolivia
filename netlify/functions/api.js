@@ -2,33 +2,31 @@ const { Client } = require('pg');
 
 /**
  * Función principal de Netlify para manejar las peticiones a la base de datos Neon.
- * Configuración necesaria: Variable de entorno DATABASE_URL en el panel de Netlify.
+ * Soporta: 
+ * - GET: Obtener datos (incluye campos necesarios para edición).
+ * - POST: Crear nuevos registros.
+ * - PUT: Actualizar registros existentes (Edición).
+ * - DELETE: Eliminar registros.
  */
 exports.handler = async (event, context) => {
-  // Configuración del cliente de PostgreSQL para Neon
   const client = new Client({
     connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false // Requerido para conexiones seguras con Neon
-    }
+    ssl: { rejectUnauthorized: false }
   });
 
   try {
     await client.connect();
     const { httpMethod, path, body } = event;
-    
-    // Extraemos el recurso final de la URL (ej: /anuncios o /asesoras)
     const segments = path.split('/').filter(Boolean);
     const resource = segments[segments.length - 1];
 
     // --- MÉTODOS DE LECTURA (GET) ---
     if (httpMethod === 'GET') {
-      
-      // 1. Leer todos los anuncios con los datos de su asesora vinculada
       if (resource === 'anuncios') {
         const query = `
           SELECT 
-            a.id, a.nombre, a.foto_url, a.tipo, a.estado, a.video_reel,
+            a.id, a.nombre, a.foto_url, a.tipo, a.estado, a.video_reel, a.asesora_id,
+            to_char(a.fecha_inicio, 'YYYY-MM-DD') as fecha_iso,
             to_char(a.fecha_inicio, 'DD/MM/YYYY') as fecha_inicio,
             aser.nombre as asesora_nombre, aser.ciudad, aser.whatsapp
           FROM anuncios a
@@ -45,7 +43,6 @@ exports.handler = async (event, context) => {
         };
       }
 
-      // 2. Leer lista de asesoras para el formulario del admin
       if (resource === 'asesoras') {
         const res = await client.query('SELECT * FROM asesoras ORDER BY nombre ASC');
         return {
@@ -58,45 +55,60 @@ exports.handler = async (event, context) => {
 
     // --- MÉTODOS DE CREACIÓN (POST) ---
     if (httpMethod === 'POST') {
-      // Registro de Anuncios
+      const data = JSON.parse(body);
       if (resource === 'anuncios') {
-        const data = JSON.parse(body);
         const query = `
           INSERT INTO anuncios (nombre, foto_url, tipo, asesora_id, estado, fecha_inicio, video_reel)
           VALUES ($1, $2, $3, $4, $5, $6, $7)
           RETURNING id;
         `;
-        const values = [
-          data.nombre, 
-          data.foto_url, 
-          data.tipo, 
-          data.asesora_id, 
-          data.estado, 
-          data.fecha_inicio, 
-          data.video_reel
-        ];
+        const values = [data.nombre, data.foto_url, data.tipo, data.asesora_id, data.estado, data.fecha_inicio, data.video_reel];
         const res = await client.query(query, values);
         return {
           statusCode: 201,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: 'Anuncio registrado correctamente', id: res.rows[0].id })
+          body: JSON.stringify({ message: 'Anuncio registrado', id: res.rows[0].id })
         };
       }
 
-      // Registro de Asesoras (Individual y usado por el bucle de Carga Masiva)
       if (resource === 'asesoras') {
-        const data = JSON.parse(body);
-        const query = `
-          INSERT INTO asesoras (nombre, ciudad, whatsapp)
-          VALUES ($1, $2, $3)
-          RETURNING id;
-        `;
+        const query = `INSERT INTO asesoras (nombre, ciudad, whatsapp) VALUES ($1, $2, $3) RETURNING id;`;
         const values = [data.nombre, data.ciudad, data.whatsapp];
         const res = await client.query(query, values);
         return {
           statusCode: 201,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: 'Asesora registrada correctamente', id: res.rows[0].id })
+          body: JSON.stringify({ message: 'Asesora registrada', id: res.rows[0].id })
+        };
+      }
+    }
+
+    // --- MÉTODOS DE ACTUALIZACIÓN / EDICIÓN (PUT) ---
+    if (httpMethod === 'PUT') {
+      const data = JSON.parse(body);
+      if (resource === 'anuncios') {
+        const query = `
+          UPDATE anuncios 
+          SET nombre=$1, foto_url=$2, tipo=$3, asesora_id=$4, estado=$5, fecha_inicio=$6, video_reel=$7
+          WHERE id=$8;
+        `;
+        const values = [data.nombre, data.foto_url, data.tipo, data.asesora_id, data.estado, data.fecha_inicio, data.video_reel, data.id];
+        await client.query(query, values);
+        return {
+          statusCode: 200,
+          body: JSON.stringify({ message: 'Anuncio actualizado correctamente' })
+        };
+      }
+
+      if (resource === 'asesoras') {
+        const query = `
+          UPDATE asesoras 
+          SET nombre=$1, ciudad=$2, whatsapp=$3 
+          WHERE id=$4;
+        `;
+        const values = [data.nombre, data.ciudad, data.whatsapp, data.id];
+        await client.query(query, values);
+        return {
+          statusCode: 200,
+          body: JSON.stringify({ message: 'Asesora actualizada correctamente' })
         };
       }
     }
@@ -104,27 +116,16 @@ exports.handler = async (event, context) => {
     // --- MÉTODOS DE ELIMINACIÓN (DELETE) ---
     if (httpMethod === 'DELETE') {
       const { id } = JSON.parse(body);
-
       if (resource === 'anuncios') {
         await client.query('DELETE FROM anuncios WHERE id = $1', [id]);
-        return {
-          statusCode: 200,
-          body: JSON.stringify({ message: 'Anuncio eliminado' })
-        };
+        return { statusCode: 200, body: JSON.stringify({ message: 'Anuncio eliminado' }) };
       }
-
       if (resource === 'asesoras') {
-        // Nota: Si hay anuncios vinculados a esta asesora, la eliminación podría fallar 
-        // dependiendo de las restricciones de integridad de tu base de datos.
         await client.query('DELETE FROM asesoras WHERE id = $1', [id]);
-        return {
-          statusCode: 200,
-          body: JSON.stringify({ message: 'Asesora eliminada' })
-        };
+        return { statusCode: 200, body: JSON.stringify({ message: 'Asesora eliminada' }) };
       }
     }
 
-    // Si la ruta no coincide con nada
     return { statusCode: 404, body: 'Recurso no encontrado' };
 
   } catch (error) {
@@ -134,7 +135,6 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({ error: 'Error interno del servidor', details: error.message })
     };
   } finally {
-    // Cerramos siempre la conexión para evitar saturar Neon
     await client.end();
   }
 };
