@@ -4,6 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MKT Fenix Store - Visualizador</title>
+    
+    <!-- Etiquetas Meta para Compartir (SEO & Social Media) -->
+    <meta name="description" content="Anuncios activos y próximas publicaciones">
+    
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="MKT Fenix Store - Visualizador">
+    <meta property="og:description" content="Anuncios activos y próximas publicaciones">
+    <meta property="og:image" content="/images/preview.png">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MKT Fenix Store - Visualizador">
+    <meta name="twitter:description" content="Anuncios activos y próximas publicaciones">
+    <meta name="twitter:image" content="/images/preview.png">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -214,7 +230,7 @@
             filtered.forEach(ad => {
                 const isActivo = ad.estado === 'Activo';
                 const badgeClass = isActivo ? 'status-badge-activo' : 'status-badge-programado';
-                const datePrefix = isActivo ? 'Desde:' : 'Inicio:';
+                const datePrefix = isActivo ? '(Desde)' : 'Inicio:';
                 
                 // Lógica de color para tipo de anuncio
                 const esPromo = ad.tipo === 'COMBO' || ad.tipo === 'TRICOMBO';
@@ -315,7 +331,7 @@
             document.getElementById('modalAsesora').innerText = ad.asesora_nombre;
             document.getElementById('modalCiudad').innerText = ad.ciudad;
             document.getElementById('modalFecha').innerText = ad.fecha_inicio;
-            document.getElementById('modalDateLabel').innerText = isActivo ? 'Desde:' : 'Programado para:';
+            document.getElementById('modalDateLabel').innerText = isActivo ? '(Desde):' : 'Programado para:';
             
             // Lógica para el estado del Video REEL
             const videoStatus = ad.video_reel.toLowerCase();
