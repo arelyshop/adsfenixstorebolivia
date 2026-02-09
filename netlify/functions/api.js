@@ -58,15 +58,14 @@ exports.handler = async (event, context) => {
 
     // --- MÉTODOS DE CREACIÓN (POST) ---
     if (httpMethod === 'POST') {
+      // Registro de Anuncios
       if (resource === 'anuncios') {
         const data = JSON.parse(body);
-        
         const query = `
           INSERT INTO anuncios (nombre, foto_url, tipo, asesora_id, estado, fecha_inicio, video_reel)
           VALUES ($1, $2, $3, $4, $5, $6, $7)
           RETURNING id;
         `;
-        
         const values = [
           data.nombre, 
           data.foto_url, 
@@ -76,7 +75,6 @@ exports.handler = async (event, context) => {
           data.fecha_inicio, 
           data.video_reel
         ];
-
         const res = await client.query(query, values);
         return {
           statusCode: 201,
@@ -84,16 +82,46 @@ exports.handler = async (event, context) => {
           body: JSON.stringify({ message: 'Anuncio registrado correctamente', id: res.rows[0].id })
         };
       }
+
+      // Registro de Asesoras (Individual y usado por el bucle de Carga Masiva)
+      if (resource === 'asesoras') {
+        const data = JSON.parse(body);
+        const query = `
+          INSERT INTO asesoras (nombre, ciudad, whatsapp)
+          VALUES ($1, $2, $3)
+          RETURNING id;
+        `;
+        const values = [data.nombre, data.ciudad, data.whatsapp];
+        const res = await client.query(query, values);
+        return {
+          statusCode: 201,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: 'Asesora registrada correctamente', id: res.rows[0].id })
+        };
+      }
     }
 
     // --- MÉTODOS DE ELIMINACIÓN (DELETE) ---
-    if (httpMethod === 'DELETE' && resource === 'anuncios') {
+    if (httpMethod === 'DELETE') {
       const { id } = JSON.parse(body);
-      await client.query('DELETE FROM anuncios WHERE id = $1', [id]);
-      return {
-        statusCode: 200,
-        body: JSON.stringify({ message: 'Anuncio eliminado' })
-      };
+
+      if (resource === 'anuncios') {
+        await client.query('DELETE FROM anuncios WHERE id = $1', [id]);
+        return {
+          statusCode: 200,
+          body: JSON.stringify({ message: 'Anuncio eliminado' })
+        };
+      }
+
+      if (resource === 'asesoras') {
+        // Nota: Si hay anuncios vinculados a esta asesora, la eliminación podría fallar 
+        // dependiendo de las restricciones de integridad de tu base de datos.
+        await client.query('DELETE FROM asesoras WHERE id = $1', [id]);
+        return {
+          statusCode: 200,
+          body: JSON.stringify({ message: 'Asesora eliminada' })
+        };
+      }
     }
 
     // Si la ruta no coincide con nada
