@@ -8,23 +8,24 @@
     <title>MKT Fenix Store - Visualizador</title>
     <meta name="description" content="Sistema de gestión y visualización de anuncios activos y programados de Fenix Store.">
 
-    <!-- Favicon cambiado a PNG -->
+    <!-- Favicon -->
     <link rel="icon" type="image/png" href="images/favicon.png">
     <link rel="shortcut icon" type="image/png" href="images/favicon.png">
     <link rel="apple-touch-icon" href="images/favicon.png">
 
     <!-- 
-        CONFIGURACIÓN PARA REDES SOCIALES (Open Graph)
-        Se mantiene la URL absoluta para asegurar que WhatsApp lea la portada.
+        CONFIGURACIÓN PARA REDES SOCIALES (Meta Tags / Open Graph)
+        Se utiliza la imagen 'preview.jpg' ubicada en la carpeta images.
     -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://mkt-fenix-store.netlify.app/"> 
-    <meta property="og:title" content="MKT FENIX STORE | Anuncios">
-    <meta property="og:description" content="Consulta los anuncios activos y promociones de nuestras asesoras.">
+    <meta property="og:url" content="https://adsfenixstorebolivia.netlify.app/"> 
+    <meta property="og:title" content="MKT FENIX STORE | Visualizador de Anuncios">
+    <meta property="og:description" content="Consulta los anuncios activos y las próximas promociones de Fenix Store Bolivia.">
     
-    <meta property="og:image" content="https://mkt-fenix-store.netlify.app/images/portada.webp">
-    <meta property="og:image:secure_url" content="https://mkt-fenix-store.netlify.app/images/portada.webp">
-    <meta property="og:image:type" content="image/webp">
+    <!-- WhatsApp y Facebook requieren rutas absolutas para mostrar la miniatura correctamente -->
+    <meta property="og:image" content="https://adsfenixstorebolivia.netlify.app/images/preview.jpg">
+    <meta property="og:image:secure_url" content="https://adsfenixstorebolivia.netlify.app/images/preview.jpg">
+    <meta property="og:image:type" content="image/jpeg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
 
@@ -32,7 +33,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="MKT FENIX STORE | Anuncios">
     <meta name="twitter:description" content="Consulta los anuncios activos y promociones de nuestras asesoras.">
-    <meta name="twitter:image" content="https://mkt-fenix-store.netlify.app/images/portada.webp">
+    <meta name="twitter:image" content="https://adsfenixstorebolivia.netlify.app/images/preview.jpg">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -132,6 +133,7 @@
             </div>
             
             <div class="flex flex-wrap items-center gap-2">
+                <!-- Botón de Actualizar Datos -->
                 <button onclick="refreshData(this)" class="bg-white p-2.5 rounded-xl shadow-sm border border-slate-200 hover:bg-slate-50 transition-all text-slate-600 flex items-center justify-center mr-2 group" title="Actualizar datos">
                     <svg id="refreshIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="group-active:scale-95 transition-transform"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></svg>
                 </button>
