@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Administración - Fenix Store</title>
+    <title>Administración - Fenix Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -12,19 +12,18 @@
         .fade-in { animation: fadeIn 0.5s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         
-        /* DISEÑO DE BOTONES DE PESTAÑA CORREGIDO */
+        /* DISEÑO DE PESTAÑAS CENTRADAS */
         .tab-btn { 
-            @apply px-8 py-4 rounded-2xl text-[11px] uppercase tracking-widest font-black transition-all duration-300 flex flex-row items-center gap-3 text-slate-500 bg-white border-none outline-none;
+            @apply px-10 py-3 rounded-2xl text-[12px] uppercase tracking-widest font-black transition-all duration-300 flex flex-row items-center justify-center gap-3 text-slate-400 bg-transparent border-none outline-none cursor-pointer;
         }
         
-        /* ESTADO ACTIVO: Azul vibrante sólido que llena todo el botón */
+        /* ESTADO ACTIVO: Azul vibrante con sombra */
         .tab-btn.active { 
-            @apply bg-blue-600 text-white;
-            box-shadow: 0 12px 20px -8px rgba(37, 99, 235, 0.7);
+            @apply bg-blue-600 text-white shadow-xl shadow-blue-200;
         }
 
         .tab-btn:not(.active):hover {
-            @apply bg-slate-50 text-slate-800;
+            @apply bg-slate-100 text-slate-600;
         }
         
         /* Feedback de copiado */
@@ -94,16 +93,18 @@
             </div>
         </div>
 
-        <!-- SELECTOR DE PESTAÑAS (FLEX-ROW FORZADO) -->
-        <div class="flex flex-row gap-2 mb-10 bg-white p-2 rounded-3xl w-fit shadow-lg border border-slate-100">
-            <button onclick="switchTab('ads')" id="tabBtnAds" class="tab-btn active">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
-                <span>Anuncios</span>
-            </button>
-            <button onclick="switchTab('asesoras')" id="tabBtnAsesoras" class="tab-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
-                <span>Asesoras</span>
-            </button>
+        <!-- SELECTOR DE PESTAÑAS CENTRADO -->
+        <div class="flex flex-row justify-center mb-12">
+            <div class="flex flex-row gap-1 bg-white p-1.5 rounded-[2rem] shadow-lg border border-slate-100">
+                <button onclick="switchTab('ads')" id="tabBtnAds" class="tab-btn active">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+                    <span>Anuncios</span>
+                </button>
+                <button onclick="switchTab('asesoras')" id="tabBtnAsesoras" class="tab-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+                    <span>Asesoras</span>
+                </button>
+            </div>
         </div>
 
         <!-- SECCIÓN DE ANUNCIOS -->
@@ -159,7 +160,6 @@
         <!-- SECCIÓN DE ASESORAS -->
         <div id="sectionAsesoras" class="grid grid-cols-1 lg:grid-cols-12 gap-8 hidden-section">
             <div class="lg:col-span-3 space-y-6">
-                <!-- Registro Individual -->
                 <div class="bg-white p-8 rounded-[3rem] shadow-sm border border-slate-100">
                     <h2 class="text-xl font-black text-slate-800 mb-8 flex items-center gap-3"><span class="p-2 bg-emerald-600 rounded-xl text-white"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span>Nueva Asesora</h2>
                     <form id="asesoraForm" class="space-y-4">
@@ -170,7 +170,6 @@
                     </form>
                 </div>
 
-                <!-- CARGA MASIVA CSV -->
                 <div class="bg-slate-900 p-8 rounded-[3rem] shadow-xl text-white">
                     <h2 class="text-lg font-black mb-4 flex items-center gap-3"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Carga Masiva</h2>
                     <p class="text-slate-400 text-[10px] mb-6 font-bold uppercase tracking-tight">Formato CSV: Nombre, Ciudad, WhatsApp</p>
@@ -180,7 +179,6 @@
                 </div>
             </div>
 
-            <!-- LISTADO DE ASESORAS -->
             <div class="lg:col-span-9">
                 <div class="bg-white rounded-[3rem] shadow-sm border border-slate-100 overflow-hidden">
                     <div class="p-8 bg-slate-50/50 border-b border-slate-100">
