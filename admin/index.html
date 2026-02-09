@@ -194,9 +194,21 @@
             </div>
             <div class="lg:col-span-8">
                 <div class="bg-white rounded-[3.5rem] shadow-sm border border-slate-100 overflow-hidden">
-                    <div class="p-8 bg-slate-50/50 flex justify-between items-center border-b border-slate-100">
-                        <h2 class="font-black text-xs uppercase tracking-[0.2em] text-slate-500">Historial de Anuncios</h2>
-                        <button onclick="fetchAds()" class="text-blue-500 font-bold text-[10px] uppercase tracking-widest hover:underline">Actualizar</button>
+                    <!-- CABECERA DE HISTORIAL CON BUSCADOR -->
+                    <div class="p-8 bg-slate-50/50 border-b border-slate-100">
+                        <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                            <div class="flex items-center gap-4">
+                                <h2 class="font-black text-xl uppercase tracking-widest text-slate-800 whitespace-nowrap">Historial</h2>
+                                <button onclick="fetchAds()" class="text-blue-500 font-bold text-[10px] uppercase tracking-widest hover:underline">Actualizar</button>
+                            </div>
+                            <!-- BUSCADOR DE ANUNCIOS -->
+                            <div class="relative w-full md:w-[350px]">
+                                <span class="absolute left-5 top-1/2 -translate-y-1/2 pointer-events-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#cbd5e1"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
+                                </span>
+                                <input type="text" id="searchAdsInput" oninput="renderAds()" placeholder="Buscar anuncio o asesora..." class="w-full bg-white border border-slate-200 rounded-2xl pl-12 pr-6 py-4 text-sm focus:ring-4 focus:ring-blue-100 focus:outline-none transition-all shadow-sm">
+                            </div>
+                        </div>
                     </div>
                     <div class="overflow-x-auto custom-scroll" style="max-height: 800px;">
                         <table class="w-full text-left">
@@ -472,9 +484,17 @@
 
         // --- GESTIÓN DE ANUNCIOS ---
         function renderAds() {
+            const searchTerm = document.getElementById('searchAdsInput').value.toLowerCase();
             const tbody = document.getElementById('adminTableBody');
             tbody.innerHTML = '';
-            allAds.forEach(ad => {
+            
+            const filtered = allAds.filter(ad => 
+                ad.nombre.toLowerCase().includes(searchTerm) || 
+                ad.tipo.toLowerCase().includes(searchTerm) || 
+                ad.asesora_nombre.toLowerCase().includes(searchTerm)
+            );
+
+            filtered.forEach(ad => {
                 tbody.innerHTML += `
                 <tr class="hover:bg-slate-50 transition-all">
                     <td class="p-8">
