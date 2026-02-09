@@ -147,7 +147,8 @@
                     <form id="adForm" class="space-y-5">
                         <input type="hidden" id="formAdId">
                         <input type="text" id="formNombre" placeholder="Nombre del Anuncio" required class="w-full bg-slate-50 p-5 rounded-2xl border-none focus:ring-2 focus:ring-blue-500 text-sm outline-none">
-                        <input type="url" id="formFoto" placeholder="URL de la Foto" required class="w-full bg-slate-50 p-5 rounded-2xl border-none focus:ring-2 focus:ring-blue-500 text-sm outline-none">
+                        <!-- Se eliminó el atributo required para permitir dejarlo vacío -->
+                        <input type="url" id="formFoto" placeholder="URL de la Foto (Opcional)" class="w-full bg-slate-50 p-5 rounded-2xl border-none focus:ring-2 focus:ring-blue-500 text-sm outline-none">
                         <div class="grid grid-cols-2 gap-4">
                             <select id="formTipo" class="bg-slate-50 p-5 rounded-2xl border-none text-sm font-bold outline-none">
                                 <option value="PRODUCTO SOLO">Producto Solo</option>
@@ -610,10 +611,17 @@
         document.getElementById('adForm').onsubmit = async (e) => {
             e.preventDefault();
             const id = document.getElementById('formAdId').value;
+            
+            // Lógica para asignar URL por defecto si está vacío
+            let fotoUrl = document.getElementById('formFoto').value.trim();
+            if (!fotoUrl) {
+                fotoUrl = 'https://via.placeholder.com/400x600?text=Sin+Foto';
+            }
+
             const payload = {
                 id: id ? parseInt(id) : null,
                 nombre: document.getElementById('formNombre').value,
-                foto_url: document.getElementById('formFoto').value,
+                foto_url: fotoUrl,
                 tipo: document.getElementById('formTipo').value,
                 asesora_id: parseInt(document.getElementById('formAsesora').value),
                 estado: document.getElementById('formEstado').value,
