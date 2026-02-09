@@ -214,7 +214,7 @@
             filtered.forEach(ad => {
                 const isActivo = ad.estado === 'Activo';
                 const badgeClass = isActivo ? 'status-badge-activo' : 'status-badge-programado';
-                const datePrefix = isActivo ? 'Activo desde:' : 'Inicio:';
+                const datePrefix = isActivo ? '(Desde)' : 'Inicio:';
                 
                 // Lógica de color para tipo de anuncio
                 const esPromo = ad.tipo === 'COMBO' || ad.tipo === 'TRICOMBO';
@@ -228,15 +228,15 @@
                         <img src="${ad.foto_url}" class="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-110" onerror="this.src='https://via.placeholder.com/400x600?text=Fenix+Store'">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
                         
-                        <!-- Indicador de En Proceso con Tuerca Naranja destacada -->
+                        <!-- Capa Oscura e Indicador Central para "En Proceso" -->
                         ${enProceso ? `
-                            <div class="absolute inset-0 flex flex-col items-center justify-center z-10 pointer-events-none">
-                                <div class="bg-black/50 p-3 rounded-2xl flex flex-col items-center shadow-xl border border-white/10">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="animate-spin-slow">
-                                        <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center z-10 pointer-events-none bg-black/45">
+                                <div class="flex flex-col items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="animate-spin-slow drop-shadow-lg">
+                                        <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1-1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
                                         <circle cx="12" cy="12" r="3" fill="#f97316"/>
                                     </svg>
-                                    <span class="text-white text-[8px] font-black uppercase tracking-widest mt-2">Video en Edición</span>
+                                    <span class="text-white text-[10px] font-black uppercase tracking-widest mt-2 drop-shadow-xl">Video en Edición</span>
                                 </div>
                             </div>
                         ` : ''}
@@ -251,9 +251,9 @@
                             </div>
                         </div>
 
-                        <!-- Botón con Icono de Ojo -->
-                        <button onclick='openModal(${JSON.stringify(ad)})' class="absolute top-4 right-4 bg-white/10 backdrop-blur-md p-2 rounded-full text-white hover:bg-white/30 transition-all z-20">
-                            <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="22px" fill="currentColor"><path d="M607.5-372.5Q660-425 660-500t-52.5-127.5Q555-680 480-680t-127.5 52.5Q300-575 300-500t52.5 127.5Q405-320 480-320t127.5-52.5Zm-204-51Q372-455 372-500t31.5-76.5Q435-608 480-608t76.5 31.5Q588-545 588-500t-31.5 76.5Q525-392 480-392t-76.5-31.5ZM214-281.5Q94-363 40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200q-146 0-266-81.5ZM480-500Zm207.5 160.5Q782-399 832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280q113 0 207.5-59.5Z"/></svg>
+                        <!-- Botón con Icono de Ojo - Color LILA mejorado -->
+                        <button onclick='openModal(${JSON.stringify(ad)})' class="absolute top-4 right-4 bg-purple-600 p-2.5 rounded-full text-white hover:bg-purple-700 hover:scale-110 transition-all z-20 shadow-[0_4px_10px_rgba(147,51,234,0.5)]">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M607.5-372.5Q660-425 660-500t-52.5-127.5Q555-680 480-680t-127.5 52.5Q300-575 300-500t52.5 127.5Q405-320 480-320t127.5-52.5Zm-204-51Q372-455 372-500t31.5-76.5Q435-608 480-608t76.5 31.5Q588-545 588-500t-31.5 76.5Q525-392 480-392t-76.5-31.5ZM214-281.5Q94-363 40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200q-146 0-266-81.5ZM480-500Zm207.5 160.5Q782-399 832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280q113 0 207.5-59.5Z"/></svg>
                         </button>
 
                         <div class="absolute bottom-0 left-0 right-0 p-5">
@@ -316,7 +316,7 @@
             document.getElementById('modalAsesora').innerText = ad.asesora_nombre;
             document.getElementById('modalCiudad').innerText = ad.ciudad;
             document.getElementById('modalFecha').innerText = ad.fecha_inicio;
-            document.getElementById('modalDateLabel').innerText = isActivo ? 'Activo desde:' : 'Programado para:';
+            document.getElementById('modalDateLabel').innerText = isActivo ? '(Desde):' : 'Programado para:';
             
             // Lógica para el estado del Video REEL
             const videoStatus = ad.video_reel.toLowerCase();
