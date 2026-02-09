@@ -85,12 +85,13 @@
                             <select id="formEstado" class="bg-slate-50 p-4 rounded-2xl border-none text-sm font-bold">
                                 <option value="Activo">Activo</option>
                                 <option value="Programado">Programado</option>
-                                <option value="pendiente">Pendiente</option>
+                                <option value="Finalizado">Finalizado</option>
                             </select>
                         </div>
                         <select id="formAsesora" required onchange="updateAsesoraDisplay()" class="w-full bg-slate-50 p-4 rounded-2xl border-none text-sm font-bold">
                             <option value="">Selecciona Asesora...</option>
                         </select>
+                        <!-- AUTORELLENADO DE ASESORA -->
                         <div class="grid grid-cols-2 gap-4 p-5 bg-blue-50 rounded-2xl text-[10px] font-black uppercase">
                             <div><p class="text-blue-400">Ciudad</p><p id="infoCiudad" class="text-slate-700">-</p></div>
                             <div><p class="text-blue-400">WhatsApp</p><p id="infoWhatsapp" class="text-slate-700">-</p></div>
@@ -98,8 +99,8 @@
                         <div class="grid grid-cols-2 gap-3">
                             <input type="date" id="formFecha" required class="bg-slate-50 p-4 rounded-2xl border-none text-sm">
                             <select id="formVideo" class="bg-slate-50 p-4 rounded-2xl border-none text-sm font-bold">
-                                <option value="pendiente">Pendiente</option>
-                                <option value="realizado">Realizado</option>
+                                <option value="Pendiente">Pendiente</option>
+                                <option value="Realizado">Realizado</option>
                             </select>
                         </div>
                         <button type="submit" class="w-full bg-blue-600 text-white font-black py-5 rounded-3xl shadow-xl shadow-blue-200 uppercase tracking-widest text-xs">Guardar Anuncio</button>
@@ -233,7 +234,7 @@
                             ciudad: columns[1].trim(),
                             whatsapp: columns[2].trim()
                         };
-                        if (payload.nombre && payload.nombre !== "Nombre") { // Evitar cabeceras
+                        if (payload.nombre && payload.nombre !== "Nombre") { 
                             try {
                                 await fetch(`${API_URL}/asesoras`, { method: 'POST', body: JSON.stringify(payload) });
                                 count++;
