@@ -40,11 +40,20 @@
             color: white; 
         }
 
-        .tipo-tag { 
+        /* Estilo base para etiquetas de tipo */
+        .tipo-tag-default { 
             background-color: rgba(255, 255, 255, 0.15); 
             backdrop-filter: blur(4px); 
             border: 1px solid rgba(255, 255, 255, 0.3); 
             color: white; 
+        }
+
+        /* Estilo resaltado para Combos/Tricombos */
+        .tipo-tag-resaltado {
+            background-color: #dc2626; /* Rojo intenso */
+            border: 1px solid #ef4444;
+            color: white;
+            box-shadow: 0 2px 4px rgba(220, 38, 38, 0.3);
         }
 
         .filter-active { 
@@ -168,9 +177,12 @@
             filtered.forEach(ad => {
                 const isActivo = ad.estado === 'Activo';
                 const badgeClass = isActivo ? 'status-badge-activo' : 'status-badge-programado';
-                // Cambio solicitado: Prefijo dinámico según estado
                 const datePrefix = isActivo ? 'Activo desde:' : 'Inicio:';
                 
+                // Lógica de color para tipo de anuncio
+                const esPromo = ad.tipo === 'COMBO' || ad.tipo === 'TRICOMBO';
+                const tipoClass = esPromo ? 'tipo-tag-resaltado' : 'tipo-tag-default';
+
                 grid.innerHTML += `
                     <div class="ad-card relative group rounded-[2rem] overflow-hidden shadow-md bg-white">
                         <img src="${ad.foto_url}" class="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-110" onerror="this.src='https://via.placeholder.com/400x600?text=Fenix+Store'">
@@ -194,7 +206,7 @@
                         <div class="absolute bottom-0 left-0 right-0 p-5">
                             <div class="flex items-center gap-2 mb-1">
                                 <span class="text-[9px] text-white/70 uppercase tracking-widest font-black">${ad.ciudad}</span>
-                                <span class="px-2 py-0.5 rounded text-[7px] font-black uppercase tipo-tag">${ad.tipo}</span>
+                                <span class="px-2 py-0.5 rounded text-[7px] font-black uppercase ${tipoClass}">${ad.tipo}</span>
                             </div>
                             <h3 class="text-white font-bold text-sm md:text-lg mb-3 leading-tight truncate">${ad.nombre}</h3>
                             
