@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="gn">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sãmbyhyha - Fenix Store</title>
+    <title>Panel de Administración - Fenix Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -12,7 +12,7 @@
         .fade-in { animation: fadeIn 0.5s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         
-        /* Tab highlight styles - Peteĩha ojehekáva */
+        /* Estilos de botones de pestaña - Destacan la sección activa */
         .tab-btn { 
             @apply px-8 py-3 rounded-2xl text-xs uppercase tracking-widest font-black transition-all duration-300 border-2 border-transparent text-slate-500 hover:bg-slate-100;
         }
@@ -20,7 +20,7 @@
             @apply bg-slate-900 text-white shadow-2xl scale-105 border-blue-500; 
         }
         
-        /* Copy feedback - Ñemonguatia */
+        /* Animación para el feedback de copiado */
         .copy-success {
             animation: copyPop 1.5s ease-out forwards;
         }
@@ -31,117 +31,121 @@
             100% { opacity: 0; transform: scale(0.9); }
         }
 
+        /* Barra de desplazamiento personalizada */
         .custom-scroll::-webkit-scrollbar { width: 6px; }
         .custom-scroll::-webkit-scrollbar-track { background: transparent; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        .custom-scroll::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
     </style>
 </head>
 <body class="min-h-screen">
 
-    <!-- LOGIN KOTY -->
+    <!-- SECCIÓN DE LOGIN -->
     <div id="loginSection" class="min-h-screen flex items-center justify-center p-4 bg-slate-100">
         <div class="max-w-md w-full bg-white p-8 md:p-12 rounded-[3rem] shadow-2xl border border-slate-100 fade-in">
             <div class="text-center mb-8">
                 <div class="w-20 h-20 bg-slate-900 rounded-3xl flex items-center justify-center text-white font-black italic text-3xl mx-auto mb-6 shadow-xl">F</div>
-                <h1 class="text-2xl font-black text-slate-800 uppercase tracking-tighter">Eikeha</h1>
-                <p class="text-slate-400 text-sm italic">MKT FENIX STORE SÃMBYHYHA</p>
+                <h1 class="text-2xl font-black text-slate-800 uppercase tracking-tighter">Panel de Acceso</h1>
+                <p class="text-slate-400 text-sm italic">SISTEMA MKT FENIX STORE</p>
             </div>
             
             <form id="loginForm" class="space-y-5">
                 <div>
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2 ml-4">Puruhára</label>
-                    <input type="text" id="userInput" required placeholder="Nde réra" class="w-full bg-slate-50 border-none rounded-2xl p-4 focus:ring-2 focus:ring-blue-500 text-sm transition-all">
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2 ml-4">Usuario</label>
+                    <input type="text" id="userInput" required placeholder="Ingresa tu usuario" class="w-full bg-slate-50 border-none rounded-2xl p-4 focus:ring-2 focus:ring-blue-500 text-sm transition-all">
                 </div>
                 <div>
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2 ml-4">Ñe'ẽmiguimi</label>
-                    <input type="password" id="passInput" required placeholder="Nde ñe'ẽmiguimi" class="w-full bg-slate-50 border-none rounded-2xl p-4 focus:ring-2 focus:ring-blue-500 text-sm transition-all">
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2 ml-4">Contraseña</label>
+                    <input type="password" id="passInput" required placeholder="Ingresa tu contraseña" class="w-full bg-slate-50 border-none rounded-2xl p-4 focus:ring-2 focus:ring-blue-500 text-sm transition-all">
                 </div>
-                <div id="loginErrorMessage" class="hidden text-red-500 text-[10px] font-bold uppercase text-center bg-red-50 p-2 rounded-xl border border-red-100">Javy eikévo</div>
-                <button type="submit" id="btnLogin" class="w-full bg-slate-900 text-white font-bold py-5 rounded-2xl shadow-lg hover:bg-slate-800 active:scale-95 transition-all uppercase tracking-widest text-sm">Eike ko'ápe</button>
+                <div id="loginErrorMessage" class="hidden text-red-500 text-[10px] font-bold uppercase text-center bg-red-50 p-2 rounded-xl border border-red-100">Credenciales incorrectas</div>
+                <button type="submit" id="btnLogin" class="w-full bg-slate-900 text-white font-bold py-5 rounded-2xl shadow-lg hover:bg-slate-800 active:scale-95 transition-all uppercase tracking-widest text-sm">Entrar al Panel</button>
             </form>
         </div>
     </div>
 
-    <!-- SÃMBYHYHA PANEL -->
+    <!-- PANEL PRINCIPAL -->
     <div id="adminPanel" class="hidden-section p-4 md:p-8 max-w-[1600px] mx-auto fade-in">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
             <div>
                 <a href="../index.html" class="text-blue-600 font-bold text-sm flex items-center gap-2 mb-2 hover:translate-x-[-4px] transition-transform">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-                    Ehecha marandukuéra
+                    Ver Visualizador Público
                 </a>
-                <h1 class="text-3xl font-black text-slate-800 uppercase tracking-tighter">Sãmbyhyha Koty</h1>
+                <h1 class="text-3xl font-black text-slate-800 uppercase tracking-tighter">Administración</h1>
             </div>
             
             <div class="flex items-center gap-4">
                 <div class="bg-white px-5 py-3 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4">
                     <div class="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
                     <div class="flex flex-col text-right">
-                        <span id="displayUsername" class="text-xs font-black text-slate-800 uppercase leading-none">Sãmbyhyhára</span>
-                        <span id="displayRole" class="text-[10px] text-slate-400 font-bold uppercase">Mburuvicha</span>
+                        <span id="displayUsername" class="text-xs font-black text-slate-800 uppercase leading-none">Admin</span>
+                        <span id="displayRole" class="text-[10px] text-slate-400 font-bold uppercase">Administrador</span>
                     </div>
                 </div>
-                <button onclick="logout()" class="p-3 bg-red-50 text-red-500 rounded-2xl hover:bg-red-100 transition-colors shadow-sm"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg></button>
+                <button onclick="logout()" class="p-3 bg-red-50 text-red-500 rounded-2xl hover:bg-red-100 transition-colors shadow-sm" title="Cerrar Sesión">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+                </button>
             </div>
         </div>
 
-        <!-- TAB SELECTOR - Peteĩha ojehekáva -->
+        <!-- SELECTOR DE PESTAÑAS -->
         <div class="flex gap-4 mb-10 bg-white p-2 rounded-[2rem] w-fit shadow-sm border border-slate-100">
             <button onclick="switchTab('ads')" id="tabBtnAds" class="tab-btn active">
                 <div class="flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
-                    Marandukuéra
+                    Anuncios
                 </div>
             </button>
             <button onclick="switchTab('asesoras')" id="tabBtnAsesoras" class="tab-btn">
                 <div class="flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
-                    Pytyvohára
+                    Asesoras
                 </div>
             </button>
         </div>
 
-        <!-- MARANDUKUÉRA VORE -->
+        <!-- SECCIÓN DE ANUNCIOS -->
         <div id="sectionAds" class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             <div class="lg:col-span-4">
                 <div class="bg-white p-8 rounded-[3rem] shadow-sm border border-slate-100">
-                    <h2 class="text-xl font-black text-slate-800 mb-8 flex items-center gap-3"><span class="p-2 bg-blue-600 rounded-xl text-white"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span>Marandu Pyahu</h2>
+                    <h2 class="text-xl font-black text-slate-800 mb-8 flex items-center gap-3"><span class="p-2 bg-blue-600 rounded-xl text-white"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span>Nuevo Anuncio</h2>
                     <form id="adForm" class="space-y-4">
-                        <input type="text" id="formNombre" placeholder="Marandu Réra" required class="w-full bg-slate-50 p-4 rounded-2xl border-none focus:ring-2 focus:ring-blue-500 text-sm">
-                        <input type="url" id="formFoto" placeholder="Ta'anga URL" required class="w-full bg-slate-50 p-4 rounded-2xl border-none focus:ring-2 focus:ring-blue-500 text-sm">
+                        <input type="text" id="formNombre" placeholder="Nombre del Anuncio" required class="w-full bg-slate-50 p-4 rounded-2xl border-none focus:ring-2 focus:ring-blue-500 text-sm">
+                        <input type="url" id="formFoto" placeholder="URL de la Foto" required class="w-full bg-slate-50 p-4 rounded-2xl border-none focus:ring-2 focus:ring-blue-500 text-sm">
                         <div class="grid grid-cols-2 gap-3">
                             <select id="formTipo" class="bg-slate-50 p-4 rounded-2xl border-none text-sm font-bold">
-                                <option value="PRODUCTO SOLO">Mba'erepy año</option>
+                                <option value="PRODUCTO SOLO">Producto Solo</option>
                                 <option value="COMBO">Combo</option>
                                 <option value="TRICOMBO">Tricombo</option>
                             </select>
                             <select id="formEstado" class="bg-slate-50 p-4 rounded-2xl border-none text-sm font-bold">
-                                <option value="Activo">Omba'apóva</option>
-                                <option value="Programado">Oñemohendáva</option>
-                                <option value="Finalizado">Omohu'ãva</option>
+                                <option value="Activo">Activo</option>
+                                <option value="Programado">Programado</option>
+                                <option value="Finalizado">Finalizado</option>
                             </select>
                         </div>
                         <select id="formAsesora" required onchange="updateAsesoraDisplay()" class="w-full bg-slate-50 p-4 rounded-2xl border-none text-sm font-bold">
-                            <option value="">Eiporavo Pytyvohára...</option>
+                            <option value="">Selecciona Asesora...</option>
                         </select>
                         <div class="grid grid-cols-2 gap-4 p-5 bg-blue-50 rounded-2xl text-[10px] font-black uppercase">
-                            <div><p class="text-blue-400">Táva</p><p id="infoCiudad" class="text-slate-700">-</p></div>
+                            <div><p class="text-blue-400">Ciudad</p><p id="infoCiudad" class="text-slate-700">-</p></div>
                             <div><p class="text-blue-400">WhatsApp</p><p id="infoWhatsapp" class="text-slate-700">-</p></div>
                         </div>
                         <div class="grid grid-cols-2 gap-3">
                             <input type="date" id="formFecha" required class="bg-slate-50 p-4 rounded-2xl border-none text-sm">
                             <select id="formVideo" class="bg-slate-50 p-4 rounded-2xl border-none text-sm font-bold">
-                                <option value="Pendiente">Oñeha'arõva</option>
-                                <option value="Realizado">Ojejapoíma</option>
+                                <option value="Pendiente">Pendiente</option>
+                                <option value="Realizado">Realizado</option>
                             </select>
                         </div>
-                        <button type="submit" class="w-full bg-blue-600 text-white font-black py-5 rounded-3xl shadow-xl shadow-blue-200 uppercase tracking-widest text-xs">Ñongatu Marandu</button>
+                        <button type="submit" class="w-full bg-blue-600 text-white font-black py-5 rounded-3xl shadow-xl shadow-blue-200 uppercase tracking-widest text-xs">Guardar Anuncio</button>
                     </form>
                 </div>
             </div>
             <div class="lg:col-span-8">
                 <div class="bg-white rounded-[3rem] shadow-sm border border-slate-100 overflow-hidden">
-                    <div class="p-6 bg-slate-50/50 flex justify-between items-center border-b border-slate-100"><h2 class="font-black text-xs uppercase tracking-widest">Marandu Ñemonguatia</h2><button onclick="fetchAds()" class="text-slate-400 italic text-[10px]">Embopyahu</button></div>
+                    <div class="p-6 bg-slate-50/50 flex justify-between items-center border-b border-slate-100"><h2 class="font-black text-xs uppercase tracking-widest text-slate-600">Historial de Anuncios</h2><button onclick="fetchAds()" class="text-blue-500 font-bold text-[10px] uppercase">Actualizar</button></div>
                     <div class="overflow-x-auto custom-scroll" style="max-height: 700px;">
                         <table class="w-full text-left">
                             <tbody id="adminTableBody" class="divide-y divide-slate-50"></tbody>
@@ -151,38 +155,41 @@
             </div>
         </div>
 
-        <!-- PYTYVOHÁRA VORE -->
+        <!-- SECCIÓN DE ASESORAS -->
         <div id="sectionAsesoras" class="grid grid-cols-1 lg:grid-cols-12 gap-8 hidden-section">
             <div class="lg:col-span-3 space-y-6">
+                <!-- Registro Individual -->
                 <div class="bg-white p-8 rounded-[3rem] shadow-sm border border-slate-100">
-                    <h2 class="text-xl font-black text-slate-800 mb-8 flex items-center gap-3"><span class="p-2 bg-emerald-600 rounded-xl text-white"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span>Pytyvohára Pyahu</h2>
+                    <h2 class="text-xl font-black text-slate-800 mb-8 flex items-center gap-3"><span class="p-2 bg-emerald-600 rounded-xl text-white"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span>Nueva Asesora</h2>
                     <form id="asesoraForm" class="space-y-4">
-                        <input type="text" id="formAsesoraNombre" required placeholder="Téra tee" class="w-full bg-slate-50 p-4 rounded-2xl border-none text-sm">
-                        <input type="text" id="formAsesoraCiudad" required placeholder="Táva" class="w-full bg-slate-50 p-4 rounded-2xl border-none text-sm">
+                        <input type="text" id="formAsesoraNombre" required placeholder="Nombre Completo" class="w-full bg-slate-50 p-4 rounded-2xl border-none text-sm">
+                        <input type="text" id="formAsesoraCiudad" required placeholder="Ciudad" class="w-full bg-slate-50 p-4 rounded-2xl border-none text-sm">
                         <input type="text" id="formAsesoraWhatsApp" required placeholder="WhatsApp (+591...)" class="w-full bg-slate-50 p-4 rounded-2xl border-none text-sm">
-                        <button type="submit" class="w-full bg-emerald-600 text-white font-black py-5 rounded-3xl uppercase text-xs tracking-widest">Ñongatu</button>
+                        <button type="submit" class="w-full bg-emerald-600 text-white font-black py-5 rounded-3xl uppercase text-xs tracking-widest">Registrar Asesora</button>
                     </form>
                 </div>
 
+                <!-- CARGA MASIVA CSV -->
                 <div class="bg-slate-900 p-8 rounded-[3rem] shadow-xl text-white">
-                    <h2 class="text-lg font-black mb-4 flex items-center gap-3"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Ñemyenyhẽ Guasu</h2>
-                    <p class="text-slate-400 text-[10px] mb-6 font-bold uppercase tracking-tight">CSV: Téra, Táva, WhatsApp</p>
+                    <h2 class="text-lg font-black mb-4 flex items-center gap-3"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Carga Masiva</h2>
+                    <p class="text-slate-400 text-[10px] mb-6 font-bold uppercase tracking-tight">Formato CSV: Nombre, Ciudad, WhatsApp</p>
                     <input type="file" id="csvFileInput" accept=".csv" class="hidden">
-                    <button onclick="document.getElementById('csvFileInput').click()" class="w-full border-2 border-dashed border-slate-700 text-slate-300 py-6 rounded-3xl hover:border-blue-500 hover:text-white transition-all text-xs font-bold uppercase">Mba'erã .CSV</button>
-                    <div id="csvProgress" class="mt-4 text-center text-[10px] font-bold text-blue-400 hidden">Ojehúvo...</div>
+                    <button onclick="document.getElementById('csvFileInput').click()" class="w-full border-2 border-dashed border-slate-700 text-slate-300 py-6 rounded-3xl hover:border-blue-500 hover:text-white transition-all text-xs font-bold uppercase">Subir Archivo .CSV</button>
+                    <div id="csvProgress" class="mt-4 text-center text-[10px] font-bold text-blue-400 hidden">Procesando...</div>
                 </div>
             </div>
 
+            <!-- LISTADO DE ASESORAS (TAMAÑO AMPLIADO) -->
             <div class="lg:col-span-9">
                 <div class="bg-white rounded-[3rem] shadow-sm border border-slate-100 overflow-hidden">
                     <div class="p-8 bg-slate-50/50 border-b border-slate-100">
                         <div class="flex flex-col md:flex-row justify-between items-center gap-6">
                             <div>
-                                <h2 class="font-black text-lg uppercase tracking-widest text-slate-800">Pytyvohára Réra</h2>
-                                <p class="text-slate-400 text-xs font-medium">Ejapo ha emonguatia pytyvohára kuéra</p>
+                                <h2 class="font-black text-lg uppercase tracking-widest text-slate-800">Directorio de Asesoras</h2>
+                                <p class="text-slate-400 text-xs font-medium">Gestiona y copia rápidamente la información de contacto</p>
                             </div>
                             <div class="relative w-full md:w-96">
-                                <input type="text" id="searchAsesorasInput" oninput="renderAsesoras()" placeholder="Eheka téra, táva térã whatsapp..." class="w-full bg-white border border-slate-200 rounded-2xl px-6 py-4 text-sm focus:ring-4 focus:ring-blue-100 focus:outline-none transition-all shadow-sm">
+                                <input type="text" id="searchAsesorasInput" oninput="renderAsesoras()" placeholder="Buscar por nombre, ciudad o whatsapp..." class="w-full bg-white border border-slate-200 rounded-2xl px-6 py-4 text-sm focus:ring-4 focus:ring-blue-100 focus:outline-none transition-all shadow-sm">
                                 <svg class="absolute right-5 top-4.5 text-slate-400" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
                             </div>
                         </div>
@@ -191,10 +198,10 @@
                         <table class="w-full text-left">
                             <thead>
                                 <tr class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] bg-white sticky top-0 z-10">
-                                    <th class="p-8 pb-4">Pytyvohára</th>
-                                    <th class="p-8 pb-4">Táva</th>
+                                    <th class="p-8 pb-4">Asesora</th>
+                                    <th class="p-8 pb-4">Ciudad</th>
                                     <th class="p-8 pb-4">Contacto</th>
-                                    <th class="p-8 pb-4 text-right">Mba'eapopy</th>
+                                    <th class="p-8 pb-4 text-right">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody id="asesorasTableBody" class="divide-y divide-slate-100"></tbody>
@@ -211,19 +218,19 @@
         let allAsesoras = [];
 
         /**
-         * Peteĩha ojehekáva - Switch tabs and update highlights
+         * Manejo de Navegación por pestañas
          */
         function switchTab(tab) {
             document.getElementById('sectionAds').classList.toggle('hidden-section', tab !== 'ads');
             document.getElementById('sectionAsesoras').classList.toggle('hidden-section', tab !== 'asesoras');
             
-            // Highlight buttons
+            // Actualizar botones destacados
             document.getElementById('tabBtnAds').classList.toggle('active', tab === 'ads');
             document.getElementById('tabBtnAsesoras').classList.toggle('active', tab === 'asesoras');
         }
 
         /**
-         * Eikeha - Auth process
+         * Lógica de Autenticación
          */
         document.getElementById('loginForm').onsubmit = async (e) => {
             e.preventDefault();
@@ -236,7 +243,7 @@
                     sessionStorage.setItem('fenix_admin_user', JSON.stringify(data.user));
                     checkSession();
                 } else { document.getElementById('loginErrorMessage').classList.remove('hidden'); }
-            } catch (err) { alert("Error de servidor"); }
+            } catch (err) { console.error("Error en servidor"); }
         };
 
         function checkSession() {
@@ -252,19 +259,21 @@
         function logout() { sessionStorage.removeItem('fenix_admin_user'); window.location.reload(); }
 
         /**
-         * Pytyvohára - Fetch and render
+         * Gestión de Asesoras
          */
         async function fetchAsesoras() {
-            const res = await fetch(`${API_URL}/asesoras`);
-            allAsesoras = await res.json();
-            
-            const select = document.getElementById('formAsesora');
-            select.innerHTML = '<option value="">Eiporavo Pytyvohára...</option>';
-            allAsesoras.forEach(a => {
-                select.innerHTML += `<option value="${a.id}">${a.nombre}</option>`;
-            });
+            try {
+                const res = await fetch(`${API_URL}/asesoras`);
+                allAsesoras = await res.json();
+                
+                const select = document.getElementById('formAsesora');
+                select.innerHTML = '<option value="">Selecciona Asesora...</option>';
+                allAsesoras.forEach(a => {
+                    select.innerHTML += `<option value="${a.id}">${a.nombre}</option>`;
+                });
 
-            renderAsesoras();
+                renderAsesoras();
+            } catch (e) { console.error("Error al cargar asesoras"); }
         }
 
         function renderAsesoras() {
@@ -286,7 +295,7 @@
                             <span class="font-extrabold text-base text-slate-800">${a.nombre}</span>
                             <button onclick="copyToClip('${a.nombre}', this)" class="w-fit text-[10px] uppercase font-bold text-blue-500 bg-blue-50 px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all flex items-center gap-2 hover:bg-blue-600 hover:text-white">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-                                Emonguatia Téra
+                                Copiar Nombre
                             </button>
                         </div>
                     </td>
@@ -295,7 +304,7 @@
                             <span class="text-sm font-semibold text-slate-500">${a.ciudad}</span>
                             <button onclick="copyToClip('${a.ciudad}', this)" class="w-fit text-[10px] uppercase font-bold text-slate-400 bg-slate-100 px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all flex items-center gap-2 hover:bg-slate-600 hover:text-white">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-                                Emonguatia Táva
+                                Copiar Ciudad
                             </button>
                         </div>
                     </td>
@@ -304,7 +313,7 @@
                             <span class="text-sm font-bold font-mono text-slate-600">${a.whatsapp}</span>
                             <button onclick="copyToClip('${a.whatsapp}', this)" class="w-fit text-[10px] uppercase font-bold text-emerald-500 bg-emerald-50 px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all flex items-center gap-2 hover:bg-emerald-600 hover:text-white">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-                                Emonguatia WhatsApp
+                                Copiar WhatsApp
                             </button>
                         </div>
                     </td>
@@ -317,10 +326,11 @@
             });
 
             if (filtered.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" class="p-20 text-center text-slate-400 italic text-base">Pytyvohára ndojehekái</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="4" class="p-20 text-center text-slate-400 italic text-base">No se encontraron asesoras</td></tr>';
             }
         }
 
+        // Función para copiar texto al portapapeles con feedback visual
         function copyToClip(text, element) {
             const input = document.createElement('textarea');
             input.value = text;
@@ -331,7 +341,7 @@
 
             const originalHTML = element.innerHTML;
             element.classList.add('copy-success');
-            element.innerHTML = '<span class="text-white font-black">¡EMONGUATIA!</span>';
+            element.innerHTML = '<span class="text-white font-black">¡COPIADO!</span>';
             
             setTimeout(() => {
                 element.classList.remove('copy-success');
@@ -339,9 +349,6 @@
             }, 1500);
         }
 
-        /**
-         * Ñongatu pytyvohára
-         */
         document.getElementById('asesoraForm').onsubmit = async (e) => {
             e.preventDefault();
             const payload = { 
@@ -354,7 +361,7 @@
         };
 
         /**
-         * Ñemyenyhẽ Guasu CSV
+         * Carga Masiva CSV
          */
         document.getElementById('csvFileInput').addEventListener('change', function(e) {
             const file = e.target.files[0];
@@ -380,12 +387,12 @@
                             try {
                                 await fetch(`${API_URL}/asesoras`, { method: 'POST', body: JSON.stringify(payload) });
                                 count++;
-                                progress.innerText = `Ojehúvo: ${count}...`;
+                                progress.innerText = `Cargando: ${count}...`;
                             } catch (err) { console.error("Error en fila " + i); }
                         }
                     }
                 }
-                alert(`✅ ${count} pytyvohára oñemohendáma.`);
+                alert(`✅ Se registraron ${count} asesoras exitosamente.`);
                 progress.classList.add('hidden');
                 document.getElementById('csvFileInput').value = "";
                 fetchAsesoras();
@@ -394,14 +401,14 @@
         });
 
         async function deleteAsesora(id) {
-            if (confirm("¿Reipe'ase ko pytyvohára?")) {
+            if (confirm("¿Estás seguro de eliminar esta asesora?")) {
                 await fetch(`${API_URL}/asesoras`, { method: 'DELETE', body: JSON.stringify({id}) });
                 fetchAsesoras();
             }
         }
 
         /**
-         * Marandukuéra - Fetch and render
+         * Gestión de Anuncios
          */
         function updateAsesoraDisplay() {
             const aser = allAsesoras.find(a => a.id == document.getElementById('formAsesora').value);
@@ -410,33 +417,35 @@
         }
 
         async function fetchAds() {
-            const res = await fetch(`${API_URL}/anuncios`);
-            const data = await res.json();
-            const tbody = document.getElementById('adminTableBody');
-            tbody.innerHTML = '';
-            data.forEach(ad => {
-                tbody.innerHTML += `
-                <tr class="hover:bg-slate-50 transition-all">
-                    <td class="p-6">
-                        <div class="flex items-center gap-4">
-                            <img src="${ad.foto_url}" class="w-12 h-12 rounded-xl object-cover shadow-sm" onerror="this.src='https://via.placeholder.com/50'">
-                            <div class="flex flex-col">
-                                <span class="font-bold text-sm text-slate-700">${ad.nombre}</span>
-                                <span class="text-[10px] text-slate-400 font-black uppercase tracking-wider">${ad.tipo}</span>
+            try {
+                const res = await fetch(`${API_URL}/anuncios`);
+                const data = await res.json();
+                const tbody = document.getElementById('adminTableBody');
+                tbody.innerHTML = '';
+                data.forEach(ad => {
+                    tbody.innerHTML += `
+                    <tr class="hover:bg-slate-50 transition-all">
+                        <td class="p-6">
+                            <div class="flex items-center gap-4">
+                                <img src="${ad.foto_url}" class="w-12 h-12 rounded-xl object-cover shadow-sm" onerror="this.src='https://via.placeholder.com/50'">
+                                <div class="flex flex-col">
+                                    <span class="font-bold text-sm text-slate-700">${ad.nombre}</span>
+                                    <span class="text-[10px] text-slate-400 font-black uppercase tracking-wider">${ad.tipo}</span>
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                    <td class="p-6 text-[10px] font-bold text-slate-500 italic uppercase">${ad.asesora_nombre}</td>
-                    <td class="p-6">
-                        <span class="px-3 py-1 bg-slate-100 rounded-lg text-[9px] font-black uppercase tracking-widest">${ad.estado}</span>
-                    </td>
-                    <td class="p-6 text-right">
-                        <button onclick="deleteAd(${ad.id})" class="text-red-300 hover:text-red-600 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
-                        </button>
-                    </td>
-                </tr>`;
-            });
+                        </td>
+                        <td class="p-6 text-[10px] font-bold text-slate-500 italic uppercase">${ad.asesora_nombre}</td>
+                        <td class="p-6">
+                            <span class="px-3 py-1 bg-slate-100 rounded-lg text-[9px] font-black uppercase tracking-widest">${ad.estado}</span>
+                        </td>
+                        <td class="p-6 text-right">
+                            <button onclick="deleteAd(${ad.id})" class="text-red-300 hover:text-red-600 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                            </button>
+                        </td>
+                    </tr>`;
+                });
+            } catch (e) { console.error("Error al cargar anuncios"); }
         }
 
         document.getElementById('adForm').onsubmit = async (e) => {
@@ -455,12 +464,13 @@
         };
 
         async function deleteAd(id) {
-            if (confirm("¿Reipe'ase ko marandu?")) {
+            if (confirm("¿Eliminar este anuncio permanentemente?")) {
                 await fetch(`${API_URL}/anuncios`, { method: 'DELETE', body: JSON.stringify({id}) });
                 fetchAds();
             }
         }
 
+        // Inicializar
         checkSession();
     </script>
 </body>
