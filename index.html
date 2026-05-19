@@ -60,9 +60,31 @@
             margin: 0 0 20px;
         }
 
+        /* Estilos del botón */
+        .btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 30px;
+            background-color: #d63031; /* Color rojo de la marca */
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(214, 48, 49, 0.3);
+        }
+
+        /* Efecto al pasar el mouse por el botón */
+        .btn:hover {
+            background-color: #b32626;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(214, 48, 49, 0.4);
+        }
+
         /* Pie de página */
         .footer {
-            margin-top: 30px;
+            margin-top: 35px;
             font-size: 13px;
             color: #b2bec3;
             border-top: 1px solid #dfe6e9;
@@ -83,8 +105,9 @@
         <div class="icon">🛠️</div>
         <div class="brand">ArelyShop.com</div>
         <h1>Sitio en Mantenimiento</h1>
-        <p>Actualmente estamos realizando mejoras en nuestra tienda para ofrecerte una mejor experiencia de compra. Estaremos de vuelta muy pronto.</p>
-        <p>Lamentamos cualquier inconveniente y agradecemos tu paciencia.</p>
+        <p>Actualmente estamos realizando algunas mejoras en nuestra página principal. Sin embargo, nuestro catálogo de productos sigue disponible.</p>
+        
+        <a href="https://arelyshop.com/all-products" class="btn">Ir a la Tienda Principal</a>
         
         <div class="footer">
             &copy; 2026 ArelyShop.com. Todos los derechos reservados.
