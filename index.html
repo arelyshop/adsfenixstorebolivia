@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualización de Informe</title>
+    <title>Campañas Activas Fenix Store</title>
     <!-- Importamos Tailwind CSS para darle un diseño moderno y responsive -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -16,15 +16,19 @@
 <body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col">
 
     <!-- Encabezado de la página -->
-    <header class="bg-blue-600 text-white shadow-md">
+    <header class="bg-gray-900 text-white shadow-md border-b-4 border-orange-500">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div class="flex items-center justify-between">
-                <div>
-                    <h1 class="text-2xl font-bold">Panel de Control</h1>
-                    <p class="text-blue-100 text-sm mt-1">Visualización de métricas e informe de datos</p>
+                <div class="flex items-center gap-4">
+                    <!-- Icono de Fenix/Tienda -->
+                    <div class="bg-orange-500 p-2 rounded-lg">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold uppercase tracking-wider">Campañas Activas Fenix Store</h1>
+                        <p class="text-gray-400 text-sm mt-1">Panel de control y rendimiento de campañas</p>
+                    </div>
                 </div>
-                <!-- Icono decorativo -->
-                <svg class="w-8 h-8 text-blue-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
             </div>
         </div>
     </header>
@@ -32,25 +36,60 @@
     <!-- Contenido principal -->
     <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         
+        <!-- Barra de búsqueda -->
+        <div class="mb-6 bg-white rounded-xl shadow-sm border border-gray-200 p-2 flex flex-col sm:flex-row items-center gap-3">
+            <div class="relative w-full flex-grow">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+                <input type="text" id="searchInput" class="block w-full pl-10 pr-3 py-3 border-none bg-gray-50 rounded-lg focus:ring-2 focus:ring-orange-500 focus:bg-white transition-colors w-full outline-none text-gray-700" placeholder="Buscar campañas, métricas o fechas...">
+            </div>
+            <button id="searchBtn" class="w-full sm:w-auto px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-colors shadow-sm whitespace-nowrap">
+                Filtrar Datos
+            </button>
+        </div>
+
+        <!-- Mensaje de aviso para el buscador -->
+        <div id="searchNotice" class="hidden mb-6 bg-orange-50 border-l-4 border-orange-500 p-4 rounded-r-lg shadow-sm transition-all duration-300">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-orange-400" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm text-orange-700 font-medium">
+                        Para filtrar la tabla, utiliza los controles de búsqueda que están <span class="font-bold underline">dentro</span> del reporte de Looker Studio.
+                    </p>
+                    <p class="text-xs text-orange-600 mt-1">
+                        Por motivos de seguridad de Google, los botones externos no pueden modificar los datos de este panel incrustado.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
         <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
             <div class="p-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
-                <h2 class="text-lg font-semibold text-gray-700">Reporte de Looker Studio</h2>
+                <h2 class="text-lg font-semibold text-gray-700">Informe Detallado Looker Studio</h2>
                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                     Público
                 </span>
             </div>
             
             <!-- Contenedor del Iframe -->
-            <!-- Se reemplazaron width="600" y height="450" por clases de Tailwind para que ocupe todo el ancho disponible y tenga una altura adecuada -->
-            <div class="w-full bg-gray-50 flex justify-center items-center p-2 sm:p-4">
-                <iframe 
-                    class="w-full min-h-[600px] rounded border border-gray-200 shadow-sm"
-                    src="https://datastudio.google.com/embed/reporting/8d4b8333-19f9-4dba-83e5-e1b2a7534d59/page/WMKzF" 
-                    frameborder="0" 
-                    style="border:0" 
-                    allowfullscreen 
-                    sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox">
-                </iframe>
+            <!-- Utilizamos clases responsivas: ocupa el 100% del ancho. 
+                 Relación de aspecto ajustada a 75% para las medidas 600x450. -->
+            <div class="w-full bg-white flex justify-center items-center">
+                <div class="relative w-full overflow-hidden" style="padding-top: 75%; min-height: 450px;">
+                    <iframe 
+                        class="absolute top-0 left-0 w-full h-full border-0"
+                        src="https://datastudio.google.com/embed/reporting/8d4b8333-19f9-4dba-83e5-e1b2a7534d59/page/WMKzF" 
+                        frameborder="0" 
+                        style="border:0" 
+                        allowfullscreen 
+                        sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox">
+                    </iframe>
+                </div>
             </div>
         </div>
 
@@ -63,9 +102,9 @@
                     </svg>
                 </div>
                 <div class="ml-3">
-                    <h3 class="text-sm font-medium text-blue-800">Sobre este tablero</h3>
+                    <h3 class="text-sm font-medium text-blue-800">Visualización Optimizada</h3>
                     <div class="mt-2 text-sm text-blue-700">
-                        <p>Este informe de Looker Studio está configurado con acceso público. Puedes utilizar los controles y filtros del panel para explorar los datos en tiempo real.</p>
+                        <p>Este informe está diseñado para adaptarse. Si lo ves desde un celular, gira tu dispositivo en modo horizontal (apaisado) para una mejor experiencia de lectura de los gráficos.</p>
                     </div>
                 </div>
             </div>
@@ -77,10 +116,35 @@
     <footer class="bg-white border-t border-gray-200 mt-auto">
         <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <p class="text-center text-sm text-gray-500">
-                &copy; <script>document.write(new Date().getFullYear())</script> Tu Organización. Todos los derechos reservados.
+                &copy; <script>document.write(new Date().getFullYear())</script> Fenix Store. Todos los derechos reservados.
             </p>
         </div>
     </footer>
 
+    <!-- Lógica de la página -->
+    <script>
+        // Lógica para el buscador de interfaz
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchBtn = document.getElementById('searchBtn');
+            const searchInput = document.getElementById('searchInput');
+            const searchNotice = document.getElementById('searchNotice');
+
+            const showNotice = () => {
+                searchNotice.classList.remove('hidden');
+                // Ocultar el mensaje después de 8 segundos
+                setTimeout(() => {
+                    searchNotice.classList.add('hidden');
+                }, 8000);
+            };
+
+            searchBtn.addEventListener('click', showNotice);
+            
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    showNotice();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
