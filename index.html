@@ -1,150 +1,784 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campañas Activas Fenix Store</title>
-    <!-- Importamos Tailwind CSS para darle un diseño moderno y responsive -->
+    <title>Visor de CSV Interactivo</title>
+    <!-- Tailwind CSS para el diseño -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Iconos Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- PapaParse para procesamiento robusto de CSV -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
+        /* Desplazamiento suave y barra de desplazamiento estilizada */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col">
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 min-h-full font-sans transition-colors duration-200">
 
-    <!-- Encabezado de la página -->
-    <header class="bg-gray-900 text-white shadow-md border-b-4 border-orange-500">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-4">
-                    <!-- Icono de Fenix/Tienda -->
-                    <div class="bg-orange-500 p-2 rounded-lg">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                    </div>
-                    <div>
-                        <h1 class="text-2xl font-bold uppercase tracking-wider">Campañas Activas Fenix Store</h1>
-                        <p class="text-gray-400 text-sm mt-1">Panel de control y rendimiento de campañas</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Contenido principal -->
-    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+    <!-- Contenedor Principal -->
+    <div class="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 flex flex-col min-h-screen gap-6">
         
-        <!-- Barra de búsqueda -->
-        <div class="mb-6 bg-white rounded-xl shadow-sm border border-gray-200 p-2 flex flex-col sm:flex-row items-center gap-3">
-            <div class="relative w-full flex-grow">
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        <!-- Encabezado de la Aplicación -->
+        <header class="flex flex-col sm:flex-row justify-between items-center gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
+            <div class="flex items-center gap-3">
+                <div class="p-3 bg-indigo-600 text-white rounded-2xl shadow-lg shadow-indigo-500/20 dark:shadow-none">
+                    <i data-lucide="table-2" class="w-8 h-8"></i>
                 </div>
-                <input type="text" id="searchInput" class="block w-full pl-10 pr-3 py-3 border-none bg-gray-50 rounded-lg focus:ring-2 focus:ring-orange-500 focus:bg-white transition-colors w-full outline-none text-gray-700" placeholder="Buscar campañas, métricas o fechas...">
-            </div>
-            <button id="searchBtn" class="w-full sm:w-auto px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-colors shadow-sm whitespace-nowrap">
-                Filtrar Datos
-            </button>
-        </div>
-
-        <!-- Mensaje de aviso para el buscador -->
-        <div id="searchNotice" class="hidden mb-6 bg-orange-50 border-l-4 border-orange-500 p-4 rounded-r-lg shadow-sm transition-all duration-300">
-            <div class="flex">
-                <div class="flex-shrink-0">
-                    <svg class="h-5 w-5 text-orange-400" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
-                    </svg>
+                <div>
+                    <h1 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Visor CSV Pro</h1>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Visualiza, edita, filtra y exporta tus archivos CSV al instante</p>
                 </div>
-                <div class="ml-3">
-                    <p class="text-sm text-orange-700 font-medium">
-                        Para filtrar la tabla, utiliza los controles de búsqueda que están <span class="font-bold underline">dentro</span> del reporte de Looker Studio.
-                    </p>
-                    <p class="text-xs text-orange-600 mt-1">
-                        Por motivos de seguridad de Google, los botones externos no pueden modificar los datos de este panel incrustado.
-                    </p>
-                </div>
-            </div>
-        </div>
-        
-        <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
-            <div class="p-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
-                <h2 class="text-lg font-semibold text-gray-700">Informe Detallado Looker Studio</h2>
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                    Público
-                </span>
             </div>
             
-            <!-- Contenedor del Iframe -->
-            <!-- Utilizamos clases responsivas: ocupa el 100% del ancho. 
-                 Relación de aspecto ajustada a 75% para las medidas 600x450. -->
-            <div class="w-full bg-white flex justify-center items-center">
-                <div class="relative w-full overflow-hidden" style="padding-top: 75%; min-height: 450px;">
-                    <iframe 
-                        class="absolute top-0 left-0 w-full h-full border-0"
-                        src="https://datastudio.google.com/embed/reporting/8d4b8333-19f9-4dba-83e5-e1b2a7534d59/page/WMKzF" 
-                        frameborder="0" 
-                        style="border:0" 
-                        allowfullscreen 
-                        sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox">
-                    </iframe>
+            <div class="flex items-center gap-3">
+                <!-- Botón de Modo Oscuro -->
+                <button id="themeToggle" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" title="Cambiar Tema">
+                    <i data-lucide="sun" id="sunIcon" class="w-5 h-5 hidden dark:block text-amber-400"></i>
+                    <i data-lucide="moon" id="moonIcon" class="w-5 h-5 block dark:hidden text-indigo-600"></i>
+                </button>
+                <!-- Botón para Cargar Demo -->
+                <button id="btnDemo" class="px-4 py-2.5 bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium rounded-xl transition-all flex items-center gap-2 text-sm">
+                    <i data-lucide="sparkles" class="w-4 h-4 text-amber-500"></i>
+                    Datos de Ejemplo
+                </button>
+            </div>
+        </header>
+
+        <!-- Zona de Carga de Archivos / Drag and Drop -->
+        <section id="dropZone" class="relative border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-400 rounded-2xl p-8 text-center bg-white dark:bg-slate-800/50 transition-all cursor-pointer group shadow-sm">
+            <input type="file" id="csvFileInput" accept=".csv, .txt" class="hidden">
+            <div class="flex flex-col items-center justify-center gap-3 py-4">
+                <div class="p-4 bg-indigo-50 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 rounded-full group-hover:scale-110 transition-transform duration-200">
+                    <i data-lucide="upload-cloud" class="w-10 h-10"></i>
+                </div>
+                <div class="space-y-1">
+                    <p class="text-base font-semibold text-slate-700 dark:text-slate-200">Arrastra tu archivo CSV aquí, o <span class="text-indigo-600 dark:text-indigo-400 hover:underline">búscalo en tu equipo</span></p>
+                    <p class="text-xs text-slate-400 dark:text-slate-500">Soporta archivos .csv y .txt separados por coma, punto y coma, o tabulador</p>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Sección de ayuda o contexto adicional (Opcional) -->
-        <div class="mt-6 bg-blue-50 border border-blue-100 rounded-lg p-4">
-            <div class="flex">
-                <div class="flex-shrink-0">
-                    <svg class="h-5 w-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
-                    </svg>
-                </div>
-                <div class="ml-3">
-                    <h3 class="text-sm font-medium text-blue-800">Visualización Optimizada</h3>
-                    <div class="mt-2 text-sm text-blue-700">
-                        <p>Este informe está diseñado para adaptarse. Si lo ves desde un celular, gira tu dispositivo en modo horizontal (apaisado) para una mejor experiencia de lectura de los gráficos.</p>
+        <!-- Contenedor del Visor (Oculto al inicio si no hay datos, pero se muestra con los datos demo o carga) -->
+        <main id="viewerContainer" class="flex-1 flex flex-col gap-4 hidden">
+            
+            <!-- Barra de Herramientas, Búsqueda y Acciones -->
+            <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+                
+                <!-- Buscador Global -->
+                <div class="relative w-full md:w-96">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                        <i data-lucide="search" class="w-5 h-5"></i>
                     </div>
+                    <input type="text" id="searchInput" placeholder="Buscar en todas las celdas..." class="block w-full pl-10 pr-4 py-2 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm">
+                </div>
+
+                <!-- Resumen e Información del Archivo -->
+                <div class="flex flex-wrap items-center gap-2 text-xs text-slate-500 dark:text-slate-400 w-full md:w-auto justify-center md:justify-end">
+                    <span id="fileNameBadge" class="font-medium bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 px-3 py-1.5 rounded-lg border border-indigo-100 dark:border-indigo-900/30">Nombre_Archivo.csv</span>
+                    <span id="rowCountBadge" class="bg-slate-100 dark:bg-slate-700 px-3 py-1.5 rounded-lg">0 Filas</span>
+                    <span id="colCountBadge" class="bg-slate-100 dark:bg-slate-700 px-3 py-1.5 rounded-lg">0 Columnas</span>
+                </div>
+
+                <!-- Exportaciones y Opciones -->
+                <div class="flex items-center gap-2 w-full md:w-auto justify-center md:justify-end">
+                    <!-- Botón Exportar CSV -->
+                    <button id="btnExportCSV" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-xs transition-colors flex items-center gap-2 shadow-sm">
+                        <i data-lucide="download" class="w-4 h-4"></i>
+                        Exportar CSV
+                    </button>
+                    <!-- Botón Exportar JSON -->
+                    <button id="btnExportJSON" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl text-xs transition-colors flex items-center gap-2 shadow-sm">
+                        <i data-lucide="file-json" class="w-4 h-4"></i>
+                        Exportar JSON
+                    </button>
+                    <!-- Botón Copiar al Portapapeles -->
+                    <button id="btnCopyClipboard" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-semibold rounded-xl text-xs transition-colors flex items-center gap-2 border border-slate-200 dark:border-slate-600">
+                        <i data-lucide="copy" class="w-4 h-4"></i>
+                        Copiar
+                    </button>
                 </div>
             </div>
-        </div>
 
-    </main>
+            <!-- Tabla de Datos -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden flex-1 flex flex-col min-h-[400px]">
+                
+                <!-- Envoltura con Scroll para pantallas pequeñas y grandes -->
+                <div class="overflow-x-auto overflow-y-auto max-h-[60vh] flex-1 relative">
+                    <table id="csvTable" class="w-full text-sm text-left border-collapse">
+                        <thead class="sticky top-0 bg-slate-100 dark:bg-slate-900/90 backdrop-blur-sm z-10 border-b border-slate-200 dark:border-slate-700">
+                            <tr id="tableHeader">
+                                <!-- Las columnas se generan dinámicamente -->
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody" class="divide-y divide-slate-100 dark:divide-slate-800">
+                            <!-- Las filas se generan dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
 
-    <!-- Pie de página -->
-    <footer class="bg-white border-t border-gray-200 mt-auto">
-        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-            <p class="text-center text-sm text-gray-500">
-                &copy; <script>document.write(new Date().getFullYear())</script> Fenix Store. Todos los derechos reservados.
-            </p>
-        </div>
-    </footer>
+                <!-- Footer de la Tabla (Paginación y Configuración) -->
+                <div class="p-4 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    
+                    <!-- Configuración de filas por página -->
+                    <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+                        <span>Mostrar:</span>
+                        <select id="rowsPerPageSelect" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-indigo-500 text-xs">
+                            <option value="10" selected>10 registros</option>
+                            <option value="25">25 registros</option>
+                            <option value="50">50 registros</option>
+                            <option value="100">100 registros</option>
+                            <option value="all">Ver todos</option>
+                        </select>
+                        <span id="paginationSummary">Mostrando 0-0 de 0</span>
+                    </div>
 
-    <!-- Lógica de la página -->
+                    <!-- Controles de Navegación de Páginas -->
+                    <div class="flex items-center gap-1.5">
+                        <button id="btnPrevPage" class="p-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                            <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                        </button>
+                        <div id="pageButtons" class="flex items-center gap-1">
+                            <!-- Botones dinámicos de páginas -->
+                        </div>
+                        <button id="btnNextPage" class="p-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Panel de información y edición interactiva -->
+            <div class="text-center text-xs text-slate-400 dark:text-slate-500 py-2">
+                <p class="flex items-center justify-center gap-1">
+                    <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                    <span>Consejo: Haz <strong>doble clic</strong> en cualquier celda para editar sus datos. Los cambios se mantienen listos para exportar.</span>
+                </p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Mensajes Flotantes Personalizados (Reemplazo seguro de alert) -->
+    <div id="toastContainer" class="fixed bottom-6 right-6 flex flex-col gap-2 z-50 pointer-events-none"></div>
+
     <script>
-        // Lógica para el buscador de interfaz
-        document.addEventListener('DOMContentLoaded', () => {
-            const searchBtn = document.getElementById('searchBtn');
-            const searchInput = document.getElementById('searchInput');
-            const searchNotice = document.getElementById('searchNotice');
+        // --- VARIABLES DE ESTADO ---
+        let rawData = [];         // Matriz completa de datos (filas de objetos/arrays)
+        let headers = [];         // Lista de nombres de columnas
+        let filteredData = [];    // Datos tras aplicar búsqueda
+        let fileName = "datos.csv";
 
-            const showNotice = () => {
-                searchNotice.classList.remove('hidden');
-                // Ocultar el mensaje después de 8 segundos
-                setTimeout(() => {
-                    searchNotice.classList.add('hidden');
-                }, 8000);
-            };
+        // Paginación y visualización
+        let currentPage = 1;
+        let rowsPerPage = 10;
+        let sortColumn = null;    // Índice de columna por la que ordenar
+        let sortDirection = 'asc'; // 'asc' o 'desc'
 
-            searchBtn.addEventListener('click', showNotice);
+        // --- ELEMENTOS DEL DOM ---
+        const dropZone = document.getElementById('dropZone');
+        const csvFileInput = document.getElementById('csvFileInput');
+        const viewerContainer = document.getElementById('viewerContainer');
+        const searchInput = document.getElementById('searchInput');
+        const btnDemo = document.getElementById('btnDemo');
+        const btnExportCSV = document.getElementById('btnExportCSV');
+        const btnExportJSON = document.getElementById('btnExportJSON');
+        const btnCopyClipboard = document.getElementById('btnCopyClipboard');
+        const fileNameBadge = document.getElementById('fileNameBadge');
+        const rowCountBadge = document.getElementById('rowCountBadge');
+        const colCountBadge = document.getElementById('colCountBadge');
+        const rowsPerPageSelect = document.getElementById('rowsPerPageSelect');
+        const tableHeader = document.getElementById('tableHeader');
+        const tableBody = document.getElementById('tableBody');
+        const paginationSummary = document.getElementById('paginationSummary');
+        const btnPrevPage = document.getElementById('btnPrevPage');
+        const btnNextPage = document.getElementById('btnNextPage');
+        const pageButtonsContainer = document.getElementById('pageButtons');
+        const themeToggle = document.getElementById('themeToggle');
+        const toastContainer = document.getElementById('toastContainer');
+
+        // --- SISTEMA DE NOTIFICACIONES (TOASTS) ---
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `flex items-center gap-2 px-4 py-3 rounded-xl shadow-lg border text-sm transition-all duration-300 transform translate-y-2 opacity-0 pointer-events-auto`;
             
-            searchInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    showNotice();
+            if (type === 'success') {
+                toast.className += ' bg-emerald-50 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-200 border-emerald-100 dark:border-emerald-900/30';
+                toast.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4 text-emerald-600 dark:text-emerald-400"></i> <span>${message}</span>`;
+            } else if (type === 'error') {
+                toast.className += ' bg-rose-50 dark:bg-rose-950/80 text-rose-800 dark:text-rose-200 border-rose-100 dark:border-rose-900/30';
+                toast.innerHTML = `<i data-lucide="alert-circle" class="w-4 h-4 text-rose-600 dark:text-rose-400"></i> <span>${message}</span>`;
+            } else {
+                toast.className += ' bg-indigo-50 dark:bg-indigo-950/80 text-indigo-800 dark:text-indigo-200 border-indigo-100 dark:border-indigo-900/30';
+                toast.innerHTML = `<i data-lucide="info" class="w-4 h-4 text-indigo-600 dark:text-indigo-400"></i> <span>${message}</span>`;
+            }
+
+            toastContainer.appendChild(toast);
+            lucide.createIcons();
+
+            // Animación de entrada
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+
+            // Desvanecer y remover
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 4000);
+        }
+
+        // --- GESTIÓN DE TEMA OSCURO ---
+        function initTheme() {
+            if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+
+        themeToggle.addEventListener('click', () => {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // --- GESTIÓN DRAG AND DROP & INPUTS ---
+        dropZone.addEventListener('click', () => csvFileInput.click());
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('border-indigo-500', 'bg-indigo-50/20', 'dark:bg-indigo-950/10');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('border-indigo-500', 'bg-indigo-50/20', 'dark:bg-indigo-950/10');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('border-indigo-500', 'bg-indigo-50/20', 'dark:bg-indigo-950/10');
+            const file = e.dataTransfer.files[0];
+            if (file) handleFile(file);
+        });
+
+        csvFileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) handleFile(file);
+        });
+
+        // --- CARGAR DATOS DE EJEMPLO ---
+        btnDemo.addEventListener('click', () => {
+            fileName = "empleados_ejemplo.csv";
+            const csvDemo = `ID,Nombre,Puesto,Departamento,Salario,Fecha de Ingreso,Estado
+101,Sofia Rodriguez,Directora Creativa,Marketing,45000,2018-05-12,Activo
+102,Alejandro Gomez,Desarrollador Frontend,Tecnología,38000,2021-09-01,Activo
+103,Beatriz Lopez,Analista de Datos,Finanzas,42000,2020-11-15,Activo
+104,Carlos Martinez,Soporte Técnico,Operaciones,24000,2023-02-28,Inactivo
+105,Diana Fuentes,Diseñadora UI/UX,Marketing,33000,2022-04-10,Activo
+106,Esteban Paz,Ingeniero de DevOps,Tecnología,51000,2019-07-20,Activo
+107,Gabriela Sanchez,Gestora de Proyectos,Operaciones,39000,2021-12-05,Activo
+108,Hector Ramirez,Contador Senior,Finanzas,40000,2017-03-14,Activo
+109,Irene Morales,Especialista SEO,Marketing,28000,2023-01-10,Activo
+110,Julio Castro,Desarrollador Backend,Tecnología,39500,2022-08-18,Activo
+111,Laura Ruiz,Reclutadora,Recursos Humanos,30000,2020-05-30,Activo
+112,Manuel Benitez,Asistente de Oficina,Operaciones,18000,2024-01-15,Activo`;
+            
+            parseCSVContent(csvDemo);
+            showToast("Se cargaron los datos de ejemplo con éxito", "success");
+        });
+
+        // --- PROCESAMIENTO DEL ARCHIVO ---
+        function handleFile(file) {
+            if (!file.name.endsWith('.csv') && !file.name.endsWith('.txt')) {
+                showToast("Por favor carga un archivo válido (.csv o .txt)", "error");
+                return;
+            }
+            fileName = file.name;
+
+            Papa.parse(file, {
+                header: false,
+                skipEmptyLines: 'greedy',
+                complete: function(results) {
+                    if (results.data && results.data.length > 0) {
+                        parseResults(results.data);
+                        showToast(`Archivo "${file.name}" cargado correctamente`, "success");
+                    } else {
+                        showToast("El archivo parece estar vacío", "error");
+                    }
+                },
+                error: function(err) {
+                    showToast("Error al parsear el archivo: " + err.message, "error");
                 }
             });
+        }
+
+        function parseCSVContent(content) {
+            Papa.parse(content, {
+                header: false,
+                skipEmptyLines: 'greedy',
+                complete: function(results) {
+                    if (results.data && results.data.length > 0) {
+                        parseResults(results.data);
+                    }
+                }
+            });
+        }
+
+        // Transforma los arreglos crudos en un mapa con headers independientes
+        function parseResults(data) {
+            // El primer renglón se asume como encabezados
+            headers = data[0].map(h => h.trim() || 'Columna_Sin_Nombre');
+            
+            // Los siguientes renglones son las filas de datos
+            rawData = data.slice(1).map((row, rowIndex) => {
+                const rowObj = { __id: rowIndex }; // ID interno para identificar filas modificadas
+                headers.forEach((header, index) => {
+                    rowObj[header] = row[index] !== undefined ? row[index].trim() : '';
+                });
+                return rowObj;
+            });
+
+            // Restablecer filtros y visualización
+            filteredData = [...rawData];
+            currentPage = 1;
+            sortColumn = null;
+            sortDirection = 'asc';
+            searchInput.value = '';
+
+            // Mostrar visor
+            viewerContainer.classList.remove('hidden');
+            
+            // Renderizar de nuevo
+            updateMetrics();
+            renderTableHeader();
+            renderTableData();
+        }
+
+        // --- ACTUALIZACIÓN DE MÉTRICAS ---
+        function updateMetrics() {
+            fileNameBadge.innerText = fileName;
+            rowCountBadge.innerText = `${rawData.length} Filas`;
+            colCountBadge.innerText = `${headers.length} Columnas`;
+        }
+
+        // --- RENDERIZACIÓN DE ENCABEZADOS ---
+        function renderTableHeader() {
+            tableHeader.innerHTML = '';
+            
+            headers.forEach((header) => {
+                const th = document.createElement('th');
+                th.className = "px-6 py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors select-none";
+                
+                // Div interno de diseño flexible
+                const flexDiv = document.createElement('div');
+                flexDiv.className = "flex items-center gap-2";
+                flexDiv.innerText = header;
+
+                // Indicador visual de ordenación
+                if (sortColumn === header) {
+                    const icon = document.createElement('i');
+                    icon.setAttribute('data-lucide', sortDirection === 'asc' ? 'chevron-up' : 'chevron-down');
+                    icon.className = "w-4 h-4 text-indigo-600 dark:text-indigo-400";
+                    flexDiv.appendChild(icon);
+                } else {
+                    const icon = document.createElement('i');
+                    icon.setAttribute('data-lucide', 'chevrons-up-down');
+                    icon.className = "w-3.5 h-3.5 text-slate-300 dark:text-slate-600 group-hover:text-slate-400";
+                    flexDiv.appendChild(icon);
+                }
+
+                th.appendChild(flexDiv);
+                
+                // Evento para ordenar por columna
+                th.addEventListener('click', () => handleSort(header));
+                tableHeader.appendChild(th);
+            });
+            
+            lucide.createIcons();
+        }
+
+        // --- RENDERIZACIÓN DE FILAS ---
+        function renderTableData() {
+            tableBody.innerHTML = '';
+
+            // Si no hay datos que coincidan con la búsqueda
+            if (filteredData.length === 0) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td colspan="${headers.length}" class="px-6 py-10 text-center text-sm text-slate-400 dark:text-slate-500">
+                        <div class="flex flex-col items-center gap-2">
+                            <i data-lucide="frown" class="w-8 h-8"></i>
+                            <span>No se encontraron resultados que coincidan con la búsqueda</span>
+                        </div>
+                    </td>
+                `;
+                tableBody.appendChild(tr);
+                lucide.createIcons();
+                updatePaginationControls(0);
+                return;
+            }
+
+            // Calcular paginación
+            const totalRows = filteredData.length;
+            const startIdx = rowsPerPage === 'all' ? 0 : (currentPage - 1) * parseInt(rowsPerPage);
+            const endIdx = rowsPerPage === 'all' ? totalRows : Math.min(startIdx + parseInt(rowsPerPage), totalRows);
+            const paginatedRows = filteredData.slice(startIdx, endIdx);
+
+            paginatedRows.forEach((row, relativeIdx) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors group";
+
+                headers.forEach((header) => {
+                    const td = document.createElement('td');
+                    td.className = "px-6 py-3.5 whitespace-nowrap text-slate-600 dark:text-slate-300 border-b border-slate-100 dark:border-slate-800 cursor-cell relative";
+                    
+                    // Contenido textual con resaltado de búsqueda si aplica
+                    const textValue = String(row[header] || '');
+                    td.innerHTML = highlightSearchText(textValue, searchInput.value);
+
+                    // Guardar metadatos para la edición
+                    td.dataset.rowId = row.__id;
+                    td.dataset.columnName = header;
+
+                    // Evento para la edición de celda
+                    td.addEventListener('dblclick', function() {
+                        makeCellEditable(this);
+                    });
+
+                    tr.appendChild(td);
+                });
+
+                tableBody.appendChild(tr);
+            });
+
+            updatePaginationControls(totalRows, startIdx, endIdx);
+        }
+
+        // Resaltar términos buscados
+        function highlightSearchText(text, search) {
+            if (!search) return text;
+            const cleanSearch = search.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'); // Sanear caracteres especiales
+            const regex = new RegExp(`(${cleanSearch})`, 'gi');
+            return text.replace(regex, `<span class="bg-yellow-100 dark:bg-yellow-950/80 text-yellow-800 dark:text-yellow-200 px-1 rounded">$1</span>`);
+        }
+
+        // --- CONTROLADORES DE EDICIÓN DE CELDA ---
+        function makeCellEditable(td) {
+            // Evitar doble edición en simultáneo de la misma celda
+            if (td.querySelector('input')) return;
+
+            const originalValue = td.textContent.trim();
+            const input = document.createElement('input');
+            input.type = "text";
+            input.value = originalValue;
+            input.className = "absolute inset-0 w-full h-full px-5 py-2.5 bg-indigo-50 dark:bg-indigo-950 text-indigo-900 dark:text-indigo-100 border-2 border-indigo-500 focus:outline-none focus:ring-0 z-20 text-sm";
+
+            td.appendChild(input);
+            input.focus();
+            input.select();
+
+            // Guardar cambios al dar enter o perder foco
+            const saveChanges = () => {
+                const newValue = input.value.trim();
+                if (newValue !== originalValue) {
+                    const rowId = parseInt(td.dataset.rowId);
+                    const columnName = td.dataset.columnName;
+
+                    // Actualizar en el dataset crudo
+                    const rawRow = rawData.find(r => r.__id === rowId);
+                    if (rawRow) {
+                        rawRow[columnName] = newValue;
+                        
+                        // También actualizar en filteredData para no perderlo de vista
+                        const filteredRow = filteredData.find(r => r.__id === rowId);
+                        if (filteredRow) filteredRow[columnName] = newValue;
+                        
+                        showToast(`Celda actualizada: "${newValue}"`, 'success');
+                    }
+                }
+                // Limpiar input y renderizar de nuevo el texto enriquecido
+                input.remove();
+                td.innerHTML = highlightSearchText(newValue, searchInput.value);
+            };
+
+            input.addEventListener('blur', saveChanges);
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') saveChanges();
+                if (e.key === 'Escape') {
+                    // Cancelar cambios
+                    input.remove();
+                    td.innerHTML = highlightSearchText(originalValue, searchInput.value);
+                }
+            });
+        }
+
+        // --- ORDENACIÓN DE COLUMNAS ---
+        function handleSort(columnName) {
+            if (sortColumn === columnName) {
+                // Alternar dirección
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortColumn = columnName;
+                sortDirection = 'asc';
+            }
+
+            // Realizar la ordenación
+            filteredData.sort((a, b) => {
+                let valA = a[columnName] || '';
+                let valB = b[columnName] || '';
+
+                // Intento de conversión numérica para ordenación inteligente
+                const numA = parseFloat(valA);
+                const numB = parseFloat(valB);
+
+                if (!isNaN(numA) && !isNaN(numB)) {
+                    return sortDirection === 'asc' ? numA - numB : numB - numA;
+                }
+
+                // Caída de vuelta a ordenación alfabética
+                return sortDirection === 'asc' 
+                    ? String(valA).localeCompare(String(valB)) 
+                    : String(valB).localeCompare(String(valA));
+            });
+
+            // Refrescar vistas
+            renderTableHeader();
+            renderTableData();
+        }
+
+        // --- BÚSQUEDA / FILTRO GLOBAL ---
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase().trim();
+            currentPage = 1; // Volver al inicio al buscar
+
+            if (!term) {
+                filteredData = [...rawData];
+            } else {
+                filteredData = rawData.filter(row => {
+                    return headers.some(header => {
+                        return String(row[header] || '').toLowerCase().includes(term);
+                    });
+                });
+            }
+
+            // Aplicar ordenación existente si la hay
+            if (sortColumn) {
+                const currentSort = sortColumn;
+                const currentDir = sortDirection;
+                sortColumn = null; // Reiniciar temporalmente para forzar ordenación
+                handleSort(currentSort);
+                sortDirection = currentDir;
+            } else {
+                renderTableData();
+            }
         });
+
+        // --- ACTUALIZACIÓN Y NAVEGACIÓN DE PAGINACIÓN ---
+        function updatePaginationControls(totalRows, startIdx = 0, endIdx = 0) {
+            // Actualizar texto de resumen
+            if (totalRows === 0) {
+                paginationSummary.innerText = "Mostrando 0-0 de 0";
+                btnPrevPage.disabled = true;
+                btnNextPage.disabled = true;
+                pageButtonsContainer.innerHTML = '';
+                return;
+            }
+
+            paginationSummary.innerText = `Mostrando ${startIdx + 1}-${endIdx} de ${totalRows}`;
+
+            // Calcular número total de páginas
+            const pagesCount = rowsPerPage === 'all' ? 1 : Math.ceil(totalRows / parseInt(rowsPerPage));
+
+            // Deshabilitar botones de límites
+            btnPrevPage.disabled = currentPage === 1;
+            btnNextPage.disabled = currentPage === pagesCount;
+
+            // Generar botones de páginas
+            pageButtonsContainer.innerHTML = '';
+            
+            // Lógica de páginas abreviadas para no saturar si hay muchas
+            let startPage = Math.max(1, currentPage - 1);
+            let endPage = Math.min(pagesCount, startPage + 2);
+            
+            if (endPage - startPage < 2) {
+                startPage = Math.max(1, endPage - 2);
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                const btn = document.createElement('button');
+                btn.innerText = i;
+                if (i === currentPage) {
+                    btn.className = "px-3 py-1.5 rounded-lg bg-indigo-600 text-white font-semibold text-xs transition-colors";
+                } else {
+                    btn.className = "px-3 py-1.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs transition-colors";
+                }
+                
+                btn.addEventListener('click', () => {
+                    currentPage = i;
+                    renderTableData();
+                });
+                pageButtonsContainer.appendChild(btn);
+            }
+        }
+
+        // Listeners de botones de navegación de páginas
+        btnPrevPage.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderTableData();
+            }
+        });
+
+        btnNextPage.addEventListener('click', () => {
+            const pagesCount = rowsPerPage === 'all' ? 1 : Math.ceil(filteredData.length / parseInt(rowsPerPage));
+            if (currentPage < pagesCount) {
+                currentPage++;
+                renderTableData();
+            }
+        });
+
+        rowsPerPageSelect.addEventListener('change', (e) => {
+            rowsPerPage = e.target.value;
+            currentPage = 1;
+            renderTableData();
+        });
+
+        // --- ACCIONES DE EXPORTACIÓN ---
+
+        // Helper para convertir el estado actual a formato CSV
+        function getCSVString() {
+            // Solo los datos que se están visualizando / filtrados
+            const exportRows = filteredData.map(row => {
+                return headers.map(header => {
+                    let cellVal = String(row[header] || '');
+                    // Escapar comillas dobles si existen en el campo
+                    if (cellVal.includes('"') || cellVal.includes(',') || cellVal.includes('\n') || cellVal.includes(';')) {
+                        cellVal = `"${cellVal.replace(/"/g, '""')}"`;
+                    }
+                    return cellVal;
+                });
+            });
+
+            return [headers.join(','), ...exportRows.map(r => r.join(','))].join('\n');
+        }
+
+        // Descargar archivo binario genérico
+        function downloadFile(content, fileName, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Exportar a CSV
+        btnExportCSV.addEventListener('click', () => {
+            if (filteredData.length === 0) return;
+            const csvOutput = getCSVString();
+            const exportName = fileName.replace(/\.[^/.]+$/, "") + "_editado.csv";
+            downloadFile(csvOutput, exportName, 'text/csv;charset=utf-8;');
+            showToast("Archivo CSV exportado exitosamente", "success");
+        });
+
+        // Exportar a JSON
+        btnExportJSON.addEventListener('click', () => {
+            if (filteredData.length === 0) return;
+            // Quitamos el ID de uso interno para la exportación limpia del JSON
+            const cleanExportData = filteredData.map(row => {
+                const cleanRow = { ...row };
+                delete cleanRow.__id;
+                return cleanRow;
+            });
+
+            const jsonOutput = JSON.stringify(cleanExportData, null, 2);
+            const exportName = fileName.replace(/\.[^/.]+$/, "") + "_editado.json";
+            downloadFile(jsonOutput, exportName, 'application/json;charset=utf-8;');
+            showToast("Archivo JSON exportado exitosamente", "success");
+        });
+
+        // Copiar al portapapeles usando fallback requerido
+        btnCopyClipboard.addEventListener('click', () => {
+            if (filteredData.length === 0) return;
+            const csvOutput = getCSVString();
+
+            // Textarea invisible para forzar la copia debido a restricciones de iframe
+            const el = document.createElement('textarea');
+            el.value = csvOutput;
+            el.setAttribute('readonly', '');
+            el.style.position = 'absolute';
+            el.style.left = '-9999px';
+            document.body.appendChild(el);
+            el.select();
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showToast("Copiado al portapapeles en formato CSV", "success");
+                } else {
+                    showToast("No se pudo copiar de forma directa", "error");
+                }
+            } catch (err) {
+                showToast("Error al copiar datos", "error");
+            }
+            
+            document.body.removeChild(el);
+        });
+
+        // --- INICIALIZACIÓN ---
+        window.onload = function () {
+            initTheme();
+            lucide.createIcons();
+            
+            // Cargar de forma predeterminada los datos demo al iniciar para que la UI no luzca vacía
+            btnDemo.click();
+        };
     </script>
 </body>
 </html>
